@@ -105,10 +105,10 @@ usage() {
 
 # Lists all file destinations in the format:
 #
-#     ~/.gitconfig
-#     ~/.gitignore_global
-#     ~/.tigrc
-#     ~/.vimrc
+#     /Users/username/.gitconfig
+#     /Users/username/.gitignore_global
+#     /Users/username/.tigrc
+#     /Users/username/.vimrc
 #     ...
 #
 list_destinations() {
@@ -134,7 +134,8 @@ file_source() {
 # - Returns: 'file-destination'
 #
 file_dest() {
-    echo "$1" | awk 'BEGIN { FS = " -> " } END { print $2 }'
+    dest=$(echo "$1" | awk 'BEGIN { FS = " -> " } END { print $2 }')
+    echo "${dest/#\~/$HOME}"
 }
 
 # Sets up symlinks for each file in $FILES. If the destination directory
@@ -147,10 +148,8 @@ link_files() {
 
     for mapping in "${FILES[@]}"; do
         local file=$(file_source "${mapping}")
-        local dest=$(file_dest "${mapping}")
-
         local fq_file="${DIR}/${file}"
-        local fq_dest="${dest/#\~/$HOME}"
+        local fq_dest=$(file_dest "${mapping}")
 
         local dest_dir=$(dirname "${fq_dest}")
 
