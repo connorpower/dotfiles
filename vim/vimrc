@@ -35,3 +35,6 @@ autocmd FileType make set noexpandtab
 " rust
 let g:rustfmt_autosave = 1
 
+" colors
+set background=dark
+set t_Co=256
