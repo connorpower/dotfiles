@@ -12,15 +12,15 @@ readonly SCRIPT=$(basename "${0}")
 # An array of mappings for 'source file' -> 'destination'. This allows us to
 # keep the dotfiles repository organized by topic independent of where the
 # files ultimately need to be placed.
-declare -a FILES=(\
-  'git/gitconfig -> ~/.gitconfig' \
-  'git/gitignore_global -> ~/.gitignore_global' \
-  'git/tigrc -> ~/.tigrc' \
-  'vim/vimrc -> ~/.vimrc' \
-  'shell/zshrc -> ~/.zshrc' \
-  'shell/tmux.conf -> ~/.tmux.conf' \
-  'tty/alacritty/alacritty.yml -> ~/.config/alacritty/alacritty.yml' \
-  'aws/aws-utils.sh -> ~/bin/aws-utils.sh' \
+declare -a FILES=(
+  'git/gitconfig -> ~/.gitconfig'
+  'git/gitignore_global -> ~/.gitignore_global'
+  'git/tigrc -> ~/.tigrc'
+  'vim/vimrc -> ~/.vimrc'
+  'shell/zshrc -> ~/.zshrc'
+  'shell/tmux.conf -> ~/.tmux.conf'
+  'tty/alacritty/alacritty.yml -> ~/.config/alacritty/alacritty.yml'
+  'aws/aws-utils.sh -> ~/bin/aws-utils.sh'
 )
 
 ###############################################################################
