@@ -105,21 +105,21 @@ list_destinations() {
     done
 }
 
-# Returns the file source from a '<file-source>;<file-destination>' mapping
+# Returns the file source from a 'file-source -> file-destination' mapping
 # in the $FILES array.
 #
-# - Argument $1: Mapping string, i.e. '<file-source>;<file-destination>'
-# - Returns: '<file-source>'
+# - Argument $1: Mapping string, i.e. 'file-source -> file-destination'
+# - Returns: 'file-source'
 #
 file_source() {
     echo "$1" | awk 'BEGIN { FS = " -> " } END { print $1 }'
 }
 
-# Returns the file destination from a '<file-source>;<file-destination>' mapping
+# Returns the file destination from a 'file-source -> file-destination' mapping
 # in the $FILES array.
 #
-# - Argument $1: Mapping string, i.e. '<file-source>;<file-destination>'
-# - Returns: '<file-destination>'
+# - Argument $1: Mapping string, i.e. 'file-source -> file-destination'
+# - Returns: 'file-destination'
 #
 file_dest() {
     echo "$1" | awk 'BEGIN { FS = " -> " } END { print $2 }'
