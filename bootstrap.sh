@@ -3,15 +3,18 @@
 set -e
 
 ###############################################################################
-## Constants
+## Configuration
 ###############################################################################
 
-readonly DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-readonly SCRIPT=$(basename "${0}")
-
-# An array of mappings for 'source file' -> 'destination'. This allows us to
-# keep the dotfiles repository organized by topic independent of where the
-# files ultimately need to be placed.
+#
+# EDIT ME:
+# This is the only part of the script which needs to be customized once a new
+# file is added.
+#
+# The format is 'source file' -> 'destination'.
+# 'source-file' is the file path in this repository. 'destination' is the
+# location which should be linked to 'source-file' when the script is run.
+#
 declare -a FILES=(
   'git/gitconfig -> ~/.gitconfig'
   'git/gitignore_global -> ~/.gitignore_global'
@@ -22,6 +25,15 @@ declare -a FILES=(
   'tty/alacritty/alacritty.yml -> ~/.config/alacritty/alacritty.yml'
   'aws/aws-utils.sh -> ~/bin/aws-utils.sh'
 )
+
+
+###############################################################################
+## Constants
+###############################################################################
+
+readonly DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+readonly SCRIPT=$(basename "${0}")
+
 
 ###############################################################################
 ## Constants
