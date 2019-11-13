@@ -20,7 +20,7 @@ The `bootstrap.sh` script will install the dotfiles in their respective
 locations. Because altering your home directory is scary, `bootstrap.sh`
 comes with a dry-run option (flag: `-d`).
 
-## Configuration
+### Configuration
 
 The only part of the script which needs to be changed is the `FILES` array at
 the start of `bootstrap.sh`. The `FILES` array contains a mapping of
@@ -38,7 +38,7 @@ declare -a FILES=(
 )
 ```
 
-## Usage
+### Usage
 
 ```
 Usage: ./bootstrap.sh [-h|--help] [-f] [-d] [-l]
