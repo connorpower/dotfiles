@@ -20,31 +20,10 @@ The `bootstrap.sh` script will install the dotfiles in their respective
 locations. Because altering your home directory is scary, `bootstrap.sh`
 comes with a dry-run option (flag: `-d`).
 
-## Usage
-
-```
-Usage: ./bootstrap.sh [-h|--help] [-f] [-d] [-l]
-    --help | -h
-        Prints this menu
-    -d
-        Dry run. Echoes the commands which would be executed to
-        stdout but doesn't modify anything.
-    -f
-        Force. Overwrites any existing files
-    -l
-        Lists the files that would be installed by this program with"
-        each full path file on a new line making the output suitable"
-        for piping to xargs or using as a for-loop input, i.e:"
-
-            for file in $(./bootstrap.sh -l); do
-                ls -lah "$file";
-            done
-```
-
 ## Configuration
 
 The only part of the script which needs to be changed is the `FILES` array at
-the very top of `bootstrap.sh`. The `FILES` array contains a mapping of
+the start of `bootstrap.sh`. The `FILES` array contains a mapping of
 every file in the repository and the location it should be linked to.
 
 ```sh
@@ -58,3 +37,25 @@ declare -a FILES=(
     'aws/aws-utils.sh -> ~/bin/aws-utils.sh'
 )
 ```
+
+## Usage
+
+```
+Usage: ./bootstrap.sh [-h|--help] [-f] [-d] [-l]
+    --help | -h
+        Prints this menu
+    -d
+        Dry run. Echoes the commands which would be executed to
+        stdout but doesn't modify anything.
+    -f
+        Force. Overwrites any existing files.
+    -l
+        Lists the files that would be installed by this program. Each
+        full path is printed on a new line making the output suitable
+        for piping to xargs or using as a for-loop input, i.e:
+
+            for file in $(./bootstrap.sh -l); do
+                ls -lah "$file";
+            done
+```
+
