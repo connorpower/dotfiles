@@ -98,7 +98,7 @@ usage() {
     echo "        for piping to xargs or using as a for-loop input, i.e:"
     echo ""
     echo "            for file in \$(${SCRIPT} -l); do"
-    echo "                ls -lah \"\$file\";"
+    echo "                ls -lah \"\$file\""
     echo "            done"
     exit 1
 }
