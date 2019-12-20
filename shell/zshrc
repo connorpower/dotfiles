@@ -35,6 +35,7 @@ bindkey "^[e" end-of-line
 # PATHS
 ################################################################################
 
+export PATH=$PATH:"${HOME}/bin"
 export PATH=$PATH:"${HOME}/.fastlane/bin"
 export PATH=$PATH:$(go env GOPATH)/bin
 export PATH=$PATH:"${HOME}/Library/Python/3.7/bin"
