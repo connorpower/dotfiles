@@ -1,0 +1,3 @@
+[submodule "vim/vimd/usda-syntax"]
+	path = vim/vimd/usda-syntax
+	url = https://github.com/superfunc/usda-syntax

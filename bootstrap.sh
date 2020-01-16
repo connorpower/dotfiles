@@ -20,6 +20,7 @@ declare -a FILES=(
   'git/gitignore_global -> ~/.gitignore_global'
   'git/tigrc -> ~/.tigrc'
   'vim/vimrc -> ~/.vimrc'
+  'vim/vimd/usda-syntax -> ~/vim/usda-syntax'
   'shell/zshrc -> ~/.zshrc'
   'shell/tmux.conf -> ~/.tmux.conf'
   'tty/alacritty/alacritty.yml -> ~/.config/alacritty/alacritty.yml'

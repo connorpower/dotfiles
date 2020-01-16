@@ -28,9 +28,16 @@ set title
 set titleold="Terminal"
 let &titlestring=expand("%:t")
 
-" filetypes
+" filetypes: gcov
 autocmd BufNewFile,BufRead *.gcov setlocal ft=gcov
+
+" filetypes: make
 autocmd FileType make set noexpandtab
+
+" filetypes: Pixar USD
+autocmd BufRead,BufNewFile *.usd set filetype=usda
+autocmd BufRead,BufNewFile *.usda set filetype=usda
+autocmd FileType usda source ~/vim/usda-syntax/vim/usda.vim
 
 " rust
 let g:rustfmt_autosave = 1
