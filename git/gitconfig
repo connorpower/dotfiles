@@ -22,11 +22,8 @@
 [pull]
     default = current
 [alias]
-    headless = !sh -c 'git stash -u && git symbolic-ref HEAD refs/heads/$0 && rm .git/index && git clean -fdx && git stash pop'
     hist = log --date-order --pretty=format:'%C(yellow)%h:%Cblue%d%Creset %s %C(white) (%an), %ar%Creset' --graph
     files-in-commit = diff-tree --no-commit-id --name-only -r
-    autochanges = !sh -c 'echo "$(git describe --tags --abbrev=0)..HEAD:" && git log $(git describe --tags --abbrev=0)..HEAD --pretty=format:\"%h %s\"'
-    changes = !sh -c 'git log $0..$1 --pretty=format:\"%h %s\"'
 [url "git@github.com:"]
     insteadOf = https://github.com/
 [filter "lfs"]
