@@ -82,7 +82,7 @@ rfc_date() {
 
 DEVELOPER_DIR="${HOME}/Developer"
 
-alias cddev="cd '${DEVELOPER_DIR}'"
+alias cddev="cd '${DEVELOPER_DIR}/ditto'"
 alias o="open ."
 alias ow="open ./*.xcworkspace"
 
