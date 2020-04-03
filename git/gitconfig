@@ -13,6 +13,7 @@
 [user]
     name = Connor Power
     email = connor@connorpower.com
+    signingkey = EC2399A673BBCD1F
 [color]
     status = auto
     branch = auto
@@ -32,3 +33,7 @@
     process = git-lfs filter-process
     required = true
     clean = git-lfs clean -- %f
+[commit]
+    gpgsign = true
+[gpg]
+    program = gpg
