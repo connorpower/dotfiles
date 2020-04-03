@@ -22,9 +22,6 @@ plugins=(
   aws
 )
 
-unsetopt share_history
-setopt no_share_history
-
 bindkey "[D" backward-word
 bindkey "[C" forward-word
 bindkey "^[a" beginning-of-line
@@ -117,3 +114,6 @@ alias gitstats="git shortlog -sn"
 
 source $ZSH/oh-my-zsh.sh
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+unsetopt share_history
+setopt no_share_history
