@@ -1,2 +1,7 @@
 set main-view = date author:width=15 id:width=7 commit-title:yes,graph,refs
 set main-view-date = relative
+
+bind main <Ctrl-f> scroll-page-down
+bind main <Ctrl-b> scroll-page-up
+bind diff <Ctrl-f> scroll-page-down
+bind diff <Ctrl-b> scroll-page-up
