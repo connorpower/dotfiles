@@ -22,12 +22,14 @@ set -euo pipefail
 ###############################################################################
 
 declare -r DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+
 declare -r SCRIPT=$(basename "${0}")
 
-
-###############################################################################
-## Defaults
-###############################################################################
+# A file which exports the BITLY_OAUTH_TOKEN variable when sourced. This
+# file is created the first time the script is run so that future
+# invocations can quickly read the bitly token which is read from 1Password
+# on first run.
+declare -r ENV_FILE="${HOME}/.env/bitly"
 
 declare -r BITLY_GROUP_ID='BjckmpmygzW'
 
@@ -113,19 +115,23 @@ long_usage() {
 # Retrieves the Bitly OATH token and exports it for faster
 # retrieval on subsequent uses.
 get_oath_token() {
+    if [[ -f "${ENV_FILE}" ]]; then
+        source "${ENV_FILE}"
+    fi
+
+    # If we now have our bitly OATH token, then we can return early.
     if [[ ! -z "${BITLY_OAUTH_TOKEN:-}" ]]; then
         return 0
     fi
 
-    local return_status=0
-    local json=$(op get item "${BITLY_OP_ITEM}") || return_status=$?
-
-    if [[ $return_status -eq 1 ]]; then
-        eval $(op signin my)
-        json=$(op get item "${BITLY_OP_ITEM}")
-    fi
+    eval $(op signin my)
+    json=$(op get item "${BITLY_OP_ITEM}")
 
     export BITLY_OAUTH_TOKEN=$(echo "${json}" | jp --unquoted "${BITLY_OP_QUERY}")
+    mkdir -p $(dirname "${ENV_FILE}") || true
+
+    # Cache the oath token for next time
+    echo "export BITLY_OAUTH_TOKEN='${BITLY_OAUTH_TOKEN}'" > "${ENV_FILE}"
 }
 
 shorten() {
