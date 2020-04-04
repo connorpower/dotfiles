@@ -1,43 +1,67 @@
 #!/bin/bash
+#
+# DESCRIPTION
+#     Shortens a link on the macOS clipboard using bitly and places the
+#     shortened link back on the clipboard. The bitly OATH token will bre
+#     retrieved from 1Password if required and exported for future use.
+#
+# AUTHOR
+#   - Connor Power <connor@ditto.live>
+#
 
-set -e
+
+# Fail fast and fail early.
+#   - Abort script at first error
+#   - Attempts to use undefined variable outputs error message and exits
+#   - Pipelines return the exit status of the last command in the pipe to fail
+set -euo pipefail
+
 
 ###############################################################################
 ## Constants
 ###############################################################################
 
-readonly DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-readonly SCRIPT=$(basename "${0}")
+declare -r DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+declare -r SCRIPT=$(basename "${0}")
 
 
 ###############################################################################
 ## Defaults
 ###############################################################################
 
-BITLY_GROUP_ID='BjckmpmygzW'
+declare -r BITLY_GROUP_ID='BjckmpmygzW'
+
+# 1Password Bitly item name
+declare -r BITLY_OP_ITEM='Bitly'
+
+# JMESPath Query to access the OATH token stored in the 1Password Bitly Entry
+declare -r BITLY_OP_QUERY="details.sections[?title == 'API'].fields[0][?t == 'OATH Token'].v | [0]"
+
 
 ###############################################################################
 ## Main Function
 ###############################################################################
 
 main() {
-    if [ "${1}" = "help" ] || [ "${1}" = "--help" ]; then
-        long_usage
-        return 0
+    if [[ $# -gt 0 ]]; then
+        if [[ "${1}" = "help" ]] || [[ "${1}" = "--help" ]]; then
+            long_usage
+            exit 0
+        fi
     fi
 
     while getopts ":hg:" o; do
         case "${o}" in
             h)
                 long_usage
-                return 0
+                exit 0
                 ;;
             g)
                 BITLY_GROUP_ID="${OPTARG}" 
                 ;;
             *)
                 short_usage
-                return 1
+                exit 1
                 ;;
         esac
     done
@@ -48,14 +72,10 @@ main() {
     if [ -z "${link}" ]; then
         echo -e "A link must be supplied.\n" 1>&2
         short_usage
-        return 1
-    fi
-
-    if [ -z "${BITLY_OAUTH_TOKEN}" ]; then
-        echo "Environment variable must be set: BITLY_OAUTH_TOKEN" >&2
         exit 1
     fi
 
+    get_oath_token
     shorten
 }
 
@@ -89,7 +109,32 @@ long_usage() {
     echo "            automatically appended."
 }
 
+# Retrieves the Bitly OATH token and exports it for faster
+# retrieval on subsequent uses.
+get_oath_token() {
+    if [[ ! -z "${BITLY_OAUTH_TOKEN:-}" ]]; then
+        return 0
+    fi
+
+    local return_status=0
+    local json=$(op get item "${BITLY_OP_ITEM}") || return_status=$?
+
+    if [[ $return_status -eq 1 ]]; then
+        eval $(op signin my)
+        json=$(op get item "${BITLY_OP_ITEM}")
+    fi
+
+    export BITLY_OAUTH_TOKEN=$(op get item Bitly \
+        | jp --unquoted "${BITLY_OP_QUERY}" \
+    )
+}
+
 shorten() {
+    if [ -z "${BITLY_OAUTH_TOKEN}" ]; then
+        echo "Environment variable must be set: BITLY_OAUTH_TOKEN" >&2
+        exit 1
+    fi
+
     echo "${link}" | egrep -q '^http' || link="https://${link}"
 
     output=$(curl -sfX POST https://api-ssl.bitly.com/v4/shorten \
@@ -114,5 +159,7 @@ shorten() {
 ## Entry Point
 ###############################################################################
 
-main "${@}"
+# The unusual syntax (versus `main "${@}"`) is a workaround for a bug in some
+# non-POSIX compliant versions of bash in which $@ is reported as unbound.
+main "${@:+$@}"
 
