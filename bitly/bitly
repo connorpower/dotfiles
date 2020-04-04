@@ -67,10 +67,10 @@ main() {
     done
     shift $((OPTIND-1))
 
-    link=$@
+    link=$(pbpaste)
 
     if [ -z "${link}" ]; then
-        echo -e "A link must be supplied.\n" 1>&2
+        echo -e "A link must be supplied in the macOS clipboard.\n" 1>&2
         short_usage
         exit 1
     fi
@@ -84,16 +84,17 @@ main() {
 ###############################################################################
 
 short_usage() {
-    echo "Usage: ${SCRIPT} [-h|--help] [-g bitly_group] link"
+    echo "Usage: ${SCRIPT} [-h|--help] [-g bitly_group]"
 }
 
 long_usage() {
     short_usage
     echo ""
-    echo "${SCRIPT} shortens a link and adds the shortened version to the"
-    echo "macOS clipboard in addition to priting to stdout. This script"
-    echo "requires a Bitly OAUTH key to operated which must be set via the"
-    echo "BITLY_OAUTH_TOKEN environment variable."
+    echo "${SCRIPT} shortens a link on the macOS clipboard and adds the"
+    echo "shortened version to the macOS clipboard. This script requires a"
+    echo "Bitly OAUTH key to operate which must be set via an BITLY_OAUTH_TOKEN"
+    echo "environment variable or present in 1Password in a ${BITLY_OP_ITEM}"
+    echo "item."
     echo ""
     echo "    Options:"
     echo "        --help | -h"
@@ -103,7 +104,7 @@ long_usage() {
     echo "            the bitly API docs ()"
     echo ""
     echo "    Arguments:"
-    echo "        link"
+    echo "        <CLIPBOARD>"
     echo "            A link to be shortened. If the link doesn't include a"
     echo "            scheme ('http://' or 'https://') then 'https://' is"
     echo "            automatically appended."
@@ -124,9 +125,7 @@ get_oath_token() {
         json=$(op get item "${BITLY_OP_ITEM}")
     fi
 
-    export BITLY_OAUTH_TOKEN=$(op get item Bitly \
-        | jp --unquoted "${BITLY_OP_QUERY}" \
-    )
+    export BITLY_OAUTH_TOKEN=$(echo "${json}" | jp --unquoted "${BITLY_OP_QUERY}")
 }
 
 shorten() {
