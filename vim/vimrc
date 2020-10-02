@@ -2,7 +2,6 @@
 call plug#begin('~/.vim/plugged')
 
 Plug 'keith/swift.vim'
-Plug 'rust-lang/rust.vim'
 Plug 'vim-syntastic/syntastic'
 Plug 'keith/swift.vim'
 
