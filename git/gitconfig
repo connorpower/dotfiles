@@ -7,7 +7,7 @@
     whitespace = trailing-space,space-before-tab,blank-at-eol
     precomposeunicode = true
 [apply]
-    whitespace = fix
+    whitespace = warn
 [merge]
     tool = opendiff
 [user]
