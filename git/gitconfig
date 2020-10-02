@@ -27,8 +27,6 @@
     hist = log --date-order --pretty=format:'%C(yellow)%h:%Cblue%d%Creset %s %C(white) (%an), %ar%Creset' --graph
     files-in-commit = diff-tree --no-commit-id --name-only -r
     stats = shortlog -s -n --all
-[url "git@github.com:"]
-    insteadOf = https://github.com/
 [filter "lfs"]
     smudge = git-lfs smudge -- %f
     process = git-lfs filter-process
