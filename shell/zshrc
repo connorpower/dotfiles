@@ -35,6 +35,8 @@ export PATH=$PATH:"${HOME}/.fastlane/bin"
 export PATH=$PATH:"${HOME}/Library/Python/3.7/bin"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH=$PATH:"/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+export PATH=$PATH:'/Users/connorpower/Library/Python/2.7/bin'
+export PATH=$PATH:'/Users/connorpower/.dotnet/tools'
 
 
 ################################################################################
