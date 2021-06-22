@@ -115,7 +115,7 @@ export SPACESHIP_2FA_SMS_DEFAULT_PHONE_NUMBER=1
 
 DEVELOPER_DIR="${HOME}/Developer"
 
-alias cddev="cd '${DEVELOPER_DIR}/ditto'"
+alias cddev='cd "${DEVELOPER_DIR}/ditto/ditto"'
 alias o="open ."
 alias ow="open ./*.xcworkspace"
 
