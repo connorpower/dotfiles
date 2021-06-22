@@ -122,6 +122,12 @@ alias ow='open ./*.xcworkspace'
 alias gs='git status'
 alias gitstats='git shortlog -sn'
 
+# Flush local DNS cache
+alias dns_flush='sudo killall -HUP mDNSResponder; sleep 2;'
+
+# Preview with QuickLook
+alias qlf='qlmanage -p "$@" &> /dev/null'
+
 
 ################################################################################
 # ZSH INITIALIZATION
