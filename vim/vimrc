@@ -28,6 +28,8 @@ let &titlestring=expand("%:t")
 " filetypes: make
 autocmd FileType make set noexpandtab
 
+" filetypes: gitcommits
+autocmd FileType gitcommit setlocal spell
 
 " colors
 set background=dark
