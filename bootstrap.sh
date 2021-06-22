@@ -26,6 +26,7 @@ declare -a FILES=(
   'tty/alacritty/alacritty.yml -> ~/.config/alacritty/alacritty.yml'
   'aws/aws-utils.sh -> ~/bin/aws-utils.sh'
   'bitly/bitly -> ~/bin/bitly'
+  'rust/cargo-config -> ~/.cargo/config'
 )
 
 
