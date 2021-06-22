@@ -1,22 +1,8 @@
 " plugins
 call plug#begin('~/.vim/plugged')
 
-Plug 'keith/swift.vim'
-Plug 'vim-syntastic/syntastic'
-Plug 'keith/swift.vim'
-
 " Initialize plugin system
 call plug#end()
-
-" Syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
 
 " highligting
 syntax on
@@ -39,33 +25,11 @@ set title
 set titleold="Terminal"
 let &titlestring=expand("%:t")
 
-" filetypes: gcov
-autocmd BufNewFile,BufRead *.gcov setlocal ft=gcov
-
 " filetypes: make
 autocmd FileType make set noexpandtab
 
-" filetypes: Pixar USD
-autocmd BufRead,BufNewFile *.usd set filetype=usda
-autocmd BufRead,BufNewFile *.usda set filetype=usda
-autocmd FileType usda source ~/vim/usda-syntax/vim/usda.vim
-
-" rust
-let g:rustfmt_autosave = 1
-
-" swift
-let g:syntastic_swift_swiftlint_use_defaults = 1
-let g:syntastic_swift_checkers = ['swiftpm', 'swiftlint']
 
 " colors
 set background=dark
 set t_Co=256
 
-" linewidths
-autocmd BufRead,BufNewFile *.sh setlocal textwidth=80
-autocmd BufRead,BufNewFile *.md setlocal textwidth=80
-autocmd BufRead,BufNewFile *.c setlocal textwidth=80
-autocmd BufRead,BufNewFile *.go setlocal textwidth=80
-autocmd BufRead,BufNewFile *.rs setlocal textwidth=100
-autocmd BufRead,BufNewFile *.m setlocal textwidth=120
-autocmd BufRead,BufNewFile *.swift setlocal textwidth=120
