@@ -1,6 +1,9 @@
 " plugins
 call plug#begin('~/.vim/plugged')
+Plug 'joshdick/onedark.vim', {'branch': 'main'}
 Plug 'sheerun/vim-polyglot'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 call plug#end()
 
 
@@ -32,10 +35,23 @@ autocmd FileType gitcommit setlocal spell
 
 
 " colors
+
+" onedark.vim override: Don't set a background color when running in a terminal;
+" just use the terminal's background color
+if (has("autocmd") && !has("gui_running"))
+  augroup colorset
+    autocmd!
+    let s:white = { "gui": "#ABB2BF", "cterm": "145", "cterm16" : "7" }
+    autocmd ColorScheme * call onedark#set_highlight("Normal", { "fg": s:white })
+  augroup END
+endif
+
+let g:airline_theme='deus'
 if (has("termguicolors"))
   set termguicolors
 endif
 
+colorscheme onedark
 syntax on
 set hlsearch
 
