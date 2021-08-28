@@ -1,12 +1,8 @@
 " plugins
 call plug#begin('~/.vim/plugged')
-
-" Initialize plugin system
+Plug 'sheerun/vim-polyglot'
 call plug#end()
 
-" highligting
-syntax on
-set hlsearch
 
 " ruler settings
 set ruler
@@ -14,16 +10,19 @@ set number
 set colorcolumn=80,100,120
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 
+
 " tab settings
 set tabstop:4
 set expandtab
 set shiftwidth=4
 set softtabstop=4
 
+
 " enable automatic title setting for terminals
 set title
 set titleold="Terminal"
 let &titlestring=expand("%:t")
+
 
 " filetypes: make
 autocmd FileType make set noexpandtab
@@ -31,7 +30,12 @@ autocmd FileType make set noexpandtab
 " filetypes: gitcommits
 autocmd FileType gitcommit setlocal spell
 
+
 " colors
-set background=dark
-set t_Co=256
+if (has("termguicolors"))
+  set termguicolors
+endif
+
+syntax on
+set hlsearch
 
