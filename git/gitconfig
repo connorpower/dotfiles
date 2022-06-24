@@ -1,7 +1,7 @@
 [credential]
     helper = osxkeychain
 [core]
-    editor = /usr/bin/vim
+    editor = nvim
     pager = less -x4
     excludesfile = /Users/connor/.gitignore_global
     whitespace = trailing-space,space-before-tab,blank-at-eol
