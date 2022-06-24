@@ -23,6 +23,23 @@ plugins=(
 )
 
 
+################################################################################
+# ZSH INITIALIZATION
+################################################################################
+
+source $ZSH/oh-my-zsh.sh
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+unsetopt share_history
+setopt no_share_history
+
+autoload -U +X bashcompinit && bashcompinit
+
+eval "$(starship init zsh)"
+
+# Undo all of ohmyzsh alias entries
+unalias -m '*'
+
 
 ################################################################################
 # PATHS
@@ -116,17 +133,3 @@ alias dns_flush='sudo killall -HUP mDNSResponder; sleep 2;'
 # Preview with QuickLook
 alias qlf='qlmanage -p "$@" &> /dev/null'
 
-
-################################################################################
-# ZSH INITIALIZATION
-################################################################################
-
-source $ZSH/oh-my-zsh.sh
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-unsetopt share_history
-setopt no_share_history
-
-autoload -U +X bashcompinit && bashcompinit
-
-eval "$(starship init zsh)"
