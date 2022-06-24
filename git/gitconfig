@@ -35,7 +35,8 @@
     hist = log --date-order --pretty=format:'%C(yellow)%h:%Cblue%d%Creset %s %C(white) (%an), %ar%Creset' --graph
     files-in-commit = diff-tree --no-commit-id --name-only -r
     stats = shortlog -s -n --all
-    hash = rev-parse --short HEAD
+    shash = rev-parse --short HEAD
+    lhash = rev-parse HEAD
 [filter "lfs"]
     smudge = git-lfs smudge -- %f
     process = git-lfs filter-process
