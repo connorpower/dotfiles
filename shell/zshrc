@@ -105,6 +105,10 @@ alias rmtgt='rm -rf ./target'
 
 export QUAY_USER='connorpowerditto'
 export DITTO_LICENSE=$(cat ~/.ditto/license)
+export KAFKA_BOOTSTRAP_HOST=localhost:9092
+
+# File descriptor hungry Ditto tests
+ulimit -n 4096
 
 
 ################################################################################
