@@ -1,15 +1,23 @@
 [credential]
     helper = osxkeychain
 [core]
+    pager = delta
     editor = nvim
-    pager = less -x4
     excludesfile = /Users/connor/.gitignore_global
     whitespace = trailing-space,space-before-tab,blank-at-eol
     precomposeunicode = true
+[interactive]
+    diffFilter = delta --color-only
+[diff]
+    colorMoved = default
+[delta]
+    navigate = true
+    syntax-theme = catppuccin
+    line-numbers = true
 [apply]
     whitespace = warn
 [merge]
-    tool = opendiff
+    conflictstyle = diff3
 [user]
     name = Connor Power
     email = connor@connorpower.com
