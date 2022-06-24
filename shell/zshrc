@@ -29,11 +29,8 @@ plugins=(
 ################################################################################
 
 export PATH=$PATH:"${HOME}/bin"
-export PATH=$PATH:"${HOME}/.fastlane/bin"
-export PATH=$PATH:"${HOME}/Library/Python/3.7/bin"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH=$PATH:"/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-export PATH=$PATH:'/Users/connorpower/Library/Python/2.7/bin'
 export PATH=$PATH:'/Users/connorpower/.dotnet/tools'
 
 
@@ -42,13 +39,6 @@ export PATH=$PATH:'/Users/connorpower/.dotnet/tools'
 ################################################################################
 
 export ANDROID_SDK_ROOT="${HOME}/Library/Android/sdk"
-
-
-################################################################################
-# cURL
-################################################################################
-
-# export CURL_SSL_BACKEND=secure-transport
 
 
 ################################################################################
@@ -105,13 +95,6 @@ date_iso_8601() {
         date -u +%Y-%m-%dT%H:%M:%SZ
     fi
 }
-
-
-################################################################################
-# APPLE DEVELOPER
-################################################################################
-
-export SPACESHIP_2FA_SMS_DEFAULT_PHONE_NUMBER=1
 
 
 ################################################################################
