@@ -138,6 +138,14 @@ alias ow='open ./*.xcworkspace'
 alias gs='git status'
 alias gitstats='git shortlog -sn'
 
+# Diff git changes with bat syntax highlighting
+batdiff() {
+    git diff --name-only --relative --diff-filter=d | xargs bat --diff
+}
+
+# Modern alternative to du, but print in intuitive order
+alias dust='dust -r'
+
 # Flush local DNS cache
 alias dns_flush='sudo killall -HUP mDNSResponder; sleep 2;'
 
