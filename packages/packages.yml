@@ -1,0 +1,103 @@
+# Rustup
+#curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+#cargo install --locked bacon
+packages:
+  base:
+    universal:
+      # General
+      - neovim
+      - bat
+      - bat-extras
+      - exa
+      - bottom
+      - ripgrep
+      - starship
+      - tmux
+      - zsh-syntax-highlighting
+      - kitty
+      - task
+      - tig
+      - tealdeer
+      - dust
+      # Dev
+      - doxygen
+      - git
+      - git-filter-repo
+      - gnupg
+      - graphviz
+      - jq
+      - llvm
+      - sccache
+      - cmake
+      - terraform
+      # Rice
+      - calcurse
+      - cmatrix
+      - neofetch
+    arch:
+      # Base Dev Tools
+      - base-devel
+      # General
+      - time
+      # Rice
+      - bash-pipes
+      # Dev
+      - github-cli
+      - git-delta
+      - aws-cli
+      # Fonts
+      - nerd-fonts-fira-code
+    darwin:
+      # Base Dev Tools
+      - pkg-config
+      # General
+      - timewarrior
+      # Rice
+      - pipes-sh
+      # Dev
+      - gh
+      - delta
+      - awscli
+      # Fonts
+      - font-fira-code-nerd-font
+      # Apps
+      - 1password-cli
+      - hummingbird
+      - moom
+      - bartender
+      - brave-browser
+      - tidal
+      - obsidian
+      - selfcontrol
+      - sensiblesidebuttons
+      - signal
+  personal:
+    universal:
+      # Utils
+      - imapsync
+      - youtube-dl
+      - ffmpeg
+    arch:
+      - cmocka-git
+    darwin:
+      - cmocka
+      - dropbox
+  ditto:
+    darwin:
+      - slack
+      - drawio
+      - cocoapods
+      - fastlane
+      - rbenv
+      - ruby
+      - sourcekitten
+      - swiftlint
+      - jenv
+      - openjdk
+      - openjdk@11
+      - swig
+      - kafka
+      - zookeeper
+      - nvm
+      - dotnet-sdk
+
