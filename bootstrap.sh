@@ -52,7 +52,6 @@ unset _script
 ###############################################################################
 
 main() {
-
     # Be nice and check for all common help flags
     if [[ $# -gt 0 ]]; then
         if [[ "${1}" = "help" ]] || [[ "${1}" = "--help" ]]; then
@@ -61,8 +60,8 @@ main() {
 	fi
     fi
 
-    local dry_run=''
-    local force='false'
+    dry_run=''
+    force='false'
 
     while getopts ":hfdl" o; do
         case "${o}" in
@@ -88,7 +87,7 @@ main() {
     done
     shift $((OPTIND-1))
 
-    link_files "${dry_run}"
+    link_files
 }
 
 
@@ -101,7 +100,7 @@ print_usage() {
 }
 
 print_help() {
-    echo "Usage: ${SCRIPT} [-h|--help] [-f] [-d] [-l]"
+    print_usage
     echo ""
     echo "    Description:"
     echo "        Bootstraps all my config files by linking all the config files in"
@@ -126,7 +125,6 @@ print_help() {
     echo "                for file in \$(${SCRIPT} -l); do"
     echo "                    ls -lah \"\$file\""
     echo "                done"
-    exit 1
 }
 
 # Lists all file destinations in the format:
