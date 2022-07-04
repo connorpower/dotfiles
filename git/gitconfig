@@ -17,6 +17,8 @@
 [apply]
     whitespace = warn
 [merge]
+    tool = nvimdiff
+    prompt = false
     conflictstyle = diff3
 [user]
     name = Connor Power
