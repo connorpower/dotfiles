@@ -67,7 +67,7 @@ packages:
       - font-fira-code-nerd-font
       # Apps
       - 1password-cli
-      - hummingbird
+      - easy-move-plus-resize
       - moom
       - bartender
       - brave-browser
