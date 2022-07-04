@@ -40,6 +40,7 @@ packages:
       # Base Dev Tools
       - base-devel
       # General
+      - perl-rename
       - time
       # Rice
       - bash-pipes
@@ -53,6 +54,7 @@ packages:
       # Base Dev Tools
       - pkg-config
       # General
+      - rename
       - timewarrior
       # Rice
       - pipes-sh
