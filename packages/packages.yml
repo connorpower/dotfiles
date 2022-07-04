@@ -19,6 +19,8 @@ packages:
       - tig
       - tealdeer
       - dust
+      - imagemagick
+      - viu
       # Dev
       - doxygen
       - git
