@@ -152,6 +152,7 @@ alias dns_flush='sudo killall -HUP mDNSResponder; sleep 2;'
 # Preview with QuickLook
 alias qlf='qlmanage -p "$@" &> /dev/null'
 
+alias mon='ddcctl -d 1 -b $1 > /dev/null'
 
 ################################################################################
 # JAVA 

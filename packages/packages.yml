@@ -56,6 +56,7 @@ packages:
       # General
       - rename
       - timewarrior
+      - ddcctl
       # Rice
       - pipes-sh
       # Dev
