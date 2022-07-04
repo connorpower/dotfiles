@@ -165,7 +165,13 @@ date_iso_8601() {
 
 DEVELOPER_DIR="${HOME}/Developer"
 
-alias cddev='cd "${DEVELOPER_DIR}/ditto/ditto"'
+alias cdddev='cd "${DEVELOPER_DIR}/ditto/ditto"'
+alias cdpdev='cd "${DEVELOPER_DIR}/personal"'
+
+alias cdpno='cd "${DEVELOPER_DIR}/personal/notes/personal"'
+alias cdfno='cd "${DEVELOPER_DIR}/personal/notes/family"'
+alias cddno='cd "${DEVELOPER_DIR}/personal/notes/ditto"'
+
 alias o='open .'
 alias ow='open ./*.xcworkspace'
 
