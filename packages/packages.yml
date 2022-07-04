@@ -90,6 +90,7 @@ packages:
   ditto:
     darwin:
       - slack
+      - lastpass
       - drawio
       - cocoapods
       - fastlane
