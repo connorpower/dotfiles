@@ -49,7 +49,7 @@ packages:
       - git-delta
       - aws-cli
       # Fonts
-      - nerd-fonts-fira-code
+      - nerd-fonts-hack
     darwin:
       # Base Dev Tools
       - pkg-config
@@ -64,7 +64,7 @@ packages:
       - delta
       - awscli
       # Fonts
-      - font-fira-code-nerd-font
+      - font-hack-nerd-font
       # Apps
       - 1password-cli
       - easy-move-plus-resize
