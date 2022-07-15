@@ -29,7 +29,6 @@ packages:
       - graphviz
       - jq
       - llvm
-      - sccache
       - cmake
       - terraform
       # Rice
