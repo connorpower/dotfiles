@@ -8,6 +8,15 @@ export LESSCHARSET=UTF-8
 
 export EDITOR=nvim
 
+if [[ "$(uname | tr '[A-Z]' '[a-z]')" == 'darwin' ]]; then 
+    export OS='darwin'
+elif uname -r | grep --quiet arch; then
+    export OS='arch'
+else
+    echo 'Unknown OS' >&2
+    print_usage
+    exit 1
+fi
 
 ################################################################################
 # OH-MY-ZSH CONFIGURATION
