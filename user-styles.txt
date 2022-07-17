@@ -1,0 +1,42 @@
+================================
+
+nzpost.co.nz
+
+CSS
+.bb-top-actions {
+    background-color: var(--darkreader-neutral-background) !important;
+}
+.bb-list::before, .bb-list::after {
+    background-color: var(--darkreader-neutral-background) !important;
+}
+.tracking-add-form::before, .tracking-add-form::after {
+    background-color: var(--darkreader-neutral-background) !important;
+}
+.tracking-details-page .tracking-tool-page-title::before, .tracking-details-page .tracking-tool-page-title::after, .tracking-list-page .tracking-tool-page-title::before, .tracking-list-page .tracking-tool-page-title::after {
+    background-color: var(--darkreader-neutral-background) !important;
+}
+.top-actions-wrapper::before, .top-actions-wrapper::after, .bb-bottom-actions::before, .bb-bottom-actions::after {
+    background-color: var(--darkreader-neutral-background) !important;
+}
+.tracking-details-page .tracking-tool-page-title, .tracking-list-page .tracking-tool-page-title {
+    background-color: var(--darkreader-neutral-background) !important;
+}
+.tracking-add-form {
+    background-color: var(--darkreader-neutral-background) !important;
+}
+.bb-list {
+    background-color: var(--darkreader-neutral-background) !important;
+}
+
+================================
+
+news.ycombinator.com
+
+INVERT
+.votearrow
+
+CSS
+table#hnmain {
+    background-color: var(--darkreader-neutral-background) !important;
+}
+
