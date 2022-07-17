@@ -73,8 +73,7 @@ main() {
 ###############################################################################
 
 function bootstrap() {
-    case $(uname | tr '[A-Z]' '[a-z]') in
-        'darwin')
+    if [[ "$(uname | tr '[A-Z]' '[a-z]')" == 'darwin' ]]; then 
             ${dry_run} xcode-select --install || true
 
             if ! command -v brew &> /dev/null; then
@@ -82,35 +81,43 @@ function bootstrap() {
             fi
 
             ${dry_run} brew install yq
-            ;;
-        *)
+    elif uname -r | grep --quiet arch; then
+            sudo pacman -Syy
+            sudo pacman --needed --noconfirm -S yq git base-devel
+
+            # AUR support
+            if ! command -v yay &> /dev/null; then
+                git clone https://aur.archlinux.org/yay.git /tmp/install-yay
+                cd /tmp/install-yay
+                makepkg --noconfirm -si
+                cd -
+                rm -rf /tmp/install-yay
+            fi
+    else
             echo 'Unknown OS' >&2
             print_usage
             exit 1
-            ;;
-    esac
+    fi
 }
 
 function install() {
-    local os="$(uname | tr '[A-Z]' '[a-z]')"
     local pkgmanager=''
-    case $os in
-        'darwin')
+    local os=''
+    if [[ "$(uname | tr '[A-Z]' '[a-z]')" == 'darwin' ]]; then 
+            os='darwin'
             pkgmanager='brew install'
-            ;;
-        'arch')
-            pkgmanager='pacman -S'
-            ;;
-        *)
+    elif uname -r | grep --quiet arch; then
+            os='arch'
+            pkgmanager='sudo pacman --needed --noconfirm -S'
+    else
             echo 'Unknown OS' >&2
             print_usage
             exit 1
-            ;;
-    esac
+    fi
 
     for category in $cats; do
         for pkg in $(yq ".packages.${category} | [.universal, .${os}] | .[][]" "${PACKAGE_LIST}"); do
-            ${dry_run} ${pkgmanager} ${pkg}
+            ${dry_run} ${pkgmanager} ${pkg//\"/}
         done
     done
 }
