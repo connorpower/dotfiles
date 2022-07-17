@@ -41,14 +41,15 @@ packages:
       # General
       - perl-rename
       - time
-      # Rice
-      - bash-pipes
       # Dev
       - github-cli
       - git-delta
       - aws-cli
+    arch-aur:
+      # Rice
+      - pipes.sh
+      - cbonsai
       # Fonts
-      - nerd-fonts-hack
       - ttf-recursive
     darwin:
       # Base Dev Tools
@@ -85,6 +86,7 @@ packages:
       - ffmpeg
     arch:
       - cmocka-git
+    arch-aur:
     darwin:
       - cmocka
       - dropbox
