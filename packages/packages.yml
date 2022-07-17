@@ -49,6 +49,7 @@ packages:
       - aws-cli
       # Fonts
       - nerd-fonts-hack
+      - ttf-recursive
     darwin:
       # Base Dev Tools
       - pkg-config
@@ -64,6 +65,7 @@ packages:
       - awscli
       # Fonts
       - font-hack-nerd-font
+      - font-recursive-code
       # Apps
       - 1password-cli
       - easy-move-plus-resize
