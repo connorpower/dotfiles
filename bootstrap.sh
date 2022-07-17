@@ -21,6 +21,7 @@ set -euo pipefail
 # location which should be linked to 'source-file' when the script is run.
 #
 declare -a FILES=(
+  'shell/zshrc                 -> ~/.zshrc'
   'git/gitconfig               -> ~/.gitconfig'
   'git/gitignore_global        -> ~/.gitignore_global'
   'git/tigrc                   -> ~/.tigrc'
