@@ -8,7 +8,7 @@ export LESSCHARSET=UTF-8
 
 export EDITOR=nvim
 
-if [[ "$(uname | tr '[A-Z]' '[a-z]')" == 'darwin' ]]; then 
+if [[ "$(uname | tr '[A-Z]' '[a-z]')" == 'darwin' ]]; then
     export OS='darwin'
 elif uname -r | grep --quiet arch; then
     export OS='arch'
@@ -211,4 +211,44 @@ alias font-test="echo -e '\e[1mbold\e[0m\n\e[3mitalic\e[0m\n\e[4munderline\e[0m\
 
 export PATH="$HOME/.jenv/bin:$PATH"
 eval "$(jenv init -)"
+
+################################################################################
+# Sit/Stand Timer
+################################################################################
+
+# Standing. Set an 8 min timer before transitioning to sitting.
+# http://ergo.human.cornell.edu/CUESitStand.html
+sd() {
+    timer_announce $(( 8 * 60 )) "Time to sit down"
+}
+
+# Sitting. Set a 20 min timer before transitioning to stand.
+# http://ergo.human.cornell.edu/CUESitStand.html
+st() {
+    timer_announce $(( 20 * 60 )) "Time to stand up"
+}
+
+# Play an announcement sound and display message after a timer (seconds) elapses.
+# $1: duration (secs)
+# $2: terminal message
+timer_announce() {
+    if [[ $# -ne 2 ]]; then
+        echo "usage: timer_sound duration msg" >&2
+        return 1
+    fi
+
+    case "${OS}" in
+        'darwin')
+            sleep $1
+            echo "${2}"
+            say "${2}"
+            ;;
+        'arch')
+            echo "TODO..." >&2
+            ;;
+        *)
+            echo "unsupported OS" >&2
+        ;;
+    esac
+}
 
