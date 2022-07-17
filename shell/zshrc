@@ -218,13 +218,13 @@ eval "$(jenv init -)"
 
 # Sitting. Set a 20 min timer before transitioning to stand.
 # http://ergo.human.cornell.edu/CUESitStand.html
-st() {
+sit() {
     timer_announce $(( 20 * 60 )) "Time to stand up"
 }
 
 # Standing. Set an 8 min timer before transitioning to walking around a bit.
 # http://ergo.human.cornell.edu/CUESitStand.html
-sd() {
+stnd() {
     timer_announce $(( 8 * 60 )) "Time to walk around a bit"
     # Start a stop watch to keep track if walking around runs over
     sw
@@ -232,7 +232,7 @@ sd() {
 
 # Walking. Set a 2 min timer before transitioning to sitting.
 # http://ergo.human.cornell.edu/CUESitStand.html
-wl() {
+wlk() {
     timer_announce $(( 2 * 60 )) "Time to sit down"
 }
 
