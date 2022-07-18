@@ -55,6 +55,7 @@ packages:
       # Base Dev Tools
       - pkg-config
       # General
+      - coreutils
       - rename
       - timewarrior
       - ddcctl

@@ -226,29 +226,37 @@ sit() {
 # http://ergo.human.cornell.edu/CUESitStand.html
 stnd() {
     timer_announce $(( 8 * 60 )) "Time to walk around a bit"
-    # Start a stop watch to keep track if walking around runs over
-    sw
 }
 
 # Walking. Set a 2 min timer before transitioning to sitting.
 # http://ergo.human.cornell.edu/CUESitStand.html
 wlk() {
     timer_announce $(( 2 * 60 )) "Time to sit down"
+    # Start a stop watch to keep track of time away
+    sw
 }
 
-# Play an announcement sound and display message after a timer (seconds) elapses.
+# Play an announcement and display a message after a timer (seconds) elapses.
+# A countdown will display while the timer is running.
+#
+# Arguments
+# ---------
 # $1: duration (secs)
 # $2: terminal message
 timer_announce() {
     if [[ $# -ne 2 ]]; then
-        echo "usage: timer_sound duration msg" >&2
+        echo "usage: timer_announce duration msg" >&2
         return 1
     fi
 
+    # Start a countdown timer
+    timeout $1 sw 2>/dev/null # todo: countdown based on $1, not a stopwatch
+
+    # Replce timer text with msg
+    printf "\033[2K\r%s\n" ${2}
+
     case "${OS}" in
         'darwin')
-            sleep $1
-            echo "${2}"
             say "${2}"
             ;;
         'arch')
@@ -258,5 +266,6 @@ timer_announce() {
             echo "unsupported OS" >&2
         ;;
     esac
+
 }
 
