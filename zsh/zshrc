@@ -2,6 +2,7 @@
 # SHELL
 ################################################################################
 
+# TODO: if undefined SSH_AGENT_PID or `test ps $SSH_AGENT_PID`, then start:
 eval $(ssh-agent -s)
 
 export LC_ALL=en_US.UTF-8
@@ -9,6 +10,8 @@ export LANG=en_US.UTF-8
 export LESSCHARSET=UTF-8
 
 export EDITOR=nvim
+
+ZSH_INCLUDE="${HOME}/.config/zsh.d"
 
 if [[ "$(uname | tr '[A-Z]' '[a-z]')" == 'darwin' ]]; then
     export OS='darwin'
@@ -74,15 +77,13 @@ preexec() {
 export PATH=$PATH:"${HOME}/bin"
 export PATH="$HOME/.cargo/bin:$PATH"
 
-# Ditto only
-# export PATH=$PATH:'/Users/connorpower/.dotnet/tools'
 
 ################################################################################
-# Android Studio
+# OS-Specific
 ################################################################################
 
-# Ditto only
-# export ANDROID_SDK_ROOT="${HOME}/Library/Android/sdk"
+if [[ "${OS}" == 'darwin' ]] source "${ZSH_INCLUDE}/macos.zsh"
+if [[ "${OS}" == 'arch'   ]] source "${ZSH_INCLUDE}/arch.zsh"
 
 
 ################################################################################
@@ -90,29 +91,6 @@ export PATH="$HOME/.cargo/bin:$PATH"
 ################################################################################
 
 export GPG_TTY=$(tty)
-
-
-################################################################################
-# RUBY
-################################################################################
-
-# Ditto/iOS only
-# eval "$(rbenv init -)"
-
-
-################################################################################
-# NODE
-################################################################################
-
-# ditto only
-
-# export NVM_DIR="$HOME/.nvm"
-# if [[ -s "/usr/local/opt/nvm/nvm.sh" ]]; then
-#     . "/usr/local/opt/nvm/nvm.sh"
-# fi
-# if [[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ]]; then
-#     . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"
-# fi
 
 
 ################################################################################
@@ -130,17 +108,11 @@ alias rmtgt='rm -rf ./target'
 
 
 ################################################################################
-# Ditto/HyDRA
+# Ditto
 ################################################################################
 
-# ditto only
-
-# export QUAY_USER='connorpowerditto'
-# export DITTO_LICENSE=$(cat ~/.ditto/license)
-# export KAFKA_BOOTSTRAP_HOST=localhost:9092
-# 
-# # File descriptor hungry Ditto tests
-# ulimit -n 4096
+# touch ~/.config/zsh.d/enable-ditto to trigger loading Ditto env
+if [[ -f "${ZSH_INCLUDE}/enable-ditto" ]] source "${ZSH_INCLUDE}/ditto.zsh"
 
 
 ################################################################################
@@ -163,16 +135,10 @@ date_iso_8601() {
 
 SCM_DIR="${HOME}/scm"
 
-alias cdddev='cd "${SCM_DIR}/ditto/ditto"'
 alias cdpdev='cd "${SCM_DIR}/personal"'
 
 alias cdpno='cd "${SCM_DIR}/personal/notes/personal"'
 alias cdfno='cd "${SCM_DIR}/personal/notes/family"'
-alias cddno='cd "${SCM_DIR}/personal/notes/ditto"'
-
-# macos only
-# alias o='open .'
-# alias ow='open ./*.xcworkspace'
 
 alias gs='git status'
 alias gitstats='git shortlog -sn'
@@ -185,72 +151,12 @@ batdiff() {
 # Modern alternative to du, but print in intuitive order
 alias dust='dust -r'
 
-# macos only
-#
-# Flush local DNS cache
-# alias dns_flush='sudo killall -HUP mDNSResponder; sleep 2;'
-# 
-# # Preview with QuickLook
-# alias qlf='qlmanage -p "$@" &> /dev/null'
-# 
-# alias mon='ddcctl -d 1 -b $1 > /dev/null'
-
 alias font-test="echo -e '\e[1mbold\e[0m\n\e[3mitalic\e[0m\n\e[4munderline\e[0m\n\e[9mstrikethrough\e[0m'"
+
 
 ################################################################################
 # Sit/Stand Timer
 ################################################################################
 
-# Sitting. Set a 20 min timer before transitioning to stand.
-# http://ergo.human.cornell.edu/CUESitStand.html
-sit() {
-    timer_announce $(( 20 * 60 )) "Time to stand up"
-}
-
-# Standing. Set an 8 min timer before transitioning to walking around a bit.
-# http://ergo.human.cornell.edu/CUESitStand.html
-stnd() {
-    timer_announce $(( 8 * 60 )) "Time to walk around a bit"
-}
-
-# Walking. Set a 2 min timer before transitioning to sitting.
-# http://ergo.human.cornell.edu/CUESitStand.html
-wlk() {
-    timer_announce $(( 2 * 60 )) "Time to sit down"
-    # Start a stop watch to keep track of time away
-    sw
-}
-
-# Play an announcement and display a message after a timer (seconds) elapses.
-# A countdown will display while the timer is running.
-#
-# Arguments
-# ---------
-# $1: duration (secs)
-# $2: terminal message
-timer_announce() {
-    if [[ $# -ne 2 ]]; then
-        echo "usage: timer_announce duration msg" >&2
-        return 1
-    fi
-
-    # Start a countdown timer
-    timeout $1 sw 2>/dev/null # todo: countdown based on $1, not a stopwatch
-
-    # Replce timer text with msg
-    printf "\033[2K\r%s\n" ${2}
-
-    case "${OS}" in
-        'darwin')
-            say "${2}"
-            ;;
-        'arch')
-            echo "TODO..." >&2
-            ;;
-        *)
-            echo "unsupported OS" >&2
-        ;;
-    esac
-
-}
+source "${ZSH_INCLUDE}/stand.zsh"
 
