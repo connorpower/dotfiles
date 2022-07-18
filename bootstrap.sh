@@ -21,14 +21,14 @@ set -euo pipefail
 # location which should be linked to 'source-file' when the script is run.
 #
 declare -a FILES=(
-  'shell/zshrc                 -> ~/.zshrc'
+  'zsh/zshrc                   -> ~/.zshrc'
+  'zsh/zsh.d                   -> ~/.config/zsh.d'
   'git/gitconfig               -> ~/.gitconfig'
   'git/gitignore_global        -> ~/.gitignore_global'
   'git/tigrc                   -> ~/.tigrc'
   'nvim/init.lua               -> ~/.config/nvim/init.lua'
   'nvim/plugins.lua            -> ~/.config/nvim/lua/plugins.lua'
-  'shell/zshrc                 -> ~/.zshrc'
-  'shell/tmux.conf             -> ~/.tmux.conf'
+  'tmux/tmux.conf              -> ~/.tmux.conf'
   'tty/kitty.conf              -> ~/.config/kitty/kity.conf'
   'aws/aws-utils.sh            -> ~/bin/aws-utils.sh'
   'bitly/bitly                 -> ~/bin/bitly'
