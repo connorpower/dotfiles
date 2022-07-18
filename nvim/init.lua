@@ -56,9 +56,11 @@ vim.g.vim_markdown_auto_insert_bullets = 0
 vim.g.vim_markdown_new_list_item_indent = 0
 
 -- Setup Color Scheme
--- TODO: only set colorsheme if term is 256 color
--- vim.g.catppuccin_flavour = 'mocha'
--- vim.cmd [[colorscheme catppuccin]]
+if os.getenv("TERM") ~= 'linux' then
+    -- only set colorsheme if term is likely to have 256 color
+    vim.g.catppuccin_flavour = 'mocha'
+    vim.cmd [[colorscheme catppuccin]]
+end
 
 
 local function setup_autocmds(working)
