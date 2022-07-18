@@ -40,3 +40,42 @@ table#hnmain {
     background-color: var(--darkreader-neutral-background) !important;
 }
 
+================================
+
+crates.io
+
+CSS
+main  {
+    background-color: var(--darkreader-neutral-background) !important;
+}
+button[class^="_submit-button"] {
+    background-color: var(--darkreader-bg--main-color) !important;
+}
+button[class^="_button"] {
+    background-color: var(--darkreader-bg--main-color) !important;
+}
+main[class^="_main"] {
+   box-shadow: 0 0 0px 2px var(--darkreader-border--gray-border) !important;
+}
+input {
+    box-shadow: none !important;
+    background-color: var(--darkreader-border--gray-border) !important;
+}
+div[class^="_docs"] {
+    box-shadow: none !important;
+}
+div[class^="_row"] {
+    box-shadow: none !important;
+}
+body {
+    background-color: var(--darkreader-neutral-background) !important;
+}
+footer {
+    background-color: var(--darkreader-neutral-background) !important;
+}
+div[class^="_header"] {
+    background-color: var(--darkreader-neutral-background) !important
+}
+a[class*="_active"] {
+    background-color: var(--darkreader-selection-background) !important
+}
