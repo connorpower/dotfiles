@@ -57,6 +57,12 @@ button[class^="_button"] {
 main[class^="_main"] {
    box-shadow: 0 0 0px 2px var(--darkreader-border--gray-border) !important;
 }
+main li :hover {
+    background-color: var(--darkreader-bg--main-color-light) !important;
+}
+main a :hover {
+    background-color: var(--darkreader-bg--main-color-light) !important;
+}
 input {
     box-shadow: none !important;
     background-color: var(--darkreader-border--gray-border) !important;
@@ -74,8 +80,15 @@ footer {
     background-color: var(--darkreader-neutral-background) !important;
 }
 div[class^="_header"] {
-    background-color: var(--darkreader-neutral-background) !important
+    background-color: var(--darkreader-neutral-background) !important;
+}
+a {
+    box-shadow: none !important;
 }
 a[class*="_active"] {
-    background-color: var(--darkreader-selection-background) !important
+    background-color: var(--darkreader-selection-background) !important;
+}
+a[class^="_hero-button"] {
+    background-color: var(--darkreader-bg--main-color-light) !important;
+    background: none;
 }
