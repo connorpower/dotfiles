@@ -11,9 +11,9 @@ set -euo pipefail
 ## Constants
 ###############################################################################
 
-declare -r OS_ARCH='arch'  # ArchLinux
-declare -r OS_WSL2='wsl2'  # Windows Subsystem for Linux
-declare -r OS_MAC='darwin' # macOS
+declare -r OS_ARCH='arch'     # ArchLinux
+declare -r OS_WSL2='wsl2'     # Windows Subsystem for Linux
+declare -r OS_DARWIN='darwin' # macOS
 
 declare -r SCRIPT=$(basename "${0}")
 
