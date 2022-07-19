@@ -6,13 +6,13 @@ sit() {
 
 # Standing. Set an 8 min timer before transitioning to walking around a bit.
 # http://ergo.human.cornell.edu/CUESitStand.html
-stnd() {
+stand() {
     timer_announce $(( 8 * 60 )) "Time to walk around a bit"
 }
 
 # Walking. Set a 2 min timer before transitioning to sitting.
 # http://ergo.human.cornell.edu/CUESitStand.html
-wlk() {
+walk() {
     timer_announce $(( 2 * 60 )) "Time to sit down"
     # Start a stop watch to keep track of time away
     sw
