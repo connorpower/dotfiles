@@ -1,21 +1,15 @@
-################################################################################
-# SHELL
-################################################################################
+#-------------------------------------------------------------------- basics ---
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LESSCHARSET=UTF-8
+
 export EDITOR=nvim
 
-if [[ "$(uname | tr '[A-Z]' '[a-z]')" == 'darwin' ]]; then
-    export OS='darwin'
-elif uname -r | grep --quiet arch; then
-    export OS='arch'
-else
-    echo 'Unknown OS' >&2
-    print_usage
-    exit 1
-fi
+# One of 'darwin', 'arch', or 'wsl2'
+export OS="$(detect-os)"
+
+#-------------------------------------------------------------- os-detection ---
 
 # Try to detect an already running ssh agent.
 if ! ssh-add -l &>/dev/null; then
