@@ -79,18 +79,18 @@ function bootstrap() {
             install yq
             ;;
         'arch')
-            sudo pacman -Syy
+            ${dry_run} sudo pacman -Syy
             install yq
             install git
             install base-devel
 
             # AUR support
             if ! command -v yay &> /dev/null; then
-                git clone https://aur.archlinux.org/yay.git /tmp/install-yay
-                cd /tmp/install-yay
-                makepkg --noconfirm -si
-                cd -
-                rm -rf /tmp/install-yay
+                ${dry_run} git clone https://aur.archlinux.org/yay.git /tmp/install-yay
+                ${dry_run} cd /tmp/install-yay
+                ${dry_run} makepkg --noconfirm -si
+                ${dry_run} cd -
+                ${dry_run} rm -rf /tmp/install-yay
             fi
             ;;
         *)
