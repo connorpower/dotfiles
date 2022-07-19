@@ -32,10 +32,10 @@ timer_announce() {
     fi
 
     # Start a countdown timer
-    timeout $1 sw 2>/dev/null # todo: countdown based on $1, not a stopwatch
+    timeout "${1}" sw 2>/dev/null # todo: countdown based on $1, not a stopwatch
 
     # Replce timer text with msg
-    printf "\033[2K\r%s\n" ${2}
+    printf "\033[2K\r%s\n" "${2}"
 
     case "${OS}" in
         'darwin')

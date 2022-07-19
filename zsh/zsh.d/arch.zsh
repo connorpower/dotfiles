@@ -1,1 +1,1 @@
-source ~/.config/zsh.d/linux.zsh
+source "${HOME}/.config/zsh.d/linux.zsh"
