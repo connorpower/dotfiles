@@ -1,9 +1,12 @@
-#-------------------------------------------------------------------- basics ---
+#------------------------------------------------------------------ charsets ---
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LESSCHARSET=UTF-8
 
+#----------------------------------------------------------------- constants ---
+
+ZSH_INCLUDE="${HOME}/.config/zsh.d"
 export EDITOR=nvim
 
 # One of 'darwin', 'arch', or 'wsl2'
@@ -26,7 +29,6 @@ if ! ssh-add -l &>/dev/null; then
     fi
 fi
 
-ZSH_INCLUDE="${HOME}/.config/zsh.d"
 
 path_append() {
     if [[ ! -d "${1}" ]]; then 
