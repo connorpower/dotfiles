@@ -148,6 +148,8 @@ batdiff() {
     git diff --name-only --relative --diff-filter=d | xargs bat --diff
 }
 
+alias pbat='bat --style plain'
+
 # Modern alternative to du, but print in intuitive order
 alias dust='dust -r'
 
