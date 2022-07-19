@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+set -e
+
+# Usage:
+# sw
+#  - start a stopwatch from 0
+
+function finish {
+  tput cnorm # Restore cursor
+  exit 0
+}
+
+trap finish EXIT
+
+DATE_FORMAT="+%H:%M:%S"
+
+# Use GNU date if possible as it's most likely to have nanoseconds available.
+if which gdate &> /dev/null; then
+    GNU_DATE=gdate
+elif date --version 2>&1 | grep 'GNU coreutils' >/dev/null; then
+    GNU_DATE=date
+fi
+
+function datef {
+    if [[ -z "$GNU_DATE" ]]; then
+        date "$@"
+    else
+        $GNU_DATE "$@"
+    fi
+}
+
+tput civis # hide cursor
+
+START_TIME=$(datef +%s)
+
+# GNU date accepts the input date differently than BSD
+if [[ -z "$GNU_DATE" ]]; then
+    DATE_INPUT="-v-${START_TIME}S"
+else
+    DATE_INPUT="--date now-${START_TIME}sec"
+fi
+
+while [ true ]; do
+    STOPWATCH=$(TZ=UTC datef $DATE_INPUT $DATE_FORMAT )
+    printf "\033[2K\r%s" $STOPWATCH
+    sleep 0.2
+done
+

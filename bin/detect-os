@@ -1,0 +1,86 @@
+#!/bin/bash
+
+# Fail fast and fail early.
+#   - Abort script at first error
+#   - Attempts to use undefined variable outputs error message and exits
+#   - Pipelines return the exit status of the last command in the pipe to fail
+set -euo pipefail
+
+
+###############################################################################
+## Constants
+###############################################################################
+
+declare -r OS_ARCH='arch'  # ArchLinux
+declare -r OS_WSL2='wsl2'  # Windows Subsystem for Linux
+declare -r OS_MAC='darwin' # macOS
+
+declare -r SCRIPT=$(basename "${0}")
+
+
+###############################################################################
+## Main Function
+###############################################################################
+
+main() {
+    if [[ $# -gt 0 ]]; then
+        if [[ "${1}" = "help" ]] || [[ "${1}" = "--help" ]]; then
+            long_usage
+            exit 0
+        fi
+    fi
+
+    while getopts ":h" o; do
+        case "${o}" in
+            h)
+                long_usage
+                exit 0
+                ;;
+            *)
+                ;;
+        esac
+    done
+    shift $((OPTIND-1))
+
+    detect
+}
+
+###############################################################################
+## Functions
+###############################################################################
+
+long_usage() {
+    short_usage
+    echo ""
+    echo "${SCRIPT} detects the curren operating system and returns a simple"
+    echo "string."
+    echo ""
+    echo "    Values:"
+    echo "        - darwin"
+    echo "        - arch"
+    echo "        - wsl2"
+    echo ""
+    echo "    Options:"
+    echo "        --help | -h"
+    echo "            Prints this menu"
+}
+
+detect() {
+    if [[ "$(uname | tr '[A-Z]' '[a-z]')" == 'darwin' ]]; then
+        echo $OS_DARWIN
+    elif uname -r | grep --quiet 'arch'; then
+        echo $OS_ARCH
+    else
+        echo 'Unknown OS' >&2
+        exit 1
+    fi
+}
+
+###############################################################################
+## Entry Point
+###############################################################################
+
+# The unusual syntax (versus `main "${@}"`) is a workaround for a bug in some
+# non-POSIX compliant versions of bash in which $@ is reported as unbound.
+main "${@:+$@}"
+
