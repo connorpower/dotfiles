@@ -1,0 +1,9 @@
+[aws]
+disabled = true
+
+[rust]
+disabled = true
+
+[directory]
+truncation_length = 1
+
