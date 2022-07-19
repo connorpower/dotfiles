@@ -9,6 +9,7 @@
 
 # Other ToDos
 
+- restore github signing
 - Split zshrc into personal vs. work
 - Remove oh-my-zsh
 - moom window configurations
