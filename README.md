@@ -1,4 +1,4 @@
-# Connor's macOS Dotfiles
+# Dotfiles
 
 These are my dotfiles. They aren't intended to be useful to anyone other than
 myself.
@@ -8,11 +8,13 @@ myself.
 Files are organized by topic:
 
 - **git**: everything relating to git (aliases, configs, etc).
-- **vim**: vim configuration and plugins.
-- **shell**: zsh and tmux configurations.
+- **nvim**: nvim configuration and plugins.
+- **zsh/rc**: primary zshrc file
+- **zsh/zsh.d/***: purpose or os-specific zsh includes
 - **tty**: everything related to terminal configuration (currently
-  [Alacritty](https://github.com/jwilm/alacritty)).
-- **aws**: utility functions to make working with AWS easier.
+  [Kitty](https://sw.kovidgoyal.net/kitty/)).
+- **bin**: utilities of various kinds.
+- ... etc
 
 ## bootstrap.sh
 
@@ -28,13 +30,12 @@ every file in the repository and the location it should be linked to.
 
 ```sh
 declare -a FILES=(
+    'zsh/rc               -> ~/.zshrc'
+    'zsh/zsh.d            -> ~/.config/zsh.d'
+    'git/gitconfig        -> ~/.gitconfig'
     'git/gitignore_global -> ~/.gitignore_global'
-    'git/tigrc -> ~/.tigrc'
-    'vim/vimrc -> ~/.vimrc'
-    'shell/zshrc -> ~/.zshrc'
-    'shell/tmux.conf -> ~/.tmux.conf'
-    'tty/alacritty/alacritty.yml -> ~/.config/alacritty/alacritty.yml'
-    'aws/aws-utils.sh -> ~/bin/aws-utils.sh'
+    'git/tigrc            -> ~/.tigrc'
+    'nvim/init.lua        -> ~/.config/nvim/init.lua'
 )
 ```
 
