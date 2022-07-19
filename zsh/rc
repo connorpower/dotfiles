@@ -16,8 +16,21 @@ export OS="$(detect-os)"
 
 source "${ZSH_INCLUDE}/ssh-agent.zsh"
 
+#--------------------------------------------------------------- zsh options ---
 
+setopt nobeep
+setopt autocd
+setopt share_history
+setopt hist_expire_dups_first
+setopt append_history
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
 
+autoload -U +X bashcompinit && bashcompinit
+
+#--------------------------------------------------------------------- paths ---
+
+# Appends a single new path to $PATH, only if it does not already exist.
 path_append() {
     if [[ ! -d "${1}" ]]; then 
         echo "not adding ${1} to path: not a directory" >&2
@@ -34,16 +47,8 @@ path_append() {
     esac
 }
 
-################################################################################
-# ZSH INITIALIZATION
-################################################################################
 
-setopt nobeep
-setopt autocd
-unsetopt share_history
-setopt no_share_history
-
-autoload -U +X bashcompinit && bashcompinit
+#-------------------------------------------------------------------- prompt ---
 
 eval "$(starship init zsh)"
 
