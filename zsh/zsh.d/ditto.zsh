@@ -13,17 +13,18 @@ export KAFKA_BOOTSTRAP_HOST=localhost:9092
 
 #------------------------------------------------------------- SDK/FFI Tools ---
 
-export PATH=$PATH:"${HOME}/.dotnet/tools"
+path_append "${HOME}/.dotnet/tools"
+
 export ANDROID_SDK_ROOT="${HOME}/Library/Android/sdk"
 
 eval "$(rbenv init -)"
 
 export NVM_DIR="$HOME/.nvm"
 if [[ -s "/usr/local/opt/nvm/nvm.sh" ]]; then
-    . "/usr/local/opt/nvm/nvm.sh"
+    source "/usr/local/opt/nvm/nvm.sh"
 fi
 if [[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ]]; then
-    . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"
+    source "/usr/local/opt/nvm/etc/bash_completion.d/nvm"
 fi
 
 #----------------------------------------------------------------- Aliases ---
