@@ -54,6 +54,9 @@ path_append() {
 # ZSH INITIALIZATION
 ################################################################################
 
+setopt nobeep
+setopt autocd
+setopt correct
 unsetopt share_history
 setopt no_share_history
 
