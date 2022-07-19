@@ -23,6 +23,22 @@ else
     exit 1
 fi
 
+path_append() {
+    if [[ ! -d "${1}" ]]; then 
+        echo "not adding ${1} to path: not a directory" >&2
+        return 1
+    fi
+
+    case ":${PATH}:" in
+        *":${1}:"*)
+            true # Already in path
+            ;; 
+        *)
+            PATH="${PATH}:${1}"
+            ;;
+    esac
+}
+
 ################################################################################
 # ZSH INITIALIZATION
 ################################################################################
@@ -74,8 +90,8 @@ preexec() {
 # PATHS
 ################################################################################
 
-export PATH=$PATH:"${HOME}/bin"
-export PATH="$HOME/.cargo/bin:$PATH"
+path_append "${HOME}/bin"
+path_append "$HOME/.cargo/bin"
 
 
 ################################################################################
