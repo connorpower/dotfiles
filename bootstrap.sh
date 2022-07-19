@@ -30,10 +30,9 @@ declare -a FILES=(
   'nvim/plugins.lua            -> ~/.config/nvim/lua/plugins.lua'
   'tmux/tmux.conf              -> ~/.tmux.conf'
   'tty/kitty.conf              -> ~/.config/kitty/kity.conf'
-  'aws/aws-utils.sh            -> ~/bin/aws-utils.sh'
-  'bitly/bitly                 -> ~/bin/bitly'
   'rust/cargo-config           -> ~/.cargo/config'
   'starship/starship.toml      -> ~/.config/starship.toml'
+  'bin                         -> ~/bin'
 )
 
 
