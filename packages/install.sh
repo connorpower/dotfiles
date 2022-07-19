@@ -7,20 +7,14 @@
 #
 set -euo pipefail
 
-
 ###############################################################################
 # CONSTANTS
 ###############################################################################
 
-_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-readonly DIR="${_dir}"
-unset _dir
-
-_script=$(basename "${0}")
-readonly SCRIPT="${_script}"
-unset _script
-
-readonly PACKAGE_LIST="${DIR}/packages.yml"
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+SCRIPT=$(basename "${0}")
+OS="$(detect-os)"
+PACKAGE_LIST="${DIR}/packages.yml"
 
 declare -a CATEGORIES=(
     'base'
@@ -36,9 +30,9 @@ main() {
     # Be nice and check for all common help flags
     if [[ $# -gt 0 ]]; then
         if [[ "${1}" = "help" ]] || [[ "${1}" = "--help" ]]; then
-	    print_help
-	    return 0
-	fi
+            print_help
+            return 0
+        fi
     fi
 
     local dry_run=''
@@ -60,11 +54,12 @@ main() {
     done
     shift $((OPTIND-1))
 
-    cats=$@
+    cats=( "$@" )
 
+    # Refresh sudo credentials in case we need it
     ${dry_run} sudo -v
     bootstrap
-    install
+    install_all
 }
 
 
@@ -73,17 +68,21 @@ main() {
 ###############################################################################
 
 function bootstrap() {
-    if [[ "$(uname | tr '[A-Z]' '[a-z]')" == 'darwin' ]]; then 
-            ${dry_run} xcode-select --install || true
+    case "${OS}" in
+        'darwin')
+            xcode-select -p &>/dev/null || ${dry_run} xcode-select --install
 
             if ! command -v brew &> /dev/null; then
                 ${dry_run} /bin/bash -c "$(${dry_run} curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
             fi
 
-            ${dry_run} brew install yq
-    elif uname -r | grep --quiet arch; then
+            install yq
+            ;;
+        'arch')
             sudo pacman -Syy
-            sudo pacman --needed --noconfirm -S yq git base-devel
+            install yq
+            install git
+            install base-devel
 
             # AUR support
             if ! command -v yay &> /dev/null; then
@@ -93,37 +92,39 @@ function bootstrap() {
                 cd -
                 rm -rf /tmp/install-yay
             fi
-    else
+            ;;
+        *)
             echo 'Unknown OS' >&2
             print_usage
             exit 1
-    fi
+            ;;
+        esac
 }
 
 function install() {
-    local pkgmanager=''
-    local os=''
-    if [[ "$(uname | tr '[A-Z]' '[a-z]')" == 'darwin' ]]; then 
-            os='darwin'
-            pkgmanager='brew install'
-    elif uname -r | grep --quiet arch; then
-            os='arch'
-            pkgmanager='sudo pacman --needed --noconfirm -S'
-    else
-            echo 'Unknown OS' >&2
-            print_usage
-            exit 1
-    fi
+    case "${OS}" in
+        'darwin')
+            brew list "${1}" &>/dev/null || ${dry_run} brew install "${1}"
+            ;;
+        'arch')
+            ${dry_run} sudo pacman --needed --noconfirm -S "${1}"
+            ;;
+        *)
+            exit 1 # unreachable
+            ;;
+    esac
+}
 
-    for category in $cats; do
-        for pkg in $(yq ".packages.${category} | [.universal, .${os}] | .[][]" "${PACKAGE_LIST}"); do
-            ${dry_run} ${pkgmanager} ${pkg//\"/}
+function install_all() {
+    for category in "${cats[@]}"; do
+        for pkg in $(yq ".packages.${category} | [.universal, .${OS}] | .[][]" "${PACKAGE_LIST}"); do
+            install "${pkg//\"/}"
         done
     done
 }
 
 print_usage() {
-    echo "Usage: ${SCRIPT} [-h|--help] [${CATEGORIES[@]}]"
+    echo "Usage: ${SCRIPT} [-h|--help] [${CATEGORIES[*]}]"
 }
 
 print_help() {
@@ -134,7 +135,7 @@ print_help() {
     echo "        installs all the packages specified by the given categories."
     echo ""
     echo "    Categories:"
-    echo "        ${CATEGORIES[@]}"
+    echo "        ${CATEGORIES[*]}"
     echo ""
     echo "    Options:"
     echo "        --help | -h"
