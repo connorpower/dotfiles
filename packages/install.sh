@@ -101,13 +101,23 @@ function bootstrap() {
         esac
 }
 
+# Install a package with the os-specific package manager
+#
+# Arguments
+# $1: package name (required)
+# $2: repo info (optional, eg 'aur' on arch)
 function install() {
     case "${OS}" in
         'darwin')
             brew list "${1}" &>/dev/null || ${dry_run} brew install "${1}"
             ;;
         'arch')
-            ${dry_run} sudo pacman --needed --noconfirm -S "${1}"
+            if [[ "${2:-}" == 'arch-aur' ]]; then
+                # Never run with sudo for AUR packages
+                ${dry_run} echo yay something something "${1}"
+            else
+                ${dry_run} sudo pacman --needed --noconfirm -S "${1}"
+            fi
             ;;
         *)
             exit 1 # unreachable
@@ -120,6 +130,13 @@ function install_all() {
         for pkg in $(yq ".packages.${category} | [.universal, .${OS}] | .[][]" "${PACKAGE_LIST}"); do
             install "${pkg//\"/}"
         done
+
+        # If we're on arch, also install AUR packages
+        if [[ "${OS}" == 'arch' ]]; then
+            for pkg in $(yq ".packages.${category} | [.\"arch-aur\"] | .[][]" "${PACKAGE_LIST}"); do
+                install "${pkg//\"/}" 'arch-aur'
+            done
+        fi
     done
 }
 
