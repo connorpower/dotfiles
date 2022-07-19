@@ -32,6 +32,7 @@ packages:
       - cmake
       - terraform
       - shellcheck
+      - git-delta
       # Rice
       - calcurse
       - cmatrix
@@ -44,7 +45,6 @@ packages:
       - time
       # Dev
       - github-cli
-      - git-delta
       - aws-cli
     arch-aur:
       # Rice
@@ -64,7 +64,6 @@ packages:
       - pipes-sh
       # Dev
       - gh
-      - delta
       - awscli
       # Fonts
       - font-hack-nerd-font
