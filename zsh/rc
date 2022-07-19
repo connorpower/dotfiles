@@ -110,7 +110,7 @@ alias dust='dust -r'
 case "${OS}" in
     'darwin') ZSH_SHARE=/usr/local/share
         ;;
-    'arch')
+    'arch') ZSH_SHARE=/usr/share/zsh/plugins
         ;;
 esac
 
