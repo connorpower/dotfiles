@@ -105,3 +105,16 @@ alias font-test="echo -e '\e[1mbold\e[0m\n\e[3mitalic\e[0m\n\e[4munderline\e[0m\
 # monitor brightness control
 alias mon='ddcctl -d 1 -b $1 > /dev/null'
 
+#------------------------------------------------------------- fish features ---
+
+# Must come at end of zshrc
+
+case "${OS}" in
+    'darwin') ZSH_SHARE=/usr/local/share
+        ;;
+    'arch')
+        ;;
+esac
+
+source "${ZSH_SHARE}/zsh-autosuggestions/zsh-autosuggestions.zsh"
+source "${ZSH_SHARE}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
