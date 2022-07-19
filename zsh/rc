@@ -26,7 +26,10 @@ setopt append_history
 setopt hist_ignore_all_dups
 setopt hist_save_no_dups
 
-autoload -U +X bashcompinit && bashcompinit
+#--------------------------------------------------------------- completions ---
+
+autoload -Uz compinit
+compinit
 
 #--------------------------------------------------------------------- paths ---
 
