@@ -182,6 +182,7 @@ alias dust='dust -r'
 
 alias font-test="echo -e '\e[1mbold\e[0m\n\e[3mitalic\e[0m\n\e[4munderline\e[0m\n\e[9mstrikethrough\e[0m'"
 
+alias mon='ddcctl -d 1 -b $1 > /dev/null'
 
 ################################################################################
 # Sit/Stand Timer
