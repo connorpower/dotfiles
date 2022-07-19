@@ -50,7 +50,6 @@ path_append() {
 
 setopt nobeep
 setopt autocd
-setopt correct
 unsetopt share_history
 setopt no_share_history
 
