@@ -5,4 +5,12 @@ alias ow='open ./*.xcworkspace'
 alias dns_flush='sudo killall -HUP mDNSResponder; sleep 2;'
 
 # Preview with QuickLook
-alias qlf='qlmanage -p "$@" &> /dev/null'
+function qlf() {
+    qlmanage -p "$@" &> /dev/null
+}
+
+# monitor brightness control
+function mon() {
+    ddcctl -d 1 -b "${1}" > /dev/null
+}
+

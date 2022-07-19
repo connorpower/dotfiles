@@ -30,15 +30,16 @@ path_append "${HOME}/bin"
 
 export EDITOR=nvim
 
-ZSH_INCLUDE="${HOME}/.config/zsh.d"
+ZSH_INCL="${HOME}/.config/zsh.d"
 SCM_DIR="${HOME}/scm"
 
 # One of 'darwin', 'arch', or 'wsl2'
-export OS="$(detect-os)"
+os=$(detect-os)
+export OS="${os}"
 
 #----------------------------------------------------------------- ssh-agent ---
 
-source "${ZSH_INCLUDE}/ssh-agent.zsh"
+source "${ZSH_INCL}/ssh-agent.zsh"
 
 #--------------------------------------------------------------- zsh options ---
 
@@ -61,16 +62,16 @@ eval "$(starship init zsh)"
 
 #------------------------------------------------------------------ includes ---
 
-if [[ "${OS}" == 'darwin' ]] source "${ZSH_INCLUDE}/macos.zsh"
-if [[ "${OS}" == 'arch'   ]] source "${ZSH_INCLUDE}/arch.zsh"
-
-source "${ZSH_INCLUDE}/vim-mode.zsh"
-source "${ZSH_INCLUDE}/aws-utils.zsh"
-source "${ZSH_INCLUDE}/dates.zsh"
-source "${ZSH_INCLUDE}/stand.zsh"
+if [[ "${OS}" == 'darwin' ]]; then source "${ZSH_INCL}/macos.zsh"; fi
+if [[ "${OS}" == 'arch'   ]]; then source "${ZSH_INCL}/arch.zsh";  fi
 
 # touch ~/.config/zsh.d/enable-ditto to trigger loading Ditto env
-if [[ -f "${ZSH_INCLUDE}/enable-ditto" ]] source "${ZSH_INCLUDE}/ditto.zsh"
+if [[ -f "${ZSH_INCL}/enable-ditto" ]]; then source "${ZSH_INCL}/ditto.zsh"; fi
+
+source "${ZSH_INCL}/vim-mode.zsh"
+source "${ZSH_INCL}/aws-utils.zsh"
+source "${ZSH_INCL}/dates.zsh"
+source "${ZSH_INCL}/stand.zsh"
 
 #---------------------------------------------------------------------- rust ---
 
@@ -79,7 +80,9 @@ alias rmtgt='rm -rf ./target'
 
 #----------------------------------------------------------------------- git ---
 
-export GPG_TTY=$(tty)
+gpg_tty=$(tty)
+export GPG_TTY="${gpg_tty}"
+
 alias gs='git status'
 alias gitstats='git shortlog -sn'
 
@@ -99,9 +102,6 @@ alias pbat='bat --style plain'
 
 # Modern alternative to du, but print in intuitive order
 alias dust='dust -r'
-
-# monitor brightness control
-alias mon='ddcctl -d 1 -b $1 > /dev/null'
 
 #------------------------------------------------------------- fish features ---
 

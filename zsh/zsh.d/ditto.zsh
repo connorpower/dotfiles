@@ -8,7 +8,10 @@ ulimit -n 4096
 #--------------------------------------------------------------------- HyDRA ---
 
 export QUAY_USER='connorpowerditto'
-export DITTO_LICENSE=$(cat ~/.ditto/license)
+
+license=$(cat ~/.ditto/license)
+export DITTO_LICENSE="${license}"
+
 export KAFKA_BOOTSTRAP_HOST=localhost:9092
 
 #------------------------------------------------------------- SDK/FFI Tools ---
