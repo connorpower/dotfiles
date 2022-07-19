@@ -28,8 +28,10 @@ path_append "${HOME}/bin"
 
 #----------------------------------------------------------------- constants ---
 
-ZSH_INCLUDE="${HOME}/.config/zsh.d"
 export EDITOR=nvim
+
+ZSH_INCLUDE="${HOME}/.config/zsh.d"
+SCM_DIR="${HOME}/scm"
 
 # One of 'darwin', 'arch', or 'wsl2'
 export OS="$(detect-os)"
@@ -57,87 +59,41 @@ compinit
 
 eval "$(starship init zsh)"
 
-#---------------------------------------------------------- vim mode for zsh ---
-
-source "${ZSH_INCLUDE}/vim-mode.zsh"
-
-################################################################################
-# PATHS
-################################################################################
-
-path_append "$HOME/.cargo/bin"
-
-
-################################################################################
-# OS-Specific
-################################################################################
+#------------------------------------------------------------------ includes ---
 
 if [[ "${OS}" == 'darwin' ]] source "${ZSH_INCLUDE}/macos.zsh"
 if [[ "${OS}" == 'arch'   ]] source "${ZSH_INCLUDE}/arch.zsh"
 
-
-################################################################################
-# GPG
-################################################################################
-
-export GPG_TTY=$(tty)
-
-
-################################################################################
-# AWS
-################################################################################
-
-source "${HOME}/bin/aws-utils.sh"
-
-
-################################################################################
-# Rust
-################################################################################
-
-alias rmtgt='rm -rf ./target'
-
-
-################################################################################
-# Ditto
-################################################################################
+source "${ZSH_INCLUDE}/vim-mode.zsh"
+source "${ZSH_INCLUDE}/aws-utils.zsh"
+source "${ZSH_INCLUDE}/dates.zsh"
+source "${ZSH_INCLUDE}/stand.zsh"
 
 # touch ~/.config/zsh.d/enable-ditto to trigger loading Ditto env
 if [[ -f "${ZSH_INCLUDE}/enable-ditto" ]] source "${ZSH_INCLUDE}/ditto.zsh"
 
+#---------------------------------------------------------------------- rust ---
 
-################################################################################
-# UTILITY FUNCTIONS
-################################################################################
+path_append "${HOME}/.cargo/bin"
+alias rmtgt='rm -rf ./target'
 
-date_iso_8601() {
-    if [[ ! -z "${1}" ]]; then
-        # Expects input in form of `date +%s`
-        date -u -r "${1}" +%Y-%m-%dT%H:%M:%SZ
-    else
-        date -u +%Y-%m-%dT%H:%M:%SZ
-    fi
-}
+#----------------------------------------------------------------------- git ---
 
-
-################################################################################
-# ALIASES
-################################################################################
-
-SCM_DIR="${HOME}/scm"
-
-alias cdpdev='cd "${SCM_DIR}/personal"'
-
-alias cdpno='cd "${SCM_DIR}/personal/notes/personal"'
-alias cdfno='cd "${SCM_DIR}/personal/notes/family"'
-
+export GPG_TTY=$(tty)
 alias gs='git status'
 alias gitstats='git shortlog -sn'
 
-# Diff git changes with bat syntax highlighting
-batdiff() {
-    git diff --name-only --relative --diff-filter=d | xargs bat --diff
-}
+#--------------------------------------------------------------- quick jumps ---
 
+# TODO: use zsh native mechanisms
+alias cdpdev='cd "${SCM_DIR}/personal"'
+alias cdpno='cd "${SCM_DIR}/personal/notes/personal"'
+alias cdfno='cd "${SCM_DIR}/personal/notes/family"'
+
+
+#--------------------------------------------------------------- quick jumps ---
+
+# Plain bat - useful when copy pasting from a file with the mouse
 alias pbat='bat --style plain'
 
 # Modern alternative to du, but print in intuitive order
@@ -145,11 +101,6 @@ alias dust='dust -r'
 
 alias font-test="echo -e '\e[1mbold\e[0m\n\e[3mitalic\e[0m\n\e[4munderline\e[0m\n\e[9mstrikethrough\e[0m'"
 
+# monitor brightness control
 alias mon='ddcctl -d 1 -b $1 > /dev/null'
-
-################################################################################
-# Sit/Stand Timer
-################################################################################
-
-source "${ZSH_INCLUDE}/stand.zsh"
 
