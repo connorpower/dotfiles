@@ -4,6 +4,28 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LESSCHARSET=UTF-8
 
+#--------------------------------------------------------------------- paths ---
+
+# Appends a single new path to $PATH, only if it does not already exist.
+path_append() {
+    if [[ ! -d "${1}" ]]; then
+        echo "not adding ${1} to path: not a directory" >&2
+        return 1
+    fi
+
+    case ":${PATH}:" in
+        *":${1}:"*)
+            true # Already in path
+            ;;
+        *)
+            PATH="${PATH}:${1}"
+            ;;
+    esac
+}
+
+# Must come early as other commands depend on utilities in here
+path_append "${HOME}/bin"
+
 #----------------------------------------------------------------- constants ---
 
 ZSH_INCLUDE="${HOME}/.config/zsh.d"
@@ -31,25 +53,6 @@ setopt hist_save_no_dups
 autoload -Uz compinit
 compinit
 
-#--------------------------------------------------------------------- paths ---
-
-# Appends a single new path to $PATH, only if it does not already exist.
-path_append() {
-    if [[ ! -d "${1}" ]]; then 
-        echo "not adding ${1} to path: not a directory" >&2
-        return 1
-    fi
-
-    case ":${PATH}:" in
-        *":${1}:"*)
-            true # Already in path
-            ;; 
-        *)
-            PATH="${PATH}:${1}"
-            ;;
-    esac
-}
-
 #-------------------------------------------------------------------- prompt ---
 
 eval "$(starship init zsh)"
@@ -62,7 +65,6 @@ source "${ZSH_INCLUDE}/vim-mode.zsh"
 # PATHS
 ################################################################################
 
-path_append "${HOME}/bin"
 path_append "$HOME/.cargo/bin"
 
 
