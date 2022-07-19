@@ -85,11 +85,12 @@ alias gitstats='git shortlog -sn'
 
 #--------------------------------------------------------------- quick jumps ---
 
-# TODO: use zsh native mechanisms
-alias cdpdev='cd "${SCM_DIR}/personal"'
-alias cdpno='cd "${SCM_DIR}/personal/notes/personal"'
-alias cdfno='cd "${SCM_DIR}/personal/notes/family"'
+export dots="${SCM_DIR}/personal/dotfiles"
 
+export pdev="${SCM_DIR}/personal"
+
+export pno="${SCM_DIR}/personal/notes/personal"
+export fno="${SCM_DIR}/personal/notes/family"
 
 #--------------------------------------------------------------- quick jumps ---
 

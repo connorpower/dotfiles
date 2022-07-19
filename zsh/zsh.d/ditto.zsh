@@ -29,6 +29,6 @@ fi
 
 #----------------------------------------------------------------- Aliases ---
 
-alias cdddev='cd "${SCM_DIR}/ditto/ditto"'
-alias cddno='cd "${SCM_DIR}/personal/notes/ditto"'
+export ddev="${SCM_DIR}/ditto/ditto"
+export dno="${SCM_DIR}/personal/notes/ditto"
 
