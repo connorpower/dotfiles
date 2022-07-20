@@ -31,6 +31,7 @@ packages:
       - viu
       - fzf
       # Dev
+      - rust-analyzer
       - doxygen
       - git
       - git-filter-repo
