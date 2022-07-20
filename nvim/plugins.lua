@@ -27,6 +27,7 @@ return require('packer').startup(function(use)
 
   -- fuzzy finder
   use 'junegunn/fzf'
+  use 'junegunn/fzf.vim'
 
   -- file controls and explorer
   use 'preservim/nerdtree'
