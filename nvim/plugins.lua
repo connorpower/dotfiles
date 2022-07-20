@@ -18,6 +18,11 @@ return require('packer').startup(function(use)
   -- Useful buffer completions
   use 'hrsh7th/cmp-buffer'
 
+  ---------------------------------------------------------------------- git ---
+
+  -- git status gutter
+  use 'airblade/vim-gitgutter'
+
   -------------------------------------------------------------- project org ---
 
   -- fuzzy finder
