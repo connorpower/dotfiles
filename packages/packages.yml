@@ -29,6 +29,7 @@ packages:
       - dust
       - imagemagick
       - viu
+      - fzf
       # Dev
       - doxygen
       - git
