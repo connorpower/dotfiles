@@ -23,6 +23,9 @@ return require('packer').startup(function(use)
   -- fuzzy finder
   use 'junegunn/fzf'
 
+  -- file controls and explorer
+  use 'preservim/nerdtree'
+
   ---------------------------------------------------------------------- LSP ---
  
   -- Common LSP tools

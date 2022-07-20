@@ -76,6 +76,10 @@ end
 -- Load plugins defined in separate file
 require('plugins')
 
+------------------------------------------------------------- NERDTree setup ---
+
+vim.g.NERDTreeWinPos = 'right'
+
 ----------------------------------------------------------------- rust-tools ---
 
 require('lspconfig').rust_analyzer.setup({})
