@@ -34,4 +34,5 @@ fi
 
 export ddev="${SCM_DIR}/ditto/ditto"
 export dno="${SCM_DIR}/personal/notes/ditto"
+export repl="${SCM_DIR}/ditto/ditto/core/replication"
 
