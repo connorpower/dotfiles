@@ -23,6 +23,15 @@ opt.wrap = false
 opt.colorcolumn = '81'
 opt.spellfile = fn.stdpath('config') .. '/spell/en.utf-8.add'
 
+-- Set display width of tab ('\t') char to 4
+opt.tabstop = 4
+-- Set indents to width of 4
+opt.shiftwidth = 4
+-- Set column width of a tab to 4
+opt.softtabstop = 4 
+-- Expand tabs into spaces
+opt.expandtab = true
+
 -- Disable arrow keys in favor of hjkl
 local key_mapper = function(mode, key, result)
   vim.api.nvim_set_keymap(
@@ -66,11 +75,15 @@ end
 local function setup_autocmds(working)
   vim.cmd [[
     autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
+
     autocmd FileType gitcommit setlocal spell textwidth=72
+
     autocmd FileType markdown 
         \ setlocal spell textwidth=80 |
         \ setlocal formatoptions-=q |
         \ setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\s*\[-*+]\\s\\+
+
+    autocmd FileType make set softtabstop=0 noexpandtab
   ]]
 end
 
