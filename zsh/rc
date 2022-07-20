@@ -43,6 +43,10 @@ source "${ZSH_INCL}/ssh-agent.zsh"
 
 #--------------------------------------------------------------- zsh options ---
 
+export HISTFILE="${HOME}/.zsh_history"
+export HISTSIZE=12000
+export SAVEHIST=10000
+
 setopt nobeep
 setopt autocd
 setopt share_history
