@@ -180,6 +180,8 @@ local function setup_autocmds(working)
 
     autocmd FileType gitcommit setlocal spell textwidth=72
 
+    autocmd FileType rust setlocal spell textwidth=80
+
     autocmd FileType markdown 
         \ setlocal spell textwidth=80 |
         \ setlocal formatoptions-=q |
