@@ -1,16 +1,83 @@
 # Get editor completions based on the config schema
 "$schema" = 'https://starship.rs/config-schema.json'
 
+command_timeout = 500
+
 [character]
-error_symbol = "[✖](bold red)"
+error_symbol   = "[✖](bold red)"
 success_symbol = "[❯](green)"
 vicmd_symbol = "[](blue)"
 
-[aws]
-disabled = true
+[git_status]
+format   = '([\[$all_status$ahead_behind\]]($style) )'
+style    = "bold red"
+ahead    = "" # nf-weather-direction_up
+behind   = "" # nf-weather-direction_down
+diverged = "" # nf-fa-arrows_v
 
 [rust]
-disabled = true
+symbol = " "
 
 [directory]
+read_only = " "
 truncation_length = 1
+
+[aws]
+symbol = "  "
+
+[buf]
+symbol = " "
+
+[c]
+symbol = " "
+
+[conda]
+symbol = " "
+
+[dart]
+symbol = " "
+
+[docker_context]
+symbol = " "
+
+[elixir]
+symbol = " "
+
+[elm]
+symbol = " "
+
+[golang]
+symbol = " "
+
+[haskell]
+symbol = " "
+
+[hg_branch]
+symbol = " "
+
+[java]
+symbol = " "
+
+[julia]
+symbol = " "
+
+[memory_usage]
+symbol = " "
+
+[nim]
+symbol = " "
+
+[nix_shell]
+symbol = " "
+
+[nodejs]
+symbol = " "
+
+[package]
+symbol = " "
+
+[python]
+symbol = " "
+
+[spack]
+symbol = "🅢 "

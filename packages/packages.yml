@@ -1,8 +1,15 @@
-# Rustup
-#curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-#cargo install --locked bacon
 packages:
+
+  # Base
+  # --------
+  # Packages to be installed on all machines: both personal and work
+
   base:
+    # Packages to be installed with cargo
+    cargo:
+      - bacon
+
+    # Packages which have the same package name across all package managers
     universal:
       # General
       - neovim
@@ -22,7 +29,9 @@ packages:
       - dust
       - imagemagick
       - viu
+      - fzf
       # Dev
+      - rust-analyzer
       - doxygen
       - git
       - git-filter-repo
@@ -38,6 +47,7 @@ packages:
       - calcurse
       - cmatrix
       - neofetch
+
     arch:
       # Base Dev Tools
       - base-devel
@@ -47,12 +57,14 @@ packages:
       # Dev
       - github-cli
       - aws-cli
+
     arch-aur:
       # Rice
       - pipes.sh
       - cbonsai
       # Fonts
       - ttf-recursive
+
     darwin:
       # Base Dev Tools
       - pkg-config
@@ -71,28 +83,50 @@ packages:
       - font-recursive-code
       # Apps
       - 1password-cli
+      - firefox
       - easy-move-plus-resize
       - moom
       - bartender
-      - brave-browser
       - tidal
       - obsidian
-      - selfcontrol
+      # - selfcontrol # wait for a block to end before switching to homebrew
       - sensiblesidebuttons
       - signal
+
+
+  # Personal
+  # --------
+  # Packages to be installed on only personal machines
+
   personal:
+
+    # Packages which have the same package name across all package managers
     universal:
       # Utils
       - imapsync
       - youtube-dl
       - ffmpeg
+
+    # Arch official packages
     arch:
       - cmocka-git
+
+    # Arch AUR packages
     arch-aur:
+
+    # Homebrew packages
     darwin:
       - cmocka
       - dropbox
+
+
+  # Ditto
+  # --------
+  # Packages to be installed on only work machines
+
   ditto:
+
+    # Homebrew packages
     darwin:
       - slack
       - lastpass

@@ -73,16 +73,22 @@ function bootstrap() {
             xcode-select -p &>/dev/null || ${dry_run} xcode-select --install
 
             if ! command -v brew &> /dev/null; then
-                ${dry_run} /bin/bash -c "$(${dry_run} curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+                ${dry_run} /bin/bash -c \
+                    "$(${dry_run} curl \
+                        --proto='https' \
+                        --tlsv1.2 \
+                        -fsSL \
+                        https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh \
+                    )"
             fi
 
-            install yq
+            pkg_install yq
             ;;
         'arch')
             ${dry_run} sudo pacman -Syy
-            install yq
-            install git
-            install base-devel
+            pkg_install yq
+            pkg_install git
+            pkg_install base-devel
 
             # AUR support
             if ! command -v yay &> /dev/null; then
@@ -98,7 +104,17 @@ function bootstrap() {
             print_usage
             exit 1
             ;;
-        esac
+    esac
+
+    if ! command -v rustup &> /dev/null; then
+        ${dry_run} /bin/bash -c \
+            "$(${dry_run} curl \
+                --proto='https' \
+                --tlsv1.2 \
+                -fsSL https://sh.rustup.rs \
+            )"
+    fi
+
 }
 
 # Install a package with the os-specific package manager
@@ -106,10 +122,10 @@ function bootstrap() {
 # Arguments
 # $1: package name (required)
 # $2: repo info (optional, eg 'aur' on arch)
-function install() {
+function pkg_install() {
     case "${OS}" in
         'darwin')
-            brew list "${1}" &>/dev/null || ${dry_run} brew install "${1}"
+            ${dry_run} brew install "${1}"
             ;;
         'arch')
             if [[ "${2:-}" == 'arch-aur' ]]; then
@@ -125,18 +141,27 @@ function install() {
     esac
 }
 
+function cargo_install() {
+    ${dry_run} cargo install --locked "${1}"
+}
+
 function install_all() {
     for category in "${cats[@]}"; do
         for pkg in $(yq ".packages.${category} | [.universal, .${OS}] | .[][]" "${PACKAGE_LIST}"); do
-            install "${pkg//\"/}"
+            pkg_install "${pkg//\"/}"
         done
 
         # If we're on arch, also install AUR packages
         if [[ "${OS}" == 'arch' ]]; then
             for pkg in $(yq ".packages.${category} | [.\"arch-aur\"] | .[][]" "${PACKAGE_LIST}"); do
-                install "${pkg//\"/}" 'arch-aur'
+                pkg_install "${pkg//\"/}" 'arch-aur'
             done
         fi
+
+        # Install Rust cargo binaries
+        for pkg in $(yq ".packages.${category} | [.cargo] | .[][]" "${PACKAGE_LIST}"); do
+            cargo_install "${pkg//\"/}"
+        done
     done
 }
 
