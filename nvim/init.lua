@@ -23,6 +23,8 @@ opt.wrap = false
 opt.colorcolumn = '81'
 opt.spellfile = fn.stdpath('config') .. '/spell/en.utf-8.add'
 
+------------------------------------------------------------- tabs v. spaces ---
+
 -- Set display width of tab ('\t') char to 4
 opt.tabstop = 4
 -- Set indents to width of 4
@@ -31,6 +33,18 @@ opt.shiftwidth = 4
 opt.softtabstop = 4 
 -- Expand tabs into spaces
 opt.expandtab = true
+
+----------------------------------------------------------------- completion ---
+
+-- menuone:  popup even when there's only one match
+-- noinsert: Do not insert text until a selection is made
+-- noselect: Do not select, force user to select one from the menu
+opt.completeopt = { 'menuone', 'noinsert', 'noselect' }
+
+-- Avoid showing extra messages when using completion
+-- opt.shortmess += 'c' // How do you append in lua??
+
+-------------------------------------------------------------------- keymaps ---
 
 -- Disable arrow keys in favor of hjkl
 local key_mapper = function(mode, key, result)
@@ -48,7 +62,9 @@ key_mapper('', '<left>', '<nop>')
 key_mapper('', '<right>', '<nop>')
 
 
--- Setup Plugins
+--------------------------------------------------------------- load plugins ---
+
+-- boostrap packer if not yet installed
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 if fn.empty(fn.glob(install_path)) > 0 then
   packer_bootstrap = fn.system({
@@ -57,20 +73,102 @@ if fn.empty(fn.glob(install_path)) > 0 then
   })
 end
 
+-- Load plugins defined in separate file
 require('plugins')
 
--- Configure preservim/vim-markdown
+----------------------------------------------------------------- rust-tools ---
+
+require('lspconfig').rust_analyzer.setup({})
+
+require('rust-tools').setup({
+    tools = { 
+        autoSetHints = true,
+        hover_with_actions = true,
+        inlay_hints = {
+            show_parameter_hints = false,
+            parameter_hints_prefix = "",
+            other_hints_prefix = "",
+        },
+    },
+})
+
+----------------------------------------------------------------- lsp config ---
+
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  local bufopts = { noremap=true, silent=true, buffer=bufnr }
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+  vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
+  vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
+  vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
+  vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+  vim.keymap.set('n', '<space>f', vim.lsp.buf.formatting, bufopts)
+end
+
+local lsp_flags = {
+  debounce_text_changes = 150,
+}
+
+require('lspconfig')['rust_analyzer'].setup{
+    on_attach = on_attach,
+    flags = lsp_flags,
+}
+
+----------------------------------------------------------------- completion ---
+
+local cmp = require('cmp')
+cmp.setup({
+  -- Enable LSP snippets
+  snippet = {
+    expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body)
+    end,
+  },
+  mapping = {
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    -- Add tab support
+    ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+    ['<Tab>'] = cmp.mapping.select_next_item(),
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm({
+      behavior = cmp.ConfirmBehavior.Insert,
+      select = true,
+    })
+  },
+
+  -- Installed sources
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'vsnip' },
+    { name = 'path' },
+    { name = 'buffer' },
+  },
+})
+
+----------------------------------------------------- preservim/vim-markdown ---
+
 vim.g.vim_markdown_folding_disabled = 1
 vim.g.vim_markdown_auto_insert_bullets = 0
 vim.g.vim_markdown_new_list_item_indent = 0
 
--- Setup Color Scheme
+--------------------------------------------------------------- color scheme ---
+
 if os.getenv("TERM") ~= 'linux' then
     -- only set colorsheme if term is likely to have 256 color
     vim.g.catppuccin_flavour = 'mocha'
     vim.cmd [[colorscheme catppuccin]]
 end
 
+------------------------------------------------------------------- autocmds ---
 
 local function setup_autocmds(working)
   vim.cmd [[
