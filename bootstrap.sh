@@ -173,25 +173,30 @@ link_files() {
     local created_links='false'
 
     local file
-    local fq_file
+    local fq_src
     local fq_dest
     local dest_dir
     for mapping in "${FILES[@]}"; do
         file=$(file_source "${mapping}")
-        fq_file="${DIR}/${file}"
+        fq_src="${DIR}/${file}"
         fq_dest=$(file_dest "${mapping}")
         dest_dir=$(dirname "${fq_dest}")
 
-        if [[ ! -e "${fq_file}" ]]; then
-            echo "${fq_file} doesn't exist" 1>&2
+        if [[ ! -e "${fq_src}" ]]; then
+            echo "${fq_src} doesn't exist" 1>&2
             exit 1
+        fi
+
+        if [[ -d "${fq_src}" && -d "${fq_dest}" ]]; then
+            echo "${fq_dest} is a directory and already exists — skipping ${file}"
+            continue
         fi
 
         if [[ "${force}" == 'true' ]] || [[ ! -e "${fq_dest}" ]]; then
             if [[ ! -d "${dest_dir}" ]]; then
                 $dry_run mkdir -p "${dest_dir}"
             fi
-            $dry_run ln -fs "${fq_file}" "${fq_dest}"
+            $dry_run ln -fs "${fq_src}" "${fq_dest}"
             created_links='true'
         fi
     done
