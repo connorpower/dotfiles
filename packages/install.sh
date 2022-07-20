@@ -130,7 +130,7 @@ function pkg_install() {
         'arch')
             if [[ "${2:-}" == 'arch-aur' ]]; then
                 # Never run with sudo for AUR packages
-                ${dry_run} echo yay something something "${1}"
+                ${dry_run} yay --aur -S "${1}"
             else
                 ${dry_run} sudo pacman --needed --noconfirm -S "${1}"
             fi
