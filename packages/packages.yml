@@ -81,10 +81,10 @@ packages:
       - font-recursive-code
       # Apps
       - 1password-cli
+      - firefox
       - easy-move-plus-resize
       - moom
       - bartender
-      - brave-browser
       - tidal
       - obsidian
       - selfcontrol
