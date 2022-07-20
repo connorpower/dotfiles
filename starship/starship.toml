@@ -4,6 +4,7 @@
 [character]
 error_symbol = "[✖](bold red)"
 success_symbol = "[❯](green)"
+vicmd_symbol = "[](blue)"
 
 [aws]
 disabled = true
@@ -13,4 +14,3 @@ disabled = true
 
 [directory]
 truncation_length = 1
-
