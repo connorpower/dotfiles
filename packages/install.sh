@@ -125,7 +125,7 @@ function bootstrap() {
 function pkg_install() {
     case "${OS}" in
         'darwin')
-            brew list "${1}" &>/dev/null || ${dry_run} brew install "${1}"
+            ${dry_run} brew install "${1}"
             ;;
         'arch')
             if [[ "${2:-}" == 'arch-aur' ]]; then
