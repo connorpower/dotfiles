@@ -96,6 +96,8 @@ require('rust-tools').setup({
     },
 })
 
+vim.g.rustfmt_autosave = 1
+
 ----------------------------------------------------------------- lsp config ---
 
 -- Use an on_attach function to only map the following keys
