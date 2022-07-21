@@ -182,12 +182,17 @@ local function setup_autocmds(working)
 
     autocmd FileType rust setlocal spell textwidth=80
 
-    autocmd FileType markdown 
+    autocmd FileType markdown
         \ setlocal spell textwidth=80 |
         \ setlocal formatoptions-=q |
         \ setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\s*\[-*+]\\s\\+
 
     autocmd FileType make set softtabstop=0 noexpandtab
+
+    autocmd BufRead * autocmd FileType <buffer> ++once                                                                                                                  
+      \ if &ft !~# 'commit\|rebase' && line("'\"") > 1 && line("'\"") <= line("$")
+      \ | exe 'normal! g`"'
+      \ | endif
   ]]
 end
 
