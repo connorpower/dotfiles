@@ -172,6 +172,11 @@ if os.getenv("TERM") ~= 'linux' then
     vim.cmd [[colorscheme catppuccin]]
 end
 
+------------------------------------------------------------------ lightline ---
+
+vim.g.lightline = { colorscheme = 'catppuccin_mocha' }
+opt.showmode = false
+
 ------------------------------------------------------------------- autocmds ---
 
 local function setup_autocmds(working)

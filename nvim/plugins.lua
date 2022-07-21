@@ -14,7 +14,7 @@ return require('packer').startup(function(use)
 
   -- Useful path completions
   use 'hrsh7th/cmp-path'
-  
+
   -- Useful buffer completions
   use 'hrsh7th/cmp-buffer'
 
@@ -32,8 +32,11 @@ return require('packer').startup(function(use)
   -- file controls and explorer
   use 'preservim/nerdtree'
 
+  -- simple statusline plugin
+  use 'itchyny/lightline.vim'
+
   ---------------------------------------------------------------------- LSP ---
- 
+
   -- Common LSP tools
   use 'neovim/nvim-lspconfig'
 
@@ -47,7 +50,7 @@ return require('packer').startup(function(use)
 
   -- Enable more of the features of rust-analyzer, such as inlay hints
   use 'simrat39/rust-tools.nvim'
- 
+
   ---------------------------------------------------------------------- csv ---
 
   use 'godlygeek/tabular'
