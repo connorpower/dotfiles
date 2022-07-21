@@ -210,6 +210,8 @@ local function setup_autocmds(working)
       \ if &ft !~# 'commit\|rebase' && line("'\"") > 1 && line("'\"") <= line("$")
       \ | exe 'normal! g`"'
       \ | endif
+
+    autocmd BufWritePre * :%s/\s\+$//e
   ]]
 end
 
