@@ -30,7 +30,7 @@ opt.tabstop = 4
 -- Set indents to width of 4
 opt.shiftwidth = 4
 -- Set column width of a tab to 4
-opt.softtabstop = 4 
+opt.softtabstop = 4
 -- Expand tabs into spaces
 opt.expandtab = true
 
@@ -68,7 +68,7 @@ key_mapper('', '<right>', '<nop>')
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 if fn.empty(fn.glob(install_path)) > 0 then
   packer_bootstrap = fn.system({
-      'git', 'clone', '--depth', '1', 
+      'git', 'clone', '--depth', '1',
       'https://github.com/wbthomason/packer.nvim', install_path
   })
 end
@@ -85,7 +85,7 @@ vim.g.NERDTreeWinPos = 'right'
 require('lspconfig').rust_analyzer.setup({})
 
 require('rust-tools').setup({
-    tools = { 
+    tools = {
         autoSetHints = true,
         hover_with_actions = true,
         inlay_hints = {
@@ -154,13 +154,12 @@ cmp.setup({
   -- disable in comments
   enabled = function()
     local ctx = require('cmp.config.context')
-    return not ctx.in_syntax_group("Comment") 
+    return not ctx.in_syntax_group("Comment")
   end,
 
   -- Installed sources
   sources = {
     { name = 'nvim_lsp' },
-    { name = 'vsnip' },
     { name = 'path' },
     { name = 'buffer' },
   },
@@ -206,7 +205,7 @@ local function setup_autocmds(working)
 
     autocmd FileType make set softtabstop=0 noexpandtab
 
-    autocmd BufRead * autocmd FileType <buffer> ++once                                                                                                                  
+    autocmd BufRead * autocmd FileType <buffer> ++once
       \ if &ft !~# 'commit\|rebase' && line("'\"") > 1 && line("'\"") <= line("$")
       \ | exe 'normal! g`"'
       \ | endif
