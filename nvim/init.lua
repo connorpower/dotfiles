@@ -177,6 +177,10 @@ end
 vim.g.lightline = { colorscheme = 'catppuccin_mocha' }
 opt.showmode = false
 
+------------------------------------------------------------------- gitsigns ---
+
+require('gitsigns').setup()
+
 ------------------------------------------------------------------- autocmds ---
 
 local function setup_autocmds(working)

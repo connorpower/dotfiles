@@ -21,7 +21,7 @@ return require('packer').startup(function(use)
   ---------------------------------------------------------------------- git ---
 
   -- git status gutter
-  use 'airblade/vim-gitgutter'
+  use 'lewis6991/gitsigns.nvim'
 
   -------------------------------------------------------------- project org ---
 
