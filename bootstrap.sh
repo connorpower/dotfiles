@@ -37,6 +37,7 @@ declare -a FILES=(
   'starship/starship.toml      -> ~/.config/starship.toml'
   'wm/hyprland.conf            -> ~/.config/hypr/hyprland.conf'
   'bin                         -> ~/bin'
+  'wallpapers                  -> ~/wallpapers'
 )
 
 declare -a TEMPLATE_LINKS=(
