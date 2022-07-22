@@ -56,6 +56,8 @@ packages:
       - perl-rename
       - time
       - wget
+      - ranger
+      - python-pillow # required for ranger img preview in kitty
       # Dev
       - github-cli
       - aws-cli

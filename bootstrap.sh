@@ -36,6 +36,7 @@ declare -a FILES=(
   'rust/cargo-config           -> ~/.cargo/config'
   'starship/starship.toml      -> ~/.config/starship.toml'
   'wm/hyprland.conf            -> ~/.config/hypr/hyprland.conf'
+  'config/ranger/rc.conf       -> ~/.config/ranger/rc.conf'
   'bin                         -> ~/bin'
   'wallpapers                  -> ~/wallpapers'
 )
