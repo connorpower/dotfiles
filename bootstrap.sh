@@ -189,7 +189,6 @@ link_files() {
 
         make_link "${DIR}/${target}" "${name}"
     done
-
 }
 
 link_templates() {
