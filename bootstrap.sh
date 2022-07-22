@@ -35,6 +35,7 @@ declare -a FILES=(
   'tty/kitty-darwin.conf       -> ~/.config/kitty/darwin.conf'
   'rust/cargo-config           -> ~/.cargo/config'
   'starship/starship.toml      -> ~/.config/starship.toml'
+  'wm/hyprland.conf            -> ~/.config/hypr/hyprland.conf'
   'bin                         -> ~/bin'
 )
 
