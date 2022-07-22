@@ -142,8 +142,8 @@ cmp.setup({
     end,
   },
   mapping = {
-    ['<down>'] = cmp.mapping.select_prev_item(),
-    ['<up>'] = cmp.mapping.select_next_item(),
+    ['<down>'] = cmp.mapping.select_next_item(),
+    ['<up>'] = cmp.mapping.select_prev_item(),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
     ['<Tab>'] = cmp.mapping.confirm({ select = true })
