@@ -107,6 +107,9 @@ alias pbat='bat --style plain'
 # Modern alternative to du, but print in intuitive order
 alias dust='dust -r'
 
+# Fuzzy find files, respecting any `.gitignore`s and preview with bat
+alias fz='fd --type f | fzf --preview "bat --color=always {}"'
+
 #------------------------------------------------------------- fish features ---
 
 # Must come at end of zshrc
