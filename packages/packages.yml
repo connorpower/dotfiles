@@ -114,6 +114,8 @@ packages:
 
     # Arch AUR packages
     arch-aur:
+      - 1password
+      - 1password-cli
 
     # Homebrew packages
     darwin:
