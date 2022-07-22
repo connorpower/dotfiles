@@ -31,9 +31,15 @@ declare -a FILES=(
   'tmux/tmux.conf              -> ~/.tmux.conf'
   'tty/kitty.conf              -> ~/.config/kitty/kitty.conf'
   'tty/kitty-catppuccin.conf   -> ~/.config/kitty/themes/catppuccin.conf'
+  'tty/kitty-arch.conf         -> ~/.config/kitty/arch.conf'
+  'tty/kitty-darwin.conf       -> ~/.config/kitty/darwin.conf'
   'rust/cargo-config           -> ~/.cargo/config'
   'starship/starship.toml      -> ~/.config/starship.toml'
   'bin                         -> ~/bin'
+)
+
+declare -a TEMPLATE_LINKS=(
+  "${HOME}/.config/kitty/<OS>.conf   -> ~/.config/kitty/os.conf"
 )
 
 
@@ -90,7 +96,14 @@ main() {
     done
     shift $((OPTIND-1))
 
+    created_links='false'
+
     link_files
+    link_templates
+
+    if [[ "${created_links}" == 'false' ]]; then
+        echo "no changes required"
+    fi
 }
 
 
@@ -159,7 +172,6 @@ file_source() {
 #
 # - Argument $1: Mapping string, i.e. 'file-source -> file-destination'
 # - Returns: 'file-destination'
-#
 file_dest() {
     dest=$(echo "$1" | awk 'BEGIN { FS = " +-> +" } END { print $2 }')
     echo "${dest/#\~/$HOME}"
@@ -168,45 +180,61 @@ file_dest() {
 # Sets up symlinks for each file in $FILES. If the destination directory
 # doesn't exist, it is created. If the destination file already exists,
 # no action is taken.
-#
 link_files() {
-    # Keeps track of whether any links were created or not.
-    local created_links='false'
+    local src
+    local dst
+    for mapping in "${FILES[@]}"; do
+        src=$(file_source "${mapping}")
+        dst=$(file_dest "${mapping}")
 
-    local file
+        make_link "${DIR}/${src}" "${dst}"
+    done
+
+}
+
+link_templates() {
+    local src
+    local template_dst
+    local dst
+    for mapping in "${TEMPLATE_LINKS[@]}"; do
+        template_src=$(file_source "${mapping}")
+        dst=$(file_dest "${mapping}")
+
+        src=$(echo "${template_src}" | sed "s/<OS>/${OS}/g")
+
+        make_link "${src}" "${dst}"
+    done
+}
+
+# $1 src
+# $2 dst
+make_link() {
     local fq_src
     local fq_dest
     local dest_dir
-    for mapping in "${FILES[@]}"; do
-        file=$(file_source "${mapping}")
-        fq_src="${DIR}/${file}"
-        fq_dest=$(file_dest "${mapping}")
-        dest_dir=$(dirname "${fq_dest}")
 
-        if [[ ! -e "${fq_src}" ]]; then
-            echo "${fq_src} doesn't exist" 1>&2
-            exit 1
+    fq_src="${1}"
+    fq_dest=$(realpath "${2}")
+    dest_dir=$(dirname "${fq_dest}")
+
+    if [[ ! -e "${fq_src}" ]]; then
+        echo "${fq_src} doesn't exist" 1>&2
+        exit 1
+    fi
+
+    if [[ -d "${fq_src}" && -d "${fq_dest}" ]]; then
+        # ${1} is a directory and already exists — skipping
+        return 0
+    fi
+
+    if [[ "${force}" == 'true' ]] || [[ ! -e "${fq_dest}" ]]; then
+        if [[ ! -d "${dest_dir}" ]]; then
+            $dry_run mkdir -p "${dest_dir}"
         fi
-
-        if [[ -d "${fq_src}" && -d "${fq_dest}" ]]; then
-            echo "${fq_dest} is a directory and already exists — skipping ${file}"
-            continue
-        fi
-
-        if [[ "${force}" == 'true' ]] || [[ ! -e "${fq_dest}" ]]; then
-            if [[ ! -d "${dest_dir}" ]]; then
-                $dry_run mkdir -p "${dest_dir}"
-            fi
-            $dry_run ln -fs "${fq_src}" "${fq_dest}"
-            created_links='true'
-        fi
-    done
-
-    if [[ "${created_links}" == 'false' ]]; then
-        echo "no changes required"
+        $dry_run ln -fs "${fq_src}" "${fq_dest}"
+        created_links='true'
     fi
 }
-
 
 ###############################################################################
 # ENTRY POINT
