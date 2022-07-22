@@ -55,6 +55,7 @@ packages:
       # General
       - perl-rename
       - time
+      - wget
       # Dev
       - github-cli
       - aws-cli
