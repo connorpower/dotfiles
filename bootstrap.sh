@@ -153,85 +153,83 @@ print_help() {
 #
 list_destinations() {
     for mapping in "${FILES[@]}"; do
-        file_dest "${mapping}"
+        link_name "${mapping}"
     done
 }
 
-# Returns the file source from a 'file-source -> file-destination' mapping
+# Returns the file source from a 'link-target -> link-name' mapping
 # in the $FILES array.
 #
-# - Argument $1: Mapping string, i.e. 'file-source -> file-destination'
-# - Returns: 'file-source'
+# - Argument $1: Mapping string, i.e. 'link-target -> link-name'
 #
-file_source() {
+link_target() {
     echo "$1" | awk 'BEGIN { FS = " +-> +" } END { print $1 }'
 }
 
-# Returns the file destination from a 'file-source -> file-destination' mapping
+# Returns the file destination from a 'link-target -> link-name' mapping
 # in the $FILES array.
 #
-# - Argument $1: Mapping string, i.e. 'file-source -> file-destination'
-# - Returns: 'file-destination'
-file_dest() {
-    dest=$(echo "$1" | awk 'BEGIN { FS = " +-> +" } END { print $2 }')
-    echo "${dest/#\~/$HOME}"
+# - Argument $1: Mapping string, i.e. 'link-target -> link-name'
+link_name() {
+    link_name=$(echo "$1" | awk 'BEGIN { FS = " +-> +" } END { print $2 }')
+    echo "${link_name/#\~/$HOME}"
 }
 
 # Sets up symlinks for each file in $FILES. If the destination directory
 # doesn't exist, it is created. If the destination file already exists,
 # no action is taken.
 link_files() {
-    local src
-    local dst
+    local target
+    local name
     for mapping in "${FILES[@]}"; do
-        src=$(file_source "${mapping}")
-        dst=$(file_dest "${mapping}")
+        target=$(link_target "${mapping}")
+        name=$(link_name "${mapping}")
 
-        make_link "${DIR}/${src}" "${dst}"
+        make_link "${DIR}/${target}" "${name}"
     done
 
 }
 
 link_templates() {
-    local src
-    local template_dst
-    local dst
+    local template_target
+    local target
+    local name
     for mapping in "${TEMPLATE_LINKS[@]}"; do
-        template_src=$(file_source "${mapping}")
-        dst=$(file_dest "${mapping}")
+        template_target=$(link_target "${mapping}")
+        target=$(echo "${template_target}" | sed "s/<OS>/${OS}/g")
 
-        src=$(echo "${template_src}" | sed "s/<OS>/${OS}/g")
+        name=$(link_name "${mapping}")
 
-        make_link "${src}" "${dst}"
+        make_link "${target}" "${name}"
     done
 }
 
 # $1 src
 # $2 dst
 make_link() {
-    local fq_src
-    local fq_dest
-    local dest_dir
+    local target
+    local name
+    local name_dir_path
 
-    fq_src="${1}"
-    fq_dest=$(realpath "${2}")
-    dest_dir=$(dirname "${fq_dest}")
+    target=$(realpath "${1}")
+    name="${2}"
+    name_dir_path=$(dirname "${name}")
 
-    if [[ ! -e "${fq_src}" ]]; then
-        echo "${fq_src} doesn't exist" 1>&2
+    if [[ ! -e "${target}" ]]; then
+        echo "${target} doesn't exist" 1>&2
         exit 1
     fi
 
-    if [[ -d "${fq_src}" && -d "${fq_dest}" ]]; then
+    if [[ -d "${target}" && -d "${name}" ]]; then
         # ${1} is a directory and already exists — skipping
         return 0
     fi
 
-    if [[ "${force}" == 'true' ]] || [[ ! -e "${fq_dest}" ]]; then
-        if [[ ! -d "${dest_dir}" ]]; then
-            $dry_run mkdir -p "${dest_dir}"
+    if [[ "${force}" == 'true' ]] || [[ ! -e "${name}" ]]; then
+        if [[ ! -d "${name_dir_path}" ]]; then
+            $dry_run mkdir -p "${name_dir_path}"
         fi
-        $dry_run ln -fs "${fq_src}" "${fq_dest}"
+        $dry_run ln -fs "${target}" "${name}"
         created_links='true'
     fi
 }
