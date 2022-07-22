@@ -110,14 +110,12 @@ packages:
 
     # Arch official packages
     arch:
-      - cmocka-git
 
     # Arch AUR packages
     arch-aur:
 
     # Homebrew packages
     darwin:
-      - cmocka
       - dropbox
 
 
