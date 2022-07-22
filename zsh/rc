@@ -99,7 +99,7 @@ export pdev="${SCM_DIR}/personal"
 export pno="${SCM_DIR}/personal/notes/personal"
 export fno="${SCM_DIR}/personal/notes/family"
 
-#--------------------------------------------------------------- quick jumps ---
+#--------------------------------------------------- preview & fuzzy finding ---
 
 # Plain bat - useful when copy pasting from a file with the mouse
 alias pbat='bat --style plain'
@@ -108,7 +108,12 @@ alias pbat='bat --style plain'
 alias dust='dust -r'
 
 # Fuzzy find files, respecting any `.gitignore`s and preview with bat
-alias fz='fd --type f | fzf --preview "bat --color=always {}"'
+alias fdz='fd --type f | fzf --preview "bat --color=always {}"'
+
+# Fuzzy find _in_ files, respecting any `.gitignore`s and preview with bat
+function rgz() {
+    rg -le $@ | fzf --preview 'bat --color=always {}'
+}
 
 #------------------------------------------------------------- fish features ---
 
