@@ -110,6 +110,7 @@ packages:
 
     # Arch official packages
     arch:
+      - alsa-utils
 
     # Arch AUR packages
     arch-aur:
