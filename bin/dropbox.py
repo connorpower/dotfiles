@@ -609,7 +609,7 @@ class CommandTicker(threading.Thread):
         first = True
         while True:
             self.stop_event.wait(0.25)
-            if self.stop_event.isSet(): break
+            if self.stop_event.is_set(): break
             if i == len(ticks):
                 first = False
                 i = 0
@@ -751,7 +751,7 @@ def start_dropbox():
 
         # Fix indicator icon and menu on Unity environments. (LP: #1559249)
         # Fix indicator icon and menu in Budgie environment. (LP: #1683051)
-        new_env = os.environ.copy()        
+        new_env = os.environ.copy()
         current_env = os.environ.get("XDG_CURRENT_DESKTOP", '').split(":")
         to_check = ['Unity', 'Budgie']
         if any(word in to_check for word in current_env):
