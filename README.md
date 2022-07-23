@@ -1,7 +1,7 @@
 # Dotfiles
 
-These are my dotfiles. They aren't intended to be useful to anyone other than
-myself.
+These are my dotfiles common configs. They aren't intended to be useful to
+anyone other than myself.
 
 ## Organization
 
@@ -11,16 +11,15 @@ Files are organized by topic:
 - **nvim**: nvim configuration and plugins.
 - **zsh/rc**: primary zshrc file
 - **zsh/zsh.d/***: purpose or os-specific zsh includes
-- **tty**: everything related to terminal configuration (currently
+- **tty**: everything related to terminal configuration (
   [Kitty](https://sw.kovidgoyal.net/kitty/)).
-- **bin**: utilities of various kinds.
-- ... etc
+- **bin**: utilities of various kinds
+- ... etc.
 
 ## bootstrap.sh
 
 The `bootstrap.sh` script will install the dotfiles in their respective
-locations. Because altering your home directory is scary, `bootstrap.sh`
-comes with a dry-run option (flag: `-d`).
+locations.
 
 ### Configuration
 
@@ -36,6 +35,7 @@ declare -a FILES=(
     'git/gitignore_global -> ~/.gitignore_global'
     'git/tigrc            -> ~/.tigrc'
     'nvim/init.lua        -> ~/.config/nvim/init.lua'
+    # ... etc
 )
 ```
 

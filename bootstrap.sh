@@ -49,9 +49,9 @@ declare -a TEMPLATE_LINKS=(
 )
 
 
-###############################################################################
+################################################################################
 # CONSTANTS
-###############################################################################
+################################################################################
 
 _dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 readonly DIR="${_dir}"
@@ -62,9 +62,9 @@ readonly SCRIPT="${_script}"
 unset _script
 
 
-###############################################################################
+################################################################################
 # MAIN
-###############################################################################
+################################################################################
 
 main() {
     # Be nice and check for all common help flags
@@ -113,9 +113,9 @@ main() {
 }
 
 
-###############################################################################
+################################################################################
 # FUNCTIONS
-###############################################################################
+################################################################################
 
 print_usage() {
     echo "Usage: ${SCRIPT} [-h|--help] [-f] [-d] [-l]"
@@ -125,24 +125,22 @@ print_help() {
     print_usage
     echo ""
     echo "    Description:"
-    echo "        Bootstraps all my config files by linking all the config files in"
-    echo "        this repo to their usual destination in the system. Using symlinks"
-    echo "        like this is useful because when I update a config file, either in"
-    echo "        the repo or where it's being linked to, the file will be updated"
-    echo "        everywhere."
+    echo "        Bootstraps all my config files by linking all the config"
+    echo "        files in this repo to their usual destination in the system."
     echo ""
     echo "    Options:"
     echo "        --help | -h"
     echo "            Prints this menu"
     echo "        -d"
-    echo "            Dry run. Echoes the commands which would be executed to "
+    echo "            Dry run. Echoes the commands which would be executed to"
     echo "            stdout but doesn't modify anything."
     echo "        -f"
     echo "            Force. Overwrites any existing files."
     echo "        -l"
-    echo "            Lists the files that would be installed by this program. Each"
-    echo "            full path is printed on a new line making the output suitable"
-    echo "            for piping to xargs or using as a for-loop input, i.e.:"
+    echo "            Lists the files that would be installed by this program."
+    echo "            Each full path is printed on a new line making the output"
+    echo "            suitable for piping to xargs or using as a for-loop"
+    echo "            input, i.e.:"
     echo ""
     echo "                for file in \$(${SCRIPT} -l); do"
     echo "                    ls -lah \"\$file\""
@@ -239,9 +237,9 @@ make_link() {
     fi
 }
 
-###############################################################################
+################################################################################
 # ENTRY POINT
-###############################################################################
+################################################################################
 
 # The unusual syntax (versus `main "${@}"`) is a workaround for a bug in some
 # non-POSIX compliant versions of bash in which $@ is reported as unbound.
