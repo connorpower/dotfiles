@@ -1,0 +1,12 @@
+[Unit]
+Description=Headless Dropbox
+After=local-fs.target network.target
+
+[Service]
+Type=simple
+ExecStart=%h/.dropbox-dist/dropboxd
+Restart=on-failure
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target

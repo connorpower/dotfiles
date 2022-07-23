@@ -37,6 +37,7 @@ declare -a FILES=(
   'starship/starship.toml      -> ~/.config/starship.toml'
   'wm/hyprland.conf            -> ~/.config/hypr/hyprland.conf'
   'ranger/rc.conf              -> ~/.config/ranger/rc.conf'
+  'systemd/dropbox.service     -> ~/.config/systemd/user/dropbox.service'
   'bin                         -> ~/bin'
   'wallpapers                  -> ~/wallpapers'
 )
