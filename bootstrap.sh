@@ -36,6 +36,8 @@ declare -a FILES=(
   'rust/cargo-config           -> ~/.cargo/config'
   'starship/starship.toml      -> ~/.config/starship.toml'
   'wm/hyprland.conf            -> ~/.config/hypr/hyprland.conf'
+  'waybar/config               -> ~/.config/waybar/config'
+  'waybar/style.css            -> ~/.config/waybar/style.css'
   'ranger/rc.conf              -> ~/.config/ranger/rc.conf'
   'systemd/dropbox.service     -> ~/.config/systemd/user/dropbox.service'
   'bin                         -> ~/bin'
