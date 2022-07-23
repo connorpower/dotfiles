@@ -1,7 +1,7 @@
 * {
 	border: none;
-	border-radius: 10;
-    font-family: "JetbrainsMono Nerd Font" ;
+	border-radius: 10px;
+    font-family: "Rec Mono linear";
 	font-size: 15px;
 	min-height: 10px;
 }
@@ -136,6 +136,7 @@ window#waybar.hidden {
 	color: #161320;
 	background: #F8BD96;
 }
+
 #clock {
 	margin-top: 6px;
 	margin-left: 8px;
@@ -146,7 +147,6 @@ window#waybar.hidden {
 	transition: none;
 	color: #161320;
 	background: #ABE9B3;
-	/*background: #1A1826;*/
 }
 
 #memory {
@@ -160,6 +160,7 @@ window#waybar.hidden {
 	color: #161320;
 	background: #DDB6F2;
 }
+
 #cpu {
 	margin-top: 6px;
 	margin-left: 8px;
@@ -208,41 +209,5 @@ window#waybar.hidden {
 	transition: none;
 	color: #161320;
 	background: #F28FAD;
-}
-
-#custom-wallpaper {
-	margin-top: 6px;
-	margin-left: 8px;
-	padding-left: 10px;
-	padding-right: 10px;
-	margin-bottom: 0px;
-	border-radius: 10px;
-	transition: none;
-	color: #161320;
-	background: #C9CBFF;
-}
-
-#custom-updates {
-	margin-top: 6px;
-	margin-left: 8px;
-	padding-left: 10px;
-	padding-right: 10px;
-	margin-bottom: 0px;
-	border-radius: 10px;
-	transition: none;
-	color: #161320;
-	background: #E8A2AF;
-}
-
-#custom-media {
-	margin-top: 6px;
-	margin-left: 8px;
-	padding-left: 10px;
-	padding-right: 10px;
-	margin-bottom: 0px;
-	border-radius: 10px;
-	transition: none;
-	color: #161320;
-	background: #F2CDCD;
 }
 
