@@ -16,36 +16,36 @@ set -euo pipefail
 # This is the only part of the script which needs to be customized once a new
 # file is added.
 #
-# The format is 'source file' -> 'destination'.
-# 'source-file' is the file path in this repository. 'destination' is the
-# location which should be linked to 'source-file' when the script is run.
+# The format is 'link name' -> 'destination' where destination is relative
+# to the dots folder.
 #
+# TODO: some files are only relvant for arch. Split into different lists
 declare -a FILES=(
-  'zsh/rc                      -> ~/.zshrc'
-  'zsh/zsh.d                   -> ~/.config/zsh.d'
-  'git/gitconfig               -> ~/.gitconfig'
-  'git/gitignore_global        -> ~/.gitignore_global'
-  'git/tigrc                   -> ~/.tigrc'
-  'nvim/init.lua               -> ~/.config/nvim/init.lua'
-  'nvim/plugins.lua            -> ~/.config/nvim/lua/plugins.lua'
-  'tmux/tmux.conf              -> ~/.tmux.conf'
-  'tty/kitty.conf              -> ~/.config/kitty/kitty.conf'
-  'tty/kitty-catppuccin.conf   -> ~/.config/kitty/themes/catppuccin.conf'
-  'tty/kitty-arch.conf         -> ~/.config/kitty/arch.conf'
-  'tty/kitty-darwin.conf       -> ~/.config/kitty/darwin.conf'
-  'rust/cargo-config           -> ~/.cargo/config'
-  'starship/starship.toml      -> ~/.config/starship.toml'
-  'wm/hyprland.conf            -> ~/.config/hypr/hyprland.conf'
-  'waybar/config               -> ~/.config/waybar/config'
-  'waybar/style.css            -> ~/.config/waybar/style.css'
-  'ranger/rc.conf              -> ~/.config/ranger/rc.conf'
-  'systemd/dropbox.service     -> ~/.config/systemd/user/dropbox.service'
-  'bin                         -> ~/bin'
-  'wallpapers                  -> ~/wallpapers'
+  '~/.zshrc                               -> zsh/rc'
+  '~/.config/zsh.d                        -> zsh/zsh.d'
+  '~/.gitconfig                           -> git/gitconfig'
+  '~/.gitignore_global                    -> git/gitignore_global'
+  '~/.tigrc                               -> git/tigrc'
+  '~/.config/nvim/init.lua                -> nvim/init.lua'
+  '~/.config/nvim/lua/plugins.lua         -> nvim/plugins.lua'
+  '~/.tmux.conf                           -> tmux/tmux.conf'
+  '~/.config/kitty/kitty.conf             -> tty/kitty.conf'
+  '~/.config/kitty/themes/catppuccin.conf -> tty/kitty-catppuccin.conf'
+  '~/.config/kitty/arch.conf              -> tty/kitty-arch.conf'
+  '~/.config/kitty/darwin.conf            -> tty/kitty-darwin.conf'
+  '~/.cargo/config                        -> rust/cargo-config'
+  '~/.config/starship.toml                -> starship/starship.toml'
+  '~/.config/hypr/hyprland.conf           -> wm/hyprland.conf'
+  '~/.config/waybar/config                -> waybar/config'
+  '~/.config/waybar/style.css             -> waybar/style.css'
+  '~/.config/ranger/rc.conf               -> ranger/rc.conf'
+  '~/.config/systemd/user/dropbox.service -> systemd/dropbox.service'
+  '~/bin                                  -> bin'
+  '~/wallpapers                           -> wallpapers'
 )
 
 declare -a TEMPLATE_LINKS=(
-  "${HOME}/.config/kitty/<OS>.conf   -> ~/.config/kitty/os.conf"
+  "~/.config/kitty/os.conf -> ${HOME}/.config/kitty/<OS>.conf"
 )
 
 
@@ -91,7 +91,7 @@ main() {
                 dry_run='echo'
                 ;;
             l)
-                list_destinations
+                list_link_names
                 return 0
                 ;;
             *)
@@ -155,27 +155,27 @@ print_help() {
 #     /Users/username/.vimrc
 #     ...
 #
-list_destinations() {
+list_link_names() {
     for mapping in "${FILES[@]}"; do
         link_name "${mapping}"
     done
 }
 
-# Returns the file source from a 'link-target -> link-name' mapping
+# Returns the link source from a 'link-target -> link-name' mapping
 # in the $FILES array.
 #
 # - Argument $1: Mapping string, i.e. 'link-target -> link-name'
 #
 link_target() {
-    echo "$1" | awk 'BEGIN { FS = " +-> +" } END { print $1 }'
+    echo "$1" | awk 'BEGIN { FS = " +-> +" } END { print $2 }'
 }
 
-# Returns the file destination from a 'link-target -> link-name' mapping
+# Returns the link name portion from a 'link-target -> link-name' mapping
 # in the $FILES array.
 #
 # - Argument $1: Mapping string, i.e. 'link-target -> link-name'
 link_name() {
-    link_name=$(echo "$1" | awk 'BEGIN { FS = " +-> +" } END { print $2 }')
+    link_name=$(echo "$1" | awk 'BEGIN { FS = " +-> +" } END { print $1 }')
     echo "${link_name/#\~/$HOME}"
 }
 
