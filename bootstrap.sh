@@ -21,35 +21,35 @@ set -euo pipefail
 #
 # TODO: some files are only relvant for arch. Split into different lists
 declare -a FILES=(
-  '~/.zshrc                                 -> zsh/rc'
-  '~/.config/zsh.d                          -> zsh/zsh.d'
-  '~/.gitconfig                             -> git/gitconfig'
-  '~/.gitignore_global                      -> git/gitignore_global'
-  '~/.tigrc                                 -> git/tigrc'
-  '~/.config/nvim/init.lua                  -> nvim/init.lua'
-  '~/.config/nvim/lua/plugins.lua           -> nvim/plugins.lua'
-  '~/.tmux.conf                             -> tmux/tmux.conf'
-  '~/.config/kitty/kitty.conf               -> tty/kitty.conf'
-  '~/.config/kitty/themes/catppuccin.conf   -> tty/kitty-catppuccin.conf'
-  '~/.config/kitty/arch.conf                -> tty/kitty-arch.conf'
-  '~/.config/kitty/darwin.conf              -> tty/kitty-darwin.conf'
-  '~/.cargo/config                          -> rust/cargo-config'
-  '~/.config/starship.toml                  -> starship/starship.toml'
-  '~/.config/ranger/rc.conf                 -> ranger/rc.conf'
-  '~/bin                                    -> bin'
-  '~/wallpapers                             -> wallpapers'
+  "${HOME}/.zshrc                                 -> zsh/rc"
+  "${HOME}/.config/zsh.d                          -> zsh/zsh.d"
+  "${HOME}/.gitconfig                             -> git/gitconfig"
+  "${HOME}/.gitignore_global                      -> git/gitignore_global"
+  "${HOME}/.tigrc                                 -> git/tigrc"
+  "${HOME}/.config/nvim/init.lua                  -> nvim/init.lua"
+  "${HOME}/.config/nvim/lua/plugins.lua           -> nvim/plugins.lua"
+  "${HOME}/.tmux.conf                             -> tmux/tmux.conf"
+  "${HOME}/.config/kitty/kitty.conf               -> tty/kitty.conf"
+  "${HOME}/.config/kitty/themes/catppuccin.conf   -> tty/kitty-catppuccin.conf"
+  "${HOME}/.config/kitty/arch.conf                -> tty/kitty-arch.conf"
+  "${HOME}/.config/kitty/darwin.conf              -> tty/kitty-darwin.conf"
+  "${HOME}/.cargo/config                          -> rust/cargo-config"
+  "${HOME}/.config/starship.toml                  -> starship/starship.toml"
+  "${HOME}/.config/ranger/rc.conf                 -> ranger/rc.conf"
+  "${HOME}/bin                                    -> bin"
+  "${HOME}/wallpapers                             -> wallpapers"
 )
 
 declare -a FILES_ARCH=(
-  '~/.config/hypr/hyprland.conf             -> wm/hyprland.conf'
-  '~/.config/waybar/config                  -> waybar/config'
-  '~/.config/waybar/style.css               -> waybar/style.css'
-  '~/.config/systemd/user/dropbox.service   -> systemd/dropbox.service'
-  '~/.config/systemd/user/ssh-agent.service -> systemd/ssh-agent.service'
+  "${HOME}/.config/hypr/hyprland.conf             -> wm/hyprland.conf"
+  "${HOME}/.config/waybar/config                  -> waybar/config"
+  "${HOME}/.config/waybar/style.css               -> waybar/style.css"
+  "${HOME}/.config/systemd/user/dropbox.service   -> systemd/dropbox.service"
+  "${HOME}/.config/systemd/user/ssh-agent.service -> systemd/ssh-agent.service"
 )
 
 declare -a TEMPLATE_LINKS=(
-  "~/.config/kitty/os.conf -> ${HOME}/.config/kitty/<OS>.conf"
+  "${HOME}/.config/kitty/os.conf -> ${HOME}/.config/kitty/<OS>.conf"
 )
 
 
@@ -182,8 +182,7 @@ link_target() {
 #
 # - Argument $1: Mapping string, i.e. 'link-target -> link-name'
 link_name() {
-    link_name=$(echo "$1" | awk 'BEGIN { FS = " +-> +" } END { print $1 }')
-    echo "${link_name/#\~/$HOME}"
+    echo "$1" | awk 'BEGIN { FS = " +-> +" } END { print $1 }'
 }
 
 # Sets up symlinks for each file in $FILES. If the destination directory
@@ -208,7 +207,7 @@ link_templates() {
     local name
     for mapping in "${TEMPLATE_LINKS[@]}"; do
         template_target=$(link_target "${mapping}")
-        target=$(echo "${template_target}" | sed "s/<OS>/${OS}/g")
+        target="${template_target//<OS>/$OS}"
 
         name=$(link_name "${mapping}")
 
