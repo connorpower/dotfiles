@@ -35,14 +35,17 @@ declare -a FILES=(
   '~/.config/kitty/darwin.conf              -> tty/kitty-darwin.conf'
   '~/.cargo/config                          -> rust/cargo-config'
   '~/.config/starship.toml                  -> starship/starship.toml'
+  '~/.config/ranger/rc.conf                 -> ranger/rc.conf'
+  '~/bin                                    -> bin'
+  '~/wallpapers                             -> wallpapers'
+)
+
+declare -a FILES_ARCH=(
   '~/.config/hypr/hyprland.conf             -> wm/hyprland.conf'
   '~/.config/waybar/config                  -> waybar/config'
   '~/.config/waybar/style.css               -> waybar/style.css'
-  '~/.config/ranger/rc.conf                 -> ranger/rc.conf'
   '~/.config/systemd/user/dropbox.service   -> systemd/dropbox.service'
   '~/.config/systemd/user/ssh-agent.service -> systemd/ssh-agent.service'
-  '~/bin                                    -> bin'
-  '~/wallpapers                             -> wallpapers'
 )
 
 declare -a TEMPLATE_LINKS=(
@@ -54,14 +57,9 @@ declare -a TEMPLATE_LINKS=(
 # CONSTANTS
 ################################################################################
 
-_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-readonly DIR="${_dir}"
-unset _dir
-
-_script=$(basename "${0}")
-readonly SCRIPT="${_script}"
-unset _script
-
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+SCRIPT=$(basename "${0}")
+OS="$(detect-os)"
 
 ################################################################################
 # MAIN
@@ -105,8 +103,16 @@ main() {
 
     created_links='false'
 
-    link_files
+    link_files "${FILES[@]}"
     link_templates
+
+    case "${OS}" in
+        'arch')
+            link_files "${FILES_ARCH[@]}"
+            ;;
+        *)
+            ;;
+    esac
 
     if [[ "${created_links}" == 'false' ]]; then
         echo "no changes required"
@@ -183,10 +189,12 @@ link_name() {
 # Sets up symlinks for each file in $FILES. If the destination directory
 # doesn't exist, it is created. If the destination file already exists,
 # no action is taken.
+#
+# $1: A bash array of files in 'link_name -> target' form.
 link_files() {
     local target
     local name
-    for mapping in "${FILES[@]}"; do
+    for mapping in "$@"; do
         target=$(link_target "${mapping}")
         name=$(link_name "${mapping}")
 
