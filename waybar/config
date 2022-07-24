@@ -23,7 +23,7 @@
     "format-muted": " mute",
     "on-scroll-up": "pamixer -d 1",
     "on-scroll-down": "pamixer -i 1",
-    "on-click": "pamixer -m",
+    "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
     "format-icons": {
       "default": [
         "",
