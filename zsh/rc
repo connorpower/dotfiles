@@ -37,10 +37,6 @@ SCM_DIR="${HOME}/scm"
 os=$(detect-os)
 export OS="${os}"
 
-#----------------------------------------------------------------- ssh-agent ---
-
-source "${ZSH_INCL}/ssh-agent.zsh"
-
 #--------------------------------------------------------------- zsh options ---
 
 export HISTFILE="${HOME}/.zsh_history"
