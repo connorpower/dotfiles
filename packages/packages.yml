@@ -52,17 +52,32 @@ packages:
     arch:
       # Base Dev Tools
       - base-devel
+      # Compositor & GUI
+      - libinput
+      - waybar
+      - wl-clipboard
       # General
       - perl-rename
+      - light
       - time
       - wget
+      - zathua-pdf-mupdf
       - ranger
       - python-pillow # required for ranger img preview in kitty
+      # Audio
+      - sof-firmware
+      - alsa-firmware
+      - alsa-ucm-conf
+      - alsa-utils
+      - pulseadio
+      - pamixer
       # Dev
       - github-cli
       - aws-cli
 
     arch-aur:
+      # Compositor
+      - hyprland-bin
       # Rice
       - pipes.sh
       - cbonsai
@@ -113,12 +128,13 @@ packages:
 
     # Arch official packages
     arch:
-      - alsa-utils
+      - signal-desktop
 
     # Arch AUR packages
     arch-aur:
       - 1password
       - 1password-cli
+      - tidal-hifi-bin
 
     # Homebrew packages
     darwin:
