@@ -43,6 +43,9 @@ return require('packer').startup(function(use)
   -- LSP completion source for nvim-cmp
   use 'hrsh7th/cmp-nvim-lsp'
 
+  -- Tree-like view for LSP Symbols
+  use 'simrat39/symbols-outline.nvim'
+
   --------------------------------------------------------------------- Rust ---
 
   -- file detection, syntax highlighting, formatting
