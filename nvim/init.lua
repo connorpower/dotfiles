@@ -84,15 +84,7 @@ vim.g.NERDTreeWinPos = 'right'
 
 require('lspconfig').rust_analyzer.setup({})
 
-require('rust-tools').setup({
-    tools = {
-        autoSetHints = true,
-        hover_with_actions = true,
-        inlay_hints = {
-            show_parameter_hints = true,
-        },
-    },
-})
+require('rust-tools').setup()
 
 vim.g.rustfmt_autosave = 1
 
