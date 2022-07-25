@@ -136,7 +136,7 @@ cmp.setup({
     ['<up>'] = cmp.mapping.select_prev_item(),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
-    ['<Tab>'] = cmp.mapping.confirm({ select = true })
+    ['<CR>'] = cmp.mapping.confirm({ select = true })
   },
 
   -- disable in comments
