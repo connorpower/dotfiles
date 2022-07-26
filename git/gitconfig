@@ -1,3 +1,5 @@
+# vim: set ft=gitconfig: set syntax=on:
+
 [credential]
     helper = osxkeychain
 [core]
