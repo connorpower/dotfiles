@@ -60,7 +60,7 @@ packages:
       # General
       - perl-rename
       - light
-      - time
+      - timew
       - wget
       - zathua-pdf-mupdf
       - ranger
