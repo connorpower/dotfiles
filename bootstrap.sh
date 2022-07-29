@@ -47,6 +47,8 @@ declare -a FILES_ARCH=(
   "${HOME}/.config/waybar/config                  -> waybar/config"
   "${HOME}/.config/waybar/style.css               -> waybar/style.css"
   "${HOME}/.config/swaylock/config                -> swaylock/config"
+  "${HOME}/.config/rofi/config.rasi               -> rofi/config.rasi"
+  "${HOME}/.config/rofi/catppuccin-mocha.rasi     -> rofi/catppuccin-mocha.rasi"
   "${HOME}/.config/systemd/user/dropbox.service   -> systemd/dropbox.service"
   "${HOME}/.config/systemd/user/ssh-agent.service -> systemd/ssh-agent.service"
 )

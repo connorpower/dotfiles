@@ -66,6 +66,8 @@ packages:
       - zathua-pdf-mupdf
       - ranger
       - python-pillow # required for ranger img preview in kitty
+      - rofi
+      - rofi-calc
       # Audio
       - sof-firmware
       - alsa-firmware
