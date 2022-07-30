@@ -58,6 +58,7 @@ packages:
       - wl-clipboard
       - swaylock
       # General
+      - pacman-contrib
       - perl-rename
       - light
       - timew
