@@ -136,9 +136,12 @@ packages:
 
     # Arch AUR packages
     arch-aur:
+      # General
       - 1password
       - 1password-cli
       - tidal-hifi-bin
+      # Rice
+      - cava
 
     # Homebrew packages
     darwin:
