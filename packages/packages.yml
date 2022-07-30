@@ -82,9 +82,6 @@ packages:
     arch-aur:
       # Compositor
       - hyprland-bin
-      # Rice
-      - pipes.sh
-      - cbonsai
       # Fonts
       - ttf-recursive
 
@@ -142,6 +139,8 @@ packages:
       - tidal-hifi-bin
       # Rice
       - cava
+      - pipes.sh
+      - cbonsai
 
     # Homebrew packages
     darwin:
