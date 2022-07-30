@@ -1,16 +1,14 @@
 configuration {
-    modi: "run,drun,calc";
-    icon-theme: "Oranchelo";
-    show-icons: true;
+    modi: "run";
+    show-icons: false;
     terminal: "kitty";
-    drun-display-format: "{icon} {name}";
     location: 0;
     disable-history: false;
     hide-scrollbar: true;
-    display-drun: "   Apps ";
     display-run: "   Run ";
-    display-calc: "   Calc ";
-    sidebar-mode: true;
+    matching: "fuzzy";
+    steal-focus: true;
 }
 
 @theme "catppuccin-mocha"
+

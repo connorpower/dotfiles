@@ -1,3 +1,4 @@
+/* vim: set ft=css: */
 * {
   bg-col: #1E1E2E;
   bg-col-light: #1E1E2E;
