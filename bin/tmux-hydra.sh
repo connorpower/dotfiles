@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 tmux new-window -n 'HyDRA' \; \
-  send-keys "cd '${HOME}/Developer/ditto/ditto/hydra'" C-m \; \
+  send-keys "cd '${HOME}/scm/ditto/ditto/hydra'" C-m \; \
   split-window -h -p 25 \; \
   send-keys 'zookeeper-server-start /usr/local/etc/zookeeper/zoo.cfg' C-m \; \
   split-window -v -p 50 \; \
