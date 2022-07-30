@@ -95,13 +95,20 @@ export pdev="${SCM_DIR}/personal"
 export pno="${SCM_DIR}/personal/notes/personal"
 export fno="${SCM_DIR}/personal/notes/family"
 
-#--------------------------------------------------- preview & fuzzy finding ---
+#---------------------------------------------------------------------- bat ---
 
 # Plain bat - useful when copy pasting from a file with the mouse
 alias pbat='bat --style plain'
 
 # Modern alternative to du, but print in intuitive order
 alias dust='dust -r'
+
+#----------------------------------------------------------------------- fzf ---
+
+FZF_BG='--color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8'
+FZF_FG='--color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc'
+FZF_MK='--color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8'
+export FZF_DEFAULT_OPTS="${FZF_BG} ${FZF_FG} ${FZF_MK}"
 
 # Fuzzy find files, respecting any `.gitignore`s and preview with bat
 alias fdz='fd --type f | fzf --preview "bat --color=always {}"'
