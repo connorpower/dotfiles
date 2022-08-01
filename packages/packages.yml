@@ -72,6 +72,8 @@ packages:
       - waybar
       - wl-clipboard
       - swaylock
+      - gnome-themes-extra
+      - gnome-tweaks
       # General
       - ttf-nerd-fonts-symbols # for starship
       - pacman-contrib
