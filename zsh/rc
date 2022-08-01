@@ -95,6 +95,8 @@ export pdev="${SCM_DIR}/personal"
 export pno="${SCM_DIR}/personal/notes/personal"
 export fno="${SCM_DIR}/personal/notes/family"
 
+export fr="${HOME}/Dropbox/Family Room/"
+
 #---------------------------------------------------------------------- bat ---
 
 # Plain bat - useful when copy pasting from a file with the mouse
