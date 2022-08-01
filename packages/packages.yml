@@ -50,14 +50,30 @@ packages:
       - neofetch
 
     arch:
-      # Base Dev Tools
+      # Base Tools
+      - git
       - base-devel
+      - neovim
+      - man-db
+      # Networking
+      - openssh
+      - nftables
+      - dhcpcd
+      # Hardware
+      - amd-ucode
+      - r8168
+      - iw
+      - netctl
+      - dialog
+      - wpa_supplicant
+      - openresolv
       # Compositor & GUI
       - libinput
       - waybar
       - wl-clipboard
       - swaylock
       # General
+      - ttf-nerd-fonts-symbols # for starship
       - pacman-contrib
       - perl-rename
       - light
@@ -75,6 +91,7 @@ packages:
       - pulseadio
       - pamixer
       # Dev
+      - gnu-netcat
       - github-cli
       - aws-cli
 
