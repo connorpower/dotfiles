@@ -1,0 +1,12 @@
+# No old backups
+/mnt/backup
+
+# No temporary files
+/tmp
+/proc
+/lost+found
+/sys
+
+# No pacman cache
+/var/cache/pacman/pkg/
+

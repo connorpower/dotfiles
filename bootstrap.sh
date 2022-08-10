@@ -18,8 +18,6 @@ set -euo pipefail
 #
 # The format is 'link name' -> 'destination' where destination is relative
 # to the dots folder.
-#
-# TODO: some files are only relvant for arch. Split into different lists
 declare -a FILES=(
   "${HOME}/.zshrc                                -> zsh/rc"
   "${HOME}/.config/zsh.d                         -> zsh/zsh.d"
@@ -45,16 +43,17 @@ declare -a FILES=(
 )
 
 declare -a FILES_ARCH=(
+  "${HOME}/.config/backup/exclude.txt             -> backup/exclude.txt"
   "${HOME}/.config/hypr/hyprland.conf             -> hyprland/hyprland.conf"
   "${HOME}/.config/waybar/config                  -> waybar/config"
   "${HOME}/.config/waybar/style.css               -> waybar/style.css"
   "${HOME}/.config/swaylock/config                -> swaylock/config"
+  "${HOME}/.config/cava/config                    -> cava/config"
   "${HOME}/.config/rofi/config.rasi               -> rofi/config.rasi"
   "${HOME}/.config/rofi/catppuccin-mocha.rasi     -> rofi/catppuccin-mocha.rasi"
   "${HOME}/.config/gtk-3.0/settings.ini           -> gtk/gtk-3.0/settings.ini"
   "${HOME}/.config/gtk-4.0/settings.ini           -> gtk/gtk-4.0/settings.ini"
   "${HOME}/.config/systemd/user/dropbox.service   -> systemd/dropbox.service"
-  "${HOME}/.config/cava/config                    -> cava/config"
   "${HOME}/.config/systemd/user/ssh-agent.service -> systemd/ssh-agent.service"
 )
 
