@@ -1,0 +1,115 @@
+#!/bin/bash
+#
+# DESCRIPTION
+#     Full system linux backup with tar.
+
+
+# Fail fast and fail early.
+#   - Abort script at first error
+#   - Attempts to use undefined variable outputs error message and exits
+#   - Pipelines return the exit status of the last command in the pipe to fail
+set -euo pipefail
+
+
+###############################################################################
+## Constants
+###############################################################################
+
+SCRIPT=$(basename "${0}")
+
+BACKDEST=/mnt/backup
+HOST=$(cat /etc/hostname)
+DISTRO=arch
+TYPE=full
+DATE=$(date "+%F")
+BACKUPFILE="${BACKDEST}/${DISTRO}-${HOST}-${TYPE}-${DATE}.tar.gz"
+
+USER=connor
+EXCLUDE_FILE="/home/${USER}/.config/backup/exclude.txt"
+
+###############################################################################
+## Main Function
+###############################################################################
+
+main() {
+    if [[ $# -gt 0 ]]; then
+        if [[ "${1}" = "help" ]] || [[ "${1}" = "--help" ]]; then
+            long_usage
+            exit 0
+        fi
+    fi
+
+    while getopts ":h" o; do
+        case "${o}" in
+            h)
+                long_usage
+                exit 0
+                ;;
+            *)
+                short_usage
+                exit 1
+                ;;
+        esac
+    done
+    shift $((OPTIND-1))
+
+    backup
+}
+
+###############################################################################
+## Functions
+###############################################################################
+
+short_usage() {
+    echo "Usage: ${SCRIPT} [-h|--help]"
+}
+
+long_usage() {
+    short_usage
+    echo ""
+    echo "'${SCRIPT}' creates a full system backup using tar. An exclude file at"
+    echo "'${EXCLUDE_FILE}' defines the locations which"
+    echo "should not be backed up. You should first boot from a live USB and"
+    echo "execute this script after you have chrooted and mounted all your"
+    echo "partitions which you want to backup."
+    echo ""
+    echo "    Options:"
+    echo "        --help | -h"
+    echo "            Prints this menu"
+}
+
+backup() {
+    echo -n "First chroot from a USB install. Are you ready to backup? (y/n): "
+    read -r confirm
+
+    if [[ ! -f "${EXCLUDE_FILE}" ]]; then
+        echo -n "No exclude file exists, continue? (y/n): "
+        read -r continue
+        if [[ "${continue}" == 'n' ]]; then
+            exit
+        fi
+    fi
+
+    if [ "${confirm}" = 'y' ]; then
+        # -p, --acls and --xattrs store all permissions, ACLs and extended
+        # attributes. Without both of these, many programs will stop working!
+        # Use bsdtar because GNU tar will not preserve extended attributes.
+        bsdtar \
+            --exclude-from="${EXCLUDE_FILE}" \
+            --acls \
+            --xattrs \
+            -cpvf \
+            "${BACKUPFILE}" \
+            /
+    fi
+}
+
+
+###############################################################################
+## Entry Point
+###############################################################################
+
+# The unusual syntax (versus `main "${@}"`) is a workaround for a bug in some
+# non-POSIX compliant versions of bash in which $@ is reported as unbound.
+main "${@:+$@}"
+
