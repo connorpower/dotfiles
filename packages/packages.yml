@@ -157,6 +157,7 @@ packages:
       - 1password
       - 1password-cli
       - tidal-hifi-bin
+      - tasksh
       # Rice
       - cava
       - pipes.sh
@@ -164,7 +165,9 @@ packages:
 
     # Homebrew packages
     darwin:
+      # General
       - dropbox
+      - tasksh
 
 
   # Ditto
