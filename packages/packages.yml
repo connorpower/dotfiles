@@ -67,6 +67,8 @@ packages:
       - dialog
       - wpa_supplicant
       - openresolv
+      - bluez
+      - bluez-utils
       # Compositor & GUI
       - libinput
       - waybar
@@ -85,6 +87,7 @@ packages:
       - ranger
       - python-pillow # required for ranger img preview in kitty
       - libqalculate
+      - gimp
       # Audio
       - sof-firmware
       - alsa-firmware
