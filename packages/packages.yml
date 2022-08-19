@@ -153,6 +153,7 @@ packages:
     # Arch official packages
     arch:
       - signal-desktop
+      - pdftk
 
     # Arch AUR packages
     arch-aur:
