@@ -96,6 +96,7 @@ export pno="${SCM_DIR}/personal/notes/personal"
 export fno="${SCM_DIR}/personal/notes/family"
 
 export fr="${HOME}/Dropbox/Family Room/"
+export ex="${HOME}/Dropbox/Family Room/Financials/Business/Outgoings/Expenses"
 
 #---------------------------------------------------------------------- bat ---
 
