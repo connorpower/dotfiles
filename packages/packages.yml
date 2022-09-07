@@ -155,6 +155,7 @@ packages:
       - signal-desktop
       - pdftk
       - nodejs
+      - npm
 
     # Arch AUR packages
     arch-aur:
