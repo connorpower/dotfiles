@@ -139,12 +139,14 @@ cmp.setup({
     ['<CR>'] = cmp.mapping.confirm({ select = true })
   },
 
+  complection = {
+    completeopt = 'menu,menuone,noinsert'
+  },
   -- disable in comments
   enabled = function()
     local ctx = require('cmp.config.context')
     return not ctx.in_syntax_group("Comment")
   end,
-
   -- Installed sources
   sources = {
     { name = 'nvim_lsp' },
