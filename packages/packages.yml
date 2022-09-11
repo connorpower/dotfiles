@@ -76,8 +76,6 @@ packages:
       - swaylock
       - gnome-themes-extra
       - gnome-tweaks
-      - grim
-      - slurp
       # General
       - ttf-nerd-fonts-symbols # for starship
       - pacman-contrib
@@ -90,6 +88,9 @@ packages:
       - python-pillow # required for ranger img preview in kitty
       - libqalculate
       - gimp
+      - grim
+      - slurp
+      - drawio-desktop-bin
       # Audio
       - sof-firmware
       - alsa-firmware
