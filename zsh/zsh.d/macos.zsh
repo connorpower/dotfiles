@@ -14,3 +14,6 @@ function mon() {
     ddcctl -d 1 -b "${1}" > /dev/null
 }
 
+function shot() {
+    screencapture -i
+}

@@ -15,3 +15,6 @@ function hibernate() {
     sudo systemctl hibernate
 }
 
+function shot() {
+    grim -g "$(slurp)" "${HOME}/Desktop/$(date_iso_8601).png"
+}

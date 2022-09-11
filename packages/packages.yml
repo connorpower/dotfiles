@@ -76,6 +76,8 @@ packages:
       - swaylock
       - gnome-themes-extra
       - gnome-tweaks
+      - grim
+      - slurp
       # General
       - ttf-nerd-fonts-symbols # for starship
       - pacman-contrib
