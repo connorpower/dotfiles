@@ -130,6 +130,12 @@ function rgz() {
         --preview-window 'up,60%,border-bottom,+{2}+3/3,~3'
 }
 
+#------------------------------------------------------- time & task warrior ---
+
+function timew-branch() {
+    timew track "$(git branch --show-current | sed 's;^.*/;;')"
+}
+
 #------------------------------------------------------------- fish features ---
 
 # Must come at end of zshrc
