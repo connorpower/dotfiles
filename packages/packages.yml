@@ -91,6 +91,7 @@ packages:
       - grim
       - slurp
       - drawio-desktop-bin
+      - unzip
       # Audio
       - sof-firmware
       - alsa-firmware
