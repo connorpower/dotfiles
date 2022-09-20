@@ -101,7 +101,6 @@ packages:
       # Dev
       - gnu-netcat
       - github-cli
-      - aws-cli
 
     arch-aur:
       # Compositor
