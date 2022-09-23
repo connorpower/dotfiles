@@ -1,5 +1,8 @@
 source "${HOME}/.config/zsh.d/linux.zsh"
 
+# Fix cursor size in QT apps
+export XCURSOR_SIZE=24
+
 alias kboff='light -S 0 -s sysfs/leds/tpacpi::kbd_backlight'
 alias kbon='light -S 50 -s sysfs/leds/tpacpi::kbd_backlight'
 
