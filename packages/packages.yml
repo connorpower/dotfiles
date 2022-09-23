@@ -108,6 +108,7 @@ packages:
       - hyprland-bin
       # General
       - rofi-lbonn-wayland
+      - hyprpicker-git
       # Fonts
       - ttf-recursive
 
