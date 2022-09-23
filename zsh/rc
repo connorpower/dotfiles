@@ -53,8 +53,10 @@ setopt hist_save_no_dups
 
 #--------------------------------------------------------------- completions ---
 
-autoload -Uz compinit
-compinit
+autoload bashcompinit && bashcompinit
+autoload -Uz compinit && compinit
+
+complete -C '/usr/local/bin/aws_completer' aws
 
 #-------------------------------------------------------------------- prompt ---
 
