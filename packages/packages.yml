@@ -86,8 +86,8 @@ packages:
       - zathua-pdf-mupdf
       - ranger
       - python-pillow # required for ranger img preview in kitty
-      - libqalculate
       - gimp
+      - eva
       - grim
       - slurp
       - drawio-desktop-bin
