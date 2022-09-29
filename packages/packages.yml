@@ -31,6 +31,7 @@ packages:
       - viu
       - fd
       - fzf
+      - eva
       # Dev
       - rust-analyzer
       - doxygen
@@ -87,7 +88,6 @@ packages:
       - ranger
       - python-pillow # required for ranger img preview in kitty
       - gimp
-      - eva
       - grim
       - slurp
       - drawio-desktop-bin
