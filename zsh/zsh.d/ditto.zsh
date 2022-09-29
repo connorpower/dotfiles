@@ -33,6 +33,6 @@ fi
 #----------------------------------------------------------------- Aliases ---
 
 export ddev="${SCM_DIR}/ditto/ditto"
-export dno="${SCM_DIR}/personal/notes/ditto"
+export dno="${HOME}/Ditto/notes"
 export repl="${SCM_DIR}/ditto/ditto/core/replication"
 
