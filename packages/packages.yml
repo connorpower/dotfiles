@@ -92,6 +92,7 @@ packages:
       - slurp
       - drawio-desktop-bin
       - unzip
+      - shotwell
       # Audio
       - sof-firmware
       - alsa-firmware
