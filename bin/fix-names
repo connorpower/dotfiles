@@ -1,0 +1,6 @@
+#!/bin/bash
+
+perl-rename 's/ - /__/g' *
+perl-rename 'y/ /-/' *
+perl-rename 'y/A-Z/a-z/' *
+perl-rename 's/[(),]//g' *
