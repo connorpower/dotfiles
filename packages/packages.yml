@@ -31,7 +31,7 @@ packages:
       - viu
       - fd
       - fzf
-      - eva
+      - calc
       # Dev
       - rust-analyzer
       - doxygen
