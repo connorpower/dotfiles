@@ -4,3 +4,4 @@ perl-rename 's/ - /__/g' *
 perl-rename 'y/ /-/' *
 perl-rename 'y/A-Z/a-z/' *
 perl-rename 's/[(),]//g' *
+perl-rename 's/([0-9]+)\.([0-9]+)\.([0-9]+)/--/' *
