@@ -26,6 +26,7 @@ declare -a FILES=(
   "${HOME}/.tigrc                                -> git/tigrc"
   "${HOME}/.config/nvim/init.lua                 -> nvim/init.lua"
   "${HOME}/.config/nvim/lua/plugins.lua          -> nvim/plugins.lua"
+  "${HOME}/.config/nvim/spell/en.utf-8.add       -> spelling/en.utf-8.add"
   "${HOME}/.tmux.conf                            -> tmux/tmux.conf"
   "${HOME}/.config/kitty/kitty.conf              -> tty/kitty.conf"
   "${HOME}/.config/kitty/themes/catppuccin.conf  -> tty/kitty-catppuccin.conf"
