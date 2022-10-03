@@ -97,8 +97,8 @@ export pdev="${SCM_DIR}/personal"
 export pno="${SCM_DIR}/personal/notes/personal"
 export fno="${SCM_DIR}/personal/notes/family"
 
-export ib="${HOME}/Dropbox/inbox/"
 export fr="${HOME}/Dropbox/Family Room/"
+export ib="${fr}/inbox/"
 export ex="${HOME}/Dropbox/Family Room/financials/business/outgoings/expenses"
 
 #---------------------------------------------------------------------- bat ---
