@@ -21,3 +21,5 @@ function hibernate() {
 function shot() {
     grim -g "$(slurp)" "${HOME}/Desktop/$(date_iso_8601).png"
 }
+
+alias zth='zathura'
