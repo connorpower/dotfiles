@@ -98,6 +98,7 @@ packages:
       - alsa-firmware
       - alsa-ucm-conf
       - alsa-utils
+      - pulseaudio-bluetooth
       - pulseadio
       - pamixer
       # Dev
