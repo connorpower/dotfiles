@@ -14,6 +14,10 @@ export DITTO_LICENSE="${license}"
 
 export KAFKA_BOOTSTRAP_HOST=localhost:9092
 
+#----------------------------------------------------------------------- Nix ---
+
+eval "$(direnv hook zsh)"
+
 #------------------------------------------------------------- SDK/FFI Tools ---
 
 path_append "${HOME}/.dotnet/tools"
