@@ -38,6 +38,8 @@ if [[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ]]; then
     source "/usr/local/opt/nvm/etc/bash_completion.d/nvm"
 fi
 
+alias rmddata='rm -rf target/debug/ditto_data'
+
 #----------------------------------------------------------------- Aliases ---
 
 export ddev="${SCM_DIR}/ditto/ditto"
