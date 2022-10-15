@@ -75,9 +75,9 @@ function bootstrap() {
             if ! command -v brew &> /dev/null; then
                 ${dry_run} /bin/bash -c \
                     "$(${dry_run} curl \
-                        --proto='https' \
+                        --proto '=https' \
                         --tlsv1.2 \
-                        -fsSL \
+                        -sSf \
                         https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh \
                     )"
             fi
@@ -109,9 +109,9 @@ function bootstrap() {
     if ! command -v rustup &> /dev/null; then
         ${dry_run} /bin/bash -c \
             "$(${dry_run} curl \
-                --proto='https' \
+                --proto '=https' \
                 --tlsv1.2 \
-                -fsSL https://sh.rustup.rs \
+                -sSf https://sh.rustup.rs \
             )"
     fi
 
