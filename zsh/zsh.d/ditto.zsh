@@ -9,8 +9,12 @@ ulimit -n 4096
 
 export QUAY_USER='connorpowerditto'
 
-license=$(cat ~/.ditto/license)
-export DITTO_LICENSE="${license}"
+if [[ -f ~/.ditto/license ]]; then
+    license=$(cat ~/.ditto/license)
+    export DITTO_LICENSE="${license}"
+else
+    echo "WARNING: Add a ditto test license to ~/.ditto/license"
+fi
 
 export KAFKA_BOOTSTRAP_HOST=localhost:9092
 
