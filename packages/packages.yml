@@ -106,7 +106,7 @@ packages:
 
     arch-aur:
       # Compositor
-      - hyprland
+      - hyprland-git
       # General
       - rofi-lbonn-wayland
       - hyprpicker-git
