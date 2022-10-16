@@ -122,6 +122,7 @@ packages:
       - rename
       - timewarrior
       - ddcctl
+      - gnu-tar
       # Rice
       - pipes-sh
       # Dev
