@@ -83,6 +83,7 @@ function bootstrap() {
             fi
 
             pkg_install yq
+            brew tap homebrew/cask-fonts
             ;;
         'arch')
             ${dry_run} sudo pacman -Syy
