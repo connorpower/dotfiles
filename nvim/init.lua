@@ -165,6 +165,17 @@ vim.g.vim_markdown_new_list_item_indent = 0
 if os.getenv("TERM") ~= 'linux' then
     -- only set colorsheme if term is likely to have 256 color
     vim.g.catppuccin_flavour = 'mocha'
+    local colors = require("catppuccin.palettes").get_palette()
+    require("catppuccin").setup({
+        custom_highlights = {
+            Statement = { fg = colors.green },
+            Function = { fg = colors.blue },
+            Special = { fg = colors.surface2 },
+            PreProc = { fg = colors.peach },
+            Include = { fg = colors.rosewater },
+            Type = { fg = colors.blue },
+        }
+    })
     vim.cmd [[colorscheme catppuccin]]
 end
 
