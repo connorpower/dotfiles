@@ -139,7 +139,7 @@ packages:
       - bartender
       - tidal
       - obsidian
-      # - selfcontrol # wait for a block to end before switching to homebrew
+      - selfcontrol
       - sensiblesidebuttons
       - signal
 
