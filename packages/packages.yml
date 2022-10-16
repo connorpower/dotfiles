@@ -43,7 +43,6 @@ packages:
       - llvm
       - cmake
       - terraform
-      - shellcheck
       - git-delta
       # Rice
       - calcurse
