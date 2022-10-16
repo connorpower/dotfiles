@@ -23,9 +23,9 @@ export KAFKA_BOOTSTRAP_HOST=localhost:9092
 
 #-------------------------------------------------------- SDK Language Tools ---
 
-path_append "${HOME}/.dotnet/tools"
-
-eval "$(rbenv init -)"
+# Managed with nix now
+#path_append "${HOME}/.dotnet/tools"
+# eval "$(rbenv init -)"
 
 export NVM_DIR="$HOME/.nvm"
 if [[ -s "/usr/local/opt/nvm/nvm.sh" ]]; then

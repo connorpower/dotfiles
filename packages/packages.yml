@@ -195,17 +195,18 @@ packages:
       - lastpass
       - drawio
       - cocoapods
-      - fastlane
       - rbenv
       - ruby
       - sourcekitten
-      - swiftlint
-      - jenv
-      - openjdk
-      - openjdk@11
-      - swig
-      - kafka
-      - zookeeper
+      - fastlane
       - nvm
-      - dotnet-sdk
+      - swiftlint
+        # Confirm whether nix is handling these now
+        #- jenv
+        #- openjdk
+        #- openjdk@11
+        #- swig
+        #- kafka
+        #- zookeeper
+        #- dotnet-sdk
 
