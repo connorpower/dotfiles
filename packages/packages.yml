@@ -123,6 +123,7 @@ packages:
       - timewarrior
       - ddcctl
       - gnu-tar
+      - gpg-suite
       # Rice
       - pipes-sh
       # Dev
