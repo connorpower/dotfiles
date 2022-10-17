@@ -1,6 +1,7 @@
 vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function(use)
+
   ------------------------------------------------------------ nvim, general ---
 
   -- nvim package management
@@ -17,6 +18,11 @@ return require('packer').startup(function(use)
 
   -- Useful buffer completions
   use 'hrsh7th/cmp-buffer'
+
+  use({
+       'nvim-treesitter/nvim-treesitter',
+       run = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
+  })
 
   ---------------------------------------------------------------------- git ---
 

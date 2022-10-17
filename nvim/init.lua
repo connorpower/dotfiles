@@ -76,6 +76,18 @@ end
 -- Load plugins defined in separate file
 require('plugins')
 
+----------------------------------------------------------------- Treesitter ---
+
+require'nvim-treesitter.configs'.setup({
+  ensure_installed = { "c", "lua", "rust" },
+  sync_install = true,
+  auto_install = false,
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = false,
+  },
+})
+
 ------------------------------------------------------------- NERDTree setup ---
 
 vim.g.NERDTreeWinPos = 'right'
@@ -163,25 +175,20 @@ vim.g.vim_markdown_new_list_item_indent = 0
 --------------------------------------------------------------- color scheme ---
 
 if os.getenv("TERM") ~= 'linux' then
-    -- only set colorsheme if term is likely to have 256 color
-    vim.g.catppuccin_flavour = 'mocha'
-    local colors = require("catppuccin.palettes").get_palette()
-    require("catppuccin").setup({
-        custom_highlights = {
-            Statement = { fg = colors.green },
-            Function = { fg = colors.blue },
-            Special = { fg = colors.surface2 },
-            PreProc = { fg = colors.peach },
-            Include = { fg = colors.rosewater },
-            Type = { fg = colors.blue },
-        }
-    })
-    vim.cmd [[colorscheme catppuccin]]
+  -- only set colorsheme if term is likely to have 256 color
+  vim.g.catppuccin_flavour = 'mocha'
+  local colors = require("catppuccin.palettes").get_palette()
+  require("catppuccin").setup({
+    custom_highlights = {
+      ["@type"] = { fg = colors.flamingo },
+      ["@function.macro"] = { fg = colors.peach },
+    }
+  })
+  vim.cmd [[colorscheme catppuccin]]
 end
 
 ------------------------------------------------------------------ lightline ---
 
-vim.g.lightline = { colorscheme = 'catppuccin_mocha' }
 opt.showmode = false
 
 ------------------------------------------------------------------- gitsigns ---
