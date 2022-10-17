@@ -193,9 +193,6 @@ packages:
 
     # Homebrew packages
     darwin:
-      - slack
-      - lastpass
-      - drawio
       - cocoapods
       - rbenv
       - ruby
@@ -203,6 +200,11 @@ packages:
       - fastlane
       - nvm
       - swiftlint
+      - --cask tailscale
+      - --cask zoom
+      - --cask slack
+      - --cask lastpass
+      - --cask drawio
         # Confirm whether nix is handling these now
         #- jenv
         #- openjdk

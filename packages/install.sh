@@ -126,7 +126,8 @@ function bootstrap() {
 function pkg_install() {
     case "${OS}" in
         'darwin')
-            ${dry_run} brew install "${1}"
+            # Don't quote "$1" to allow parsing args like "--cask cask-name"
+            ${dry_run} brew install $1
             ;;
         'arch')
             if [[ "${2:-}" == 'arch-aur' ]]; then
@@ -148,21 +149,21 @@ function cargo_install() {
 
 function install_all() {
     for category in "${cats[@]}"; do
-        for pkg in $(yq ".packages.${category} | [.universal, .${OS}] | .[][]" "${PACKAGE_LIST}"); do
+        while read -r pkg; do
             pkg_install "${pkg//\"/}"
-        done
+        done < <(yq ".packages.${category} | [.universal, .${OS}] | .[][]" "${PACKAGE_LIST}");
 
         # If we're on arch, also install AUR packages
         if [[ "${OS}" == 'arch' ]]; then
-            for pkg in $(yq ".packages.${category} | [.\"arch-aur\"] | .[][]" "${PACKAGE_LIST}"); do
+            while read -r pkg; do
                 pkg_install "${pkg//\"/}" 'arch-aur'
-            done
+            done < <(yq ".packages.${category} | [.\"arch-aur\"] | .[][]" "${PACKAGE_LIST}")
         fi
 
         # Install Rust cargo binaries
-        for pkg in $(yq ".packages.${category} | [.cargo] | .[][]" "${PACKAGE_LIST}"); do
+        while read -r pkg; do
             cargo_install "${pkg//\"/}"
-        done
+        done < <(yq ".packages.${category} | [.cargo] | .[][]" "${PACKAGE_LIST}")
     done
 }
 
