@@ -92,6 +92,7 @@ alias gitstats='git shortlog -sn'
 
 export dots="${SCM_DIR}/personal/dotfiles"
 
+export scm="${SCM_DIR}"
 export pdev="${SCM_DIR}/personal"
 
 export pno="${SCM_DIR}/personal/notes/personal"
