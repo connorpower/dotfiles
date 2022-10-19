@@ -2,7 +2,8 @@
 local opt = vim.opt
 local fn = vim.fn
 
-opt.clipboard = 'unnamedplus'
+opt.clipboard = 'unnamed', 'unnamedplus'
+opt.mouse = 'r'
 opt.termguicolors = true
 opt.syntax = 'on'
 opt.smartcase = true
