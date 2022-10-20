@@ -80,7 +80,7 @@ require('plugins')
 ----------------------------------------------------------------- Treesitter ---
 
 require'nvim-treesitter.configs'.setup({
-  ensure_installed = { "c", "lua", "rust" },
+  ensure_installed = { "c", "lua", "rust", "nix" },
   sync_install = true,
   auto_install = false,
   highlight = {
