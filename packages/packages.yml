@@ -205,6 +205,7 @@ packages:
       - --cask slack
       - --cask lastpass
       - --cask drawio
+      - --cask notion
         # Confirm whether nix is handling these now
         #- jenv
         #- openjdk
