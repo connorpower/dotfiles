@@ -1,0 +1,15 @@
+#!/bin/sh
+
+cd ~
+
+export _JAVA_AWT_WM_NONREPARENTING=1
+export XCURSOR_SIZE=24
+
+export XDG_CURRENT_DESKTOP=wlr
+
+if [[ -z "${DISPLAY}" ]] && [[ "$(tty)" = '/dev/tty1' ]]; then
+  exec Hyprland
+else
+  echo "DISPLAY not set or not on tty1"
+fi
+
