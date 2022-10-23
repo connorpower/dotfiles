@@ -1,11 +1,12 @@
 # No old backups
 /mnt/backup
 
-# No temporary files
+# No temporary or device files
 /tmp
 /proc
 /lost+found
 /sys
+/dev
 
 # No pacman cache
 /var/cache/pacman/pkg/
