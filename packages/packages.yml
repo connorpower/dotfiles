@@ -55,6 +55,7 @@ packages:
       - base-devel
       - neovim
       - man-db
+      - ntp
       # Networking
       - openssh
       - nftables
