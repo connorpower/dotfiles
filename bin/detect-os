@@ -13,6 +13,7 @@ set -euo pipefail
 
 declare -r OS_ARCH='arch'     # ArchLinux
 declare -r OS_WSL2='wsl2'     # Windows Subsystem for Linux
+declare -r OS_MSYS2='msys2'   # MSYS2
 declare -r OS_DARWIN='darwin' # macOS
 
 declare -r SCRIPT=$(basename "${0}")
@@ -59,6 +60,7 @@ long_usage() {
     echo "        - darwin"
     echo "        - arch"
     echo "        - wsl2"
+    echo "        - msys2"
     echo ""
     echo "    Options:"
     echo "        --help | -h"
@@ -70,6 +72,8 @@ detect() {
         echo $OS_DARWIN
     elif uname -r | grep --quiet 'arch'; then
         echo $OS_ARCH
+    elif [[ "${MSYSTEM}" == 'MSYS' ]]; then
+	echo $OS_MSYS2
     else
         echo 'Unknown OS' >&2
         exit 1

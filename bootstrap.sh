@@ -32,6 +32,7 @@ declare -a FILES=(
   "${HOME}/.config/kitty/themes/catppuccin.conf  -> tty/kitty-catppuccin.conf"
   "${HOME}/.config/kitty/arch.conf               -> tty/kitty-arch.conf"
   "${HOME}/.config/kitty/darwin.conf             -> tty/kitty-darwin.conf"
+  "${HOME}/.config/kitty/msys2.conf              -> tty/kitty-msys2.conf"
   "${HOME}/.cargo/config                         -> rust/cargo-config"
   "${HOME}/.config/bat/conifg                    -> bat/config"
   "${HOME}/.config/bat/themes/catppuccin.tmTheme -> bat/catppuccin.tmTheme"
