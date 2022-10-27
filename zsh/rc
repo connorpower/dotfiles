@@ -148,6 +148,8 @@ case "${OS}" in
         ;;
     'arch') ZSH_SHARE=/usr/share/zsh/plugins
         ;;
+    'msys2') ZSH_SHARE="${HOME}/.zsh"
+        ;;
 esac
 
 source "${ZSH_SHARE}/zsh-autosuggestions/zsh-autosuggestions.zsh"
