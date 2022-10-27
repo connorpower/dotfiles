@@ -62,10 +62,25 @@ complete -C '/usr/local/bin/aws_completer' aws
 
 eval "$(starship init zsh)"
 
+#--------------------------------------------------------------- quick jumps ---
+
+export dots="${SCM_DIR}/personal/dotfiles"
+
+export scm="${SCM_DIR}"
+export pdev="${SCM_DIR}/personal"
+
+export pno="${SCM_DIR}/personal/notes/personal"
+export fno="${SCM_DIR}/personal/notes/family"
+
+export fr="${HOME}/Dropbox/Family Room/"
+export ib="${fr}/inbox/"
+export ex="${HOME}/Dropbox/Family Room/financials/business/outgoings/expenses"
+
 #------------------------------------------------------------------ includes ---
 
 if [[ "${OS}" == 'darwin' ]]; then source "${ZSH_INCL}/macos.zsh"; fi
 if [[ "${OS}" == 'arch'   ]]; then source "${ZSH_INCL}/arch.zsh";  fi
+if [[ "${OS}" == 'msys2'  ]]; then source "${ZSH_INCL}/msys2.zsh"; fi
 
 # touch ~/.config/zsh.d/enable-ditto to trigger loading Ditto env
 if [[ -f "${ZSH_INCL}/enable-ditto" ]]; then source "${ZSH_INCL}/ditto.zsh"; fi
@@ -87,20 +102,6 @@ export GPG_TTY="${gpg_tty}"
 
 alias gs='git status'
 alias gitstats='git shortlog -sn'
-
-#--------------------------------------------------------------- quick jumps ---
-
-export dots="${SCM_DIR}/personal/dotfiles"
-
-export scm="${SCM_DIR}"
-export pdev="${SCM_DIR}/personal"
-
-export pno="${SCM_DIR}/personal/notes/personal"
-export fno="${SCM_DIR}/personal/notes/family"
-
-export fr="${HOME}/Dropbox/Family Room/"
-export ib="${fr}/inbox/"
-export ex="${HOME}/Dropbox/Family Room/financials/business/outgoings/expenses"
 
 #---------------------------------------------------------------------- bat ---
 
