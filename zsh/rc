@@ -154,3 +154,8 @@ esac
 
 source "${ZSH_SHARE}/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "${ZSH_SHARE}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+# tmp winds up set on MYSYS2 which when case insensitive is interpreted as the
+# env var containing the system temp directory (TMP), which then causes some
+# downstream failures (eg. rust compiler).
+unset tmp
