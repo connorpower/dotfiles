@@ -5,7 +5,7 @@
 [core]
     pager = delta
     editor = nvim
-    excludesfile = /Users/connor/.gitignore_global
+    excludesfile = ~/.gitignore_global
     whitespace = trailing-space,space-before-tab,blank-at-eol
     precomposeunicode = true
 [interactive]
