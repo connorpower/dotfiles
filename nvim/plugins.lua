@@ -24,6 +24,9 @@ return require('packer').startup(function(use)
        run = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
   })
 
+  -- Always issue commands from the root of a repo
+  use 'airblade/vim-rooter'
+
   ---------------------------------------------------------------------- git ---
 
   -- git status gutter
