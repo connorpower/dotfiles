@@ -183,6 +183,8 @@ if os.getenv("TERM") ~= 'linux' then
   local colors = require("catppuccin.palettes").get_palette()
   require("catppuccin").setup({
     custom_highlights = {
+      -- Disable italic display for comments
+      Comment = { fg = colors.surface2, style = { } },
       ["@type"] = { fg = colors.flamingo },
       ["@function.macro"] = { fg = colors.peach },
     }
