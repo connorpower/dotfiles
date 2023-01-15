@@ -1,5 +1,13 @@
--- Setup global options
+-- TODOs
+-- set leader to space
+-- configure double space to switch to last file/buffers
+-- set up fzf shortcuts for files, and active buffers
+-- use NCM2 for autocomplete
+-- install vim-highlightedyank
+-- test vim-rooter
+--
 
+-- Setup global options
 vim.g.mapleader = " "
 
 local opt = vim.opt
