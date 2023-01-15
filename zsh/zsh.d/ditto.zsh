@@ -20,6 +20,22 @@ else
     echo "WARNING: Add a ditto test license to ~/.ditto/license"
 fi
 
+#------------------------------------------------------------------ iOS Tools---
+
+function get_booted_sim_id() {
+    xcrun simctl list \
+        | grep Booted \
+        | sed -E 's/[a-zA-Z0-9 ]+\(([^\)]*)\).*/\1/'
+}
+
+function get_sim_data_dir() {
+    xcrun simctl \
+        get_app_container \
+        "$(get_booted_sim_id)" \
+        'live.ditto.DittoCarsApp' \
+        data
+}
+
 #--------------------------------------------------------------------- HyDRA ---
 
 export QUAY_USER='connorpowerditto'
