@@ -19,7 +19,6 @@ fi
 #--------------------------------------------------------------------- HyDRA ---
 
 export QUAY_USER='connorpowerditto'
-export KAFKA_BOOTSTRAP_HOST=localhost:9092
 
 #-------------------------------------------------------- SDK Language Tools ---
 
