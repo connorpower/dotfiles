@@ -123,7 +123,8 @@ function bootstrap() {
 # Arguments
 # $1: package name (required)
 # $2: repo info (optional, eg 'aur' on arch)
-function pkg_install() {
+function pkg_install() (
+    echo "installing ${1}..."
     case "${OS}" in
         'darwin')
             # Don't quote "$1" to allow parsing args like "--cask cask-name"
@@ -141,7 +142,7 @@ function pkg_install() {
             exit 1 # unreachable
             ;;
     esac
-}
+)
 
 function cargo_install() {
     ${dry_run} cargo install --locked "${1}"
@@ -150,19 +151,19 @@ function cargo_install() {
 function install_all() {
     for category in "${cats[@]}"; do
         while read -r pkg; do
-            pkg_install "${pkg//\"/}"
+            (pkg_install "${pkg//\"/}")
         done < <(yq ".packages.${category} | [.universal, .${OS}] | .[][]" "${PACKAGE_LIST}");
 
         # If we're on arch, also install AUR packages
         if [[ "${OS}" == 'arch' ]]; then
             while read -r pkg; do
-                pkg_install "${pkg//\"/}" 'arch-aur'
+                (pkg_install "${pkg//\"/}" 'arch-aur')
             done < <(yq ".packages.${category} | [.\"arch-aur\"] | .[][]" "${PACKAGE_LIST}")
         fi
 
         # Install Rust cargo binaries
         while read -r pkg; do
-            cargo_install "${pkg//\"/}"
+            (cargo_install "${pkg//\"/}")
         done < <(yq ".packages.${category} | [.cargo] | .[][]" "${PACKAGE_LIST}")
     done
 }
