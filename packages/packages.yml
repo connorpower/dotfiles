@@ -15,7 +15,7 @@ packages:
       - neovim
       - bat
       - bat-extras
-      - exa
+      - eza
       - bottom
       - ripgrep
       - starship
