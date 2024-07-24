@@ -30,6 +30,7 @@
     branch = auto
     ui = auto
 [push]
+    autoSetupRemote = true
     default = upstream
 [pull]
     default = current
