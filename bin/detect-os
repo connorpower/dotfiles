@@ -12,7 +12,7 @@ set -euo pipefail
 ###############################################################################
 
 declare -r OS_ARCH='arch'     # ArchLinux
-declare -r OS_WSL2='wsl2'     # Windows Subsystem for Linux
+declare -r OS_DEBIAN='debian' # Debian Linux
 declare -r OS_MSYS2='msys2'   # MSYS2
 declare -r OS_DARWIN='darwin' # macOS
 
@@ -59,7 +59,7 @@ long_usage() {
     echo "    Values:"
     echo "        - darwin"
     echo "        - arch"
-    echo "        - wsl2"
+    echo "        - debian"
     echo "        - msys2"
     echo ""
     echo "    Options:"
@@ -72,8 +72,10 @@ detect() {
         echo $OS_DARWIN
     elif uname -r | grep --quiet 'arch'; then
         echo $OS_ARCH
-    elif [[ "${MSYSTEM}" == 'MSYS' ]]; then
+    elif [[ "${MSYSTEM-}" == 'MSYS' ]]; then
 	echo $OS_MSYS2
+    elif [[ "$(lsb_release -i 2> /dev/null | sed 's/:\t/:/' | cut -d ':' -f 2-)" == 'Ubuntu' ]]; then
+	echo $OS_DEBIAN
     else
         echo 'Unknown OS' >&2
         exit 1
@@ -86,5 +88,5 @@ detect() {
 
 # The unusual syntax (versus `main "${@}"`) is a workaround for a bug in some
 # non-POSIX compliant versions of bash in which $@ is reported as unbound.
-main "${@:+$@}"
+main git@github.com:connorpower/dotfiles.git"${@:+$@}"
 

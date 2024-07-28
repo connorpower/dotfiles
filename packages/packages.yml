@@ -8,32 +8,30 @@ packages:
     # Packages to be installed with cargo
     cargo:
       - bacon
+      - eza
+      - bat
+      - bottom
+      - ripgrep
+      - starship
+      - tealdeer
+      - du-dust
+      - viu
+      - fd-find
+      - cargo-update
+      - calc
+      - git-delta
 
     # Packages which have the same package name across all package managers
     universal:
       # General
       - neovim
-      - bat
-      - bat-extras
-      - eza
-      - bottom
-      - ripgrep
-      - starship
       - tmux
       - zsh-autosuggestions
       - zsh-syntax-highlighting
-      - kitty
-      - task
       - tig
-      - tealdeer
-      - dust
       - imagemagick
-      - viu
-      - fd
       - fzf
-      - calc
       # Dev
-      - rust-analyzer
       - doxygen
       - git
       - git-filter-repo
@@ -42,17 +40,18 @@ packages:
       - jq
       - llvm
       - cmake
-      - terraform
-      - git-delta
       # Rice
-      - calcurse
       - cmatrix
       - neofetch
+
+    debian:
+      - zsh
 
     arch:
       # Base Tools
       - git
       - base-devel
+      - bat-extras
       - neovim
       - man-db
       - ntp
@@ -118,12 +117,15 @@ packages:
       # Base Dev Tools
       - pkg-config
       # General
+      - rust-analyzer
+      - kitty
       - coreutils
+      - bat-extras
       - rename
-      - timewarrior
       - ddcctl
       - gnu-tar
       - gpg-suite
+      - terraform
       # Rice
       - pipes-sh
       # Dev
@@ -136,13 +138,9 @@ packages:
       - 1password
       - 1password-cli
       - firefox
-      - easy-move-plus-resize
       - moom
       - bartender
       - tidal
-      - obsidian
-      - selfcontrol
-      - sensiblesidebuttons
       - signal
 
 
@@ -155,7 +153,6 @@ packages:
     # Packages which have the same package name across all package managers
     universal:
       # Utils
-      - imapsync
       - youtube-dl
       - ffmpeg
 
@@ -183,7 +180,10 @@ packages:
       # General
       - dropbox
       - tasksh
+      - imapsync
 
+    # Debian packages
+    debian:
 
   # Ditto
   # --------

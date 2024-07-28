@@ -13,7 +13,7 @@ set -euo pipefail
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 SCRIPT=$(basename "${0}")
-OS="$(detect-os)"
+OS="$(${DIR}/../bin/detect-os)"
 PACKAGE_LIST="${DIR}/packages.yml"
 
 declare -a CATEGORIES=(
@@ -100,6 +100,15 @@ function bootstrap() {
                 ${dry_run} rm -rf /tmp/install-yay
             fi
             ;;
+	'debian')
+	    ${dry_run} sudo apt update
+	    ${dry_run} sudo apt upgrade
+            ${dry_run} sudo apt-get install -y build-essential
+            ${dry_run} sudo apt-get install -y cmake
+	    ${dry_run} sudo apt-get install -y libssl-dev
+	    ${dry_run} sudo apt-get install -y pkg-config
+	    ${dry_run} sudo snap install yq
+	    ;;
         *)
             echo 'Unknown OS' >&2
             print_usage
@@ -115,7 +124,6 @@ function bootstrap() {
                 -sSf https://sh.rustup.rs \
             )"
     fi
-
 }
 
 # Install a package with the os-specific package manager
@@ -138,6 +146,9 @@ function pkg_install() (
                 ${dry_run} sudo pacman --needed --noconfirm -S "${1}"
             fi
             ;;
+	'debian')
+	    ${dry_run} sudo apt-get install -y "${1}"
+	    ;;
         *)
             exit 1 # unreachable
             ;;
