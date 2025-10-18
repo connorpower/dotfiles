@@ -33,7 +33,7 @@ declare -a FILES=(
   "${HOME}/.config/kitty/arch.conf               -> tty/kitty-arch.conf"
   "${HOME}/.config/kitty/darwin.conf             -> tty/kitty-darwin.conf"
   "${HOME}/.config/kitty/msys2.conf              -> tty/kitty-msys2.conf"
-  "${HOME}/.cargo/config                         -> rust/cargo-config"
+  "${HOME}/.cargo/config.toml                    -> rust/cargo-config.toml"
   "${HOME}/.config/bat/config                    -> bat/config"
   "${HOME}/.config/bat/themes/catppuccin.tmTheme -> bat/catppuccin.tmTheme"
   "${HOME}/.config/starship.toml                 -> starship/starship.toml"
