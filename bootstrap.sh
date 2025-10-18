@@ -220,7 +220,11 @@ link_templates() {
 
         name=$(link_name "${mapping}")
 
-        make_link "${target}" "${name}"
+	if [ -f "${target}" ]; then
+            make_link "${target}" "${name}"
+	else
+	    echo "Skipping (doesn't exist): ${target}"
+	fi
     done
 }
 
