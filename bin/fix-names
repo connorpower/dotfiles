@@ -1,7 +1,98 @@
 #!/bin/bash
 
-perl-rename 's/ - /__/g' *
-perl-rename 'y/ /-/' *
-perl-rename 'y/A-Z/a-z/' *
-perl-rename 's/[(),]//g' *
-perl-rename 's/([0-9]+)\.([0-9]+)\.([0-9]+)/--/' *
+# Fail fast and fail early.
+#   - Abort script at first error
+#   - Attempts to use undefined variable outputs error message and exits
+#   - Pipelines return the exit status of the last command in the pipe to fail
+set -euo pipefail
+
+
+###############################################################################
+## Constants
+###############################################################################
+
+declare -r SCRIPT=$(basename "${0}")
+
+
+###############################################################################
+## Variables
+###############################################################################
+
+# Set to 'echo' when in dry run  mode
+DRY_RUN=''
+
+
+###############################################################################
+## Main Function
+###############################################################################
+
+main() {
+    if [[ $# -gt 0 ]]; then
+        if [[ "${1}" = "help" ]] || [[ "${1}" = "--help" ]]; then
+            long_usage
+            exit 0
+        fi
+    fi
+
+    while getopts ":hn" o; do
+        case "${o}" in
+            h)
+                long_usage
+                exit 0
+                ;;
+            n)
+                DRY_RUN=echo
+                ;;
+            *)
+                ;;
+        esac
+    done
+    shift $((OPTIND-1))
+
+    fix_names "$@"
+}
+
+###############################################################################
+## Functions
+###############################################################################
+
+long_usage() {
+    echo "${SCRIPT} fixes old linuxy file names from Dropbox"
+    echo ""
+    echo "    Usage:"
+    echo "        ${SCRIPT} *.pdf"
+    echo ""
+    echo "    Options:"
+    echo "        --help | -h"
+    echo "            Prints this menu"
+    echo "        -n"
+    echo "            No modifications (dry run)"
+}
+
+fix_names() {
+    for file in "$@"; do
+        newname="${file}"
+
+        # Apply transformations in sequence
+        # convert dashes to spaces
+        newname=$(echo "${newname}" | sed -E 's/([^0-9]{2})-/\1 /g')
+        # convert double underscores to ' - '
+        newname=$(echo "${newname}" | sed -E 's/__/ - /g')
+        # title case the filename
+        newname=$(echo "${newname}" | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2));}1')
+
+        if [ "${file}" != "${newname}" ]; then
+            $DRY_RUN mv "${file}" "${newname}"
+        fi
+    done
+}
+
+
+###############################################################################
+## Entry Point
+###############################################################################
+
+# The unusual syntax (versus `main "${@}"`) is a workaround for a bug in some
+# non-POSIX compliant versions of bash in which $@ is reported as unbound.
+main "${@:+$@}"
+
