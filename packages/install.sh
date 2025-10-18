@@ -108,6 +108,7 @@ function bootstrap() {
 	    ${dry_run} sudo apt-get install -y libssl-dev
 	    ${dry_run} sudo apt-get install -y pkg-config
 	    ${dry_run} sudo snap install yq
+	    ${dry_run} sudo snap install --classic nvim
 	    ;;
         *)
             echo 'Unknown OS' >&2

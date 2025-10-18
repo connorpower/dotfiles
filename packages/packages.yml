@@ -24,7 +24,6 @@ packages:
     # Packages which have the same package name across all package managers
     universal:
       # General
-      - neovim
       - tmux
       - zsh-autosuggestions
       - zsh-syntax-highlighting
@@ -117,6 +116,7 @@ packages:
       # Base Dev Tools
       - pkg-config
       # General
+      - neovim
       - rust-analyzer
       - kitty
       - coreutils
