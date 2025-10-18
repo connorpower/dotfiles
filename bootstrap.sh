@@ -70,7 +70,7 @@ declare -a TEMPLATE_LINKS=(
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 SCRIPT=$(basename "${0}")
-OS="$(detect-os)"
+OS="$(${DIR}/bin/detect-os)"
 
 ################################################################################
 # MAIN

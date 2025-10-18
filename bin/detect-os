@@ -12,7 +12,7 @@ set -euo pipefail
 ###############################################################################
 
 declare -r OS_ARCH='arch'     # ArchLinux
-declare -r OS_DEBIAN='debian' # Debian Linux
+declare -r OS_DEBIAN='debian' # Debian Linux (WSL2)
 declare -r OS_MSYS2='msys2'   # MSYS2
 declare -r OS_DARWIN='darwin' # macOS
 

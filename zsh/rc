@@ -153,6 +153,10 @@ case "${OS}" in
         ;;
     'msys2') ZSH_SHARE="${HOME}/.zsh"
         ;;
+    'debian')
+        ZSH_SHARE="/usr/share"
+        source "${HOME}/.config/zsh.d/debian-wsl2.zsh"
+        ;;
 esac
 
 source "${ZSH_SHARE}/zsh-autosuggestions/zsh-autosuggestions.zsh"
