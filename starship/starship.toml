@@ -4,7 +4,7 @@
 command_timeout = 500
 
 [character]
-error_symbol   = "[✖](bold red)"
+error_symbol   = "[](bold red)"
 success_symbol = "[❯](green)"
 vicmd_symbol = "[](blue)"
 
