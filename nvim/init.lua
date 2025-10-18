@@ -204,10 +204,6 @@ end
 
 opt.showmode = false
 
-------------------------------------------------------------------- gitsigns ---
-
-require('gitsigns').setup()
-
 ------------------------------------------------------------------- autocmds ---
 
 local function setup_autocmds(working)
