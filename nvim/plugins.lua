@@ -27,6 +27,15 @@ return require('packer').startup(function(use)
   -- Always issue commands from the root of a repo
   use 'airblade/vim-rooter'
 
+  ----------------------------------------------------------------- gitsigns ---
+
+  use {
+    'lewis6991/gitsigns.nvim',
+    config = function()
+      require('gitsigns').setup()
+    end
+  }
+
   ---------------------------------------------------------------------- git ---
 
   -- git status gutter
@@ -61,7 +70,7 @@ return require('packer').startup(function(use)
   use 'rust-lang/rust.vim'
 
   -- Enable more of the features of rust-analyzer, such as inlay hints
-  use 'simrat39/rust-tools.nvim'
+  use 'mrcjkb/rustaceanvim'
 
   ---------------------------------------------------------------------- csv ---
 

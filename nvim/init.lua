@@ -105,9 +105,13 @@ vim.g.NERDTreeWinPos = 'right'
 
 ----------------------------------------------------------------- rust-tools ---
 
-require('lspconfig').rust_analyzer.setup({})
-
-require('rust-tools').setup()
+vim.lsp.config.rust_analyzer = {
+  settings = {
+    on_attach = on_attach,
+    flags = lsp_flags,
+  }
+}
+vim.lsp.enable('rust_analyzer')
 
 vim.g.rustfmt_autosave = 1
 
@@ -137,11 +141,6 @@ end
 
 local lsp_flags = {
   debounce_text_changes = 150,
-}
-
-require('lspconfig')['rust_analyzer'].setup{
-    on_attach = on_attach,
-    flags = lsp_flags,
 }
 
 ----------------------------------------------------------------- completion ---
