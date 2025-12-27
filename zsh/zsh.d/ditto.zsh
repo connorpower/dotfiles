@@ -12,6 +12,11 @@ else
     echo "WARNING: Add a ditto test license to ~/.ditto/license"
 fi
 
+#------------------------------------------------------------- Android Tools ---
+
+export PATH=$PATH:~/Library/Android/sdk/platform-tools
+export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+
 #------------------------------------------------------------------ iOS Tools---
 
 function get_booted_sim_id() {
