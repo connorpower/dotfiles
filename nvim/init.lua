@@ -90,14 +90,17 @@ require('plugins')
 
 ----------------------------------------------------------------- Treesitter ---
 
-require'nvim-treesitter.configs'.setup({
-  sync_install = true,
-  auto_install = false,
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = false,
-  },
-})
+local ok, treesitter = pcall(require, 'nvim-treesitter.configs')
+if ok then
+  treesitter.setup({
+    sync_install = true,
+    auto_install = false,
+    highlight = {
+      enable = true,
+      additional_vim_regex_highlighting = false,
+    },
+  })
+end
 
 ------------------------------------------------------------- NERDTree setup ---
 
@@ -105,13 +108,15 @@ vim.g.NERDTreeWinPos = 'right'
 
 ----------------------------------------------------------------- rust-tools ---
 
-vim.lsp.config.rust_analyzer = {
-  settings = {
-    on_attach = on_attach,
-    flags = lsp_flags,
+if vim.lsp.config then
+  vim.lsp.config.rust_analyzer = {
+    settings = {
+      on_attach = on_attach,
+      flags = lsp_flags,
+    }
   }
-}
-vim.lsp.enable('rust_analyzer')
+  vim.lsp.enable('rust_analyzer')
+end
 
 vim.g.rustfmt_autosave = 1
 

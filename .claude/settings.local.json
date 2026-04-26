@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -E \"^d|\\\\.sh$|^-.*bootstrap|^-.*install\")",
+      "Bash(xargs -I {} bash -c 'echo \"=== {} ===\" && head -20 {}')",
+      "Bash(bash *)",
+      "Bash(apt-cache show *)",
+      "Bash(./bootstrap.sh *)",
+      "Bash(nvim --version)",
+      "Read(//home/conno/.cargo/bin/**)"
+    ]
+  }
+}

@@ -42,6 +42,14 @@ declare -a FILES=(
   "${HOME}/wallpapers                            -> wallpapers"
 )
 
+declare -a FILES_DARWIN=(
+  "${HOME}/.gitconfig-os                          -> git/gitconfig-darwin"
+)
+
+declare -a FILES_DEBIAN=(
+  "${HOME}/.gitconfig-os                          -> git/gitconfig-debian"
+)
+
 declare -a FILES_ARCH=(
   "${HOME}/.config/backup/exclude.txt             -> backup/exclude.txt"
   "${HOME}/.config/hypr/hyprland.conf             -> hyprland/hyprland.conf"
@@ -119,6 +127,12 @@ main() {
         'arch')
             link_files "${FILES_ARCH[@]}"
             ;;
+        'darwin')
+            link_files "${FILES_DARWIN[@]}"
+            ;;
+        'debian')
+            link_files "${FILES_DEBIAN[@]}"
+            ;;
         *)
             ;;
     esac
@@ -126,6 +140,12 @@ main() {
     if [[ "${created_links}" == 'false' ]]; then
         echo "no changes required"
     fi
+
+    if [[ "${OS}" == 'debian' ]]; then
+        configure_locale
+    fi
+
+    bootstrap_nvim_plugins
 }
 
 
@@ -226,6 +246,26 @@ link_templates() {
 	    echo "Skipping (doesn't exist): ${target}"
 	fi
     done
+}
+
+configure_locale() {
+    if ! locale -a 2>/dev/null | grep -q 'en_US.utf8'; then
+        $dry_run sudo locale-gen en_US.UTF-8
+    fi
+}
+
+bootstrap_nvim_plugins() {
+    if [[ -n "${dry_run}" ]]; then
+        echo "nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'"
+        return 0
+    fi
+
+    if ! command -v nvim &>/dev/null; then
+        return 0
+    fi
+
+    echo "Bootstrapping nvim plugins..."
+    nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 }
 
 # $1 src

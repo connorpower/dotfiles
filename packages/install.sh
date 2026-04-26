@@ -60,6 +60,7 @@ main() {
     ${dry_run} sudo -v
     bootstrap
     install_all
+    configure
 }
 
 
@@ -101,14 +102,37 @@ function bootstrap() {
             fi
             ;;
 	'debian')
-	    ${dry_run} sudo apt update
-	    ${dry_run} sudo apt upgrade
+	    ${dry_run} sudo apt-get update
+	    ${dry_run} sudo apt-get upgrade -y
             ${dry_run} sudo apt-get install -y build-essential
             ${dry_run} sudo apt-get install -y cmake
 	    ${dry_run} sudo apt-get install -y libssl-dev
 	    ${dry_run} sudo apt-get install -y pkg-config
-	    ${dry_run} sudo snap install yq
-	    ${dry_run} sudo snap install --classic nvim
+	    ${dry_run} sudo apt-get install -y software-properties-common
+	    if ! locale -a 2>/dev/null | grep -q 'en_US.utf8'; then
+	        ${dry_run} sudo locale-gen en_US.UTF-8
+	    fi
+	    # yq (Go version): direct binary — snap requires systemd which may not run in WSL2
+	    if ! command -v yq &> /dev/null; then
+	        ARCH=$(dpkg --print-architecture)
+	        ${dry_run} sudo wget -qO /usr/local/bin/yq \
+	            "https://github.com/mikefarah/yq/releases/latest/download/yq_linux_${ARCH}"
+	        ${dry_run} sudo chmod a+rx /usr/local/bin/yq
+	    fi
+	    # neovim-ppa/unstable tracks latest stable nvim releases (0.11+)
+	    if ! apt-cache policy | grep -q neovim-ppa; then
+	        ${dry_run} sudo add-apt-repository -y ppa:neovim-ppa/unstable
+	        ${dry_run} sudo apt-get update
+	    fi
+	    # nvm
+	    if [ ! -s "${HOME}/.nvm/nvm.sh" ]; then
+	        ${dry_run} curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+	    fi
+	    # shellcheck source=/dev/null
+	    source "${HOME}/.nvm/nvm.sh"
+	    if ! nvm ls --no-colors 2>/dev/null | grep -q 'lts'; then
+	        ${dry_run} nvm install --lts
+	    fi
 	    ;;
         *)
             echo 'Unknown OS' >&2
@@ -125,6 +149,9 @@ function bootstrap() {
                 -sSf https://sh.rustup.rs \
             )"
     fi
+    # Make cargo available in the current session if rustup just installed it
+    # shellcheck source=/dev/null
+    [ -s "${HOME}/.cargo/env" ] && source "${HOME}/.cargo/env"
 }
 
 # Install a package with the os-specific package manager
@@ -158,6 +185,29 @@ function pkg_install() (
 
 function cargo_install() {
     ${dry_run} cargo install --locked "${1}"
+}
+
+function configure() {
+    case "${OS}" in
+        'debian'|'arch')
+            if [[ "${SHELL}" != "$(command -v zsh)" ]]; then
+                ${dry_run} sudo usermod -s "$(command -v zsh)" "${USER}"
+                echo "Default shell changed to zsh — takes effect on next login"
+            fi
+            ;;
+    esac
+
+    if command -v git-lfs &> /dev/null; then
+        ${dry_run} git lfs install
+    fi
+
+    if command -v tldr &> /dev/null; then
+        ${dry_run} tldr --update
+    fi
+
+    if command -v bat &> /dev/null; then
+        ${dry_run} bat cache --build
+    fi
 }
 
 function install_all() {

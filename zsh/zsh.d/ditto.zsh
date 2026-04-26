@@ -1,5 +1,14 @@
 ## Ditto only
 
+#---------------------------------------------------------------------- env ---
+
+eval "$(direnv hook zsh)"
+
+function addkeys() {
+    eval "$(keychain --eval --quiet id_rsa)"
+    eval $(keychain --eval --agents gpg EC2399A673BBCD1F)
+}
+
 #----------------------------------------------------------------- Rust Core ---
 
 # File descriptor-hungry DB tests

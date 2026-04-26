@@ -45,6 +45,9 @@ packages:
 
     debian:
       - zsh
+      - git-lfs
+      - gh
+      - neovim
 
     arch:
       # Base Tools
@@ -153,7 +156,7 @@ packages:
     # Packages which have the same package name across all package managers
     universal:
       # Utils
-      - youtube-dl
+      - yt-dlp
       - ffmpeg
 
     # Arch official packages
@@ -190,6 +193,14 @@ packages:
   # Packages to be installed on only work machines
 
   ditto:
+
+    # Packages which have the same package name across all package managers
+    universal:
+      - direnv
+
+    # Debian packages
+    debian:
+      - keychain
 
     # Homebrew packages
     darwin:

@@ -1,7 +1,7 @@
 # vim: set ft=gitconfig: set syntax=on:
 
-[credential]
-    helper = osxkeychain
+[include]
+    path = ~/.gitconfig-os
 [core]
     pager = delta
     editor = nvim
@@ -22,8 +22,8 @@
     tool = nvimdiff
     conflictstyle = diff3
 [user]
-    name = Connor Power
-    email = connor@connorpower.com
+	name = Connor Power
+	email = connor@connorpower.com
     signingkey = EC2399A673BBCD1F
 [color]
     status = auto
@@ -47,7 +47,7 @@
     required = true
     clean = git-lfs clean -- %f
 [commit]
-    gpgsign = true
+    gpgsign = false 
 [gpg]
     program = gpg
 [init]
