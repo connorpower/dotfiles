@@ -188,6 +188,15 @@ function cargo_install() {
 }
 
 function configure() {
+    # aws-cli v2: not available via apt, requires unzip (installed via packages.yml)
+    if [[ "${OS}" == 'debian' ]] && ! command -v aws &> /dev/null; then
+        ARCH=$(uname -m)
+        ${dry_run} curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-${ARCH}.zip" -o /tmp/awscliv2.zip
+        ${dry_run} unzip -q /tmp/awscliv2.zip -d /tmp
+        ${dry_run} sudo /tmp/aws/install
+        ${dry_run} rm -rf /tmp/aws /tmp/awscliv2.zip
+    fi
+
     case "${OS}" in
         'debian'|'arch')
             if [[ "${SHELL}" != "$(command -v zsh)" ]]; then

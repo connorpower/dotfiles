@@ -45,6 +45,7 @@ packages:
 
     debian:
       - zsh
+      - unzip
       - git-lfs
       - gh
       - neovim
@@ -53,6 +54,7 @@ packages:
       # Base Tools
       - git
       - base-devel
+      - aws-cli
       - bat-extras
       - neovim
       - man-db
