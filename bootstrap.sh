@@ -28,11 +28,6 @@ declare -a FILES=(
   "${HOME}/.config/nvim/lua/plugins.lua          -> nvim/plugins.lua"
   "${HOME}/.config/nvim/spell/en.utf-8.add       -> spelling/en.utf-8.add"
   "${HOME}/.tmux.conf                            -> tmux/tmux.conf"
-  "${HOME}/.config/kitty/kitty.conf              -> tty/kitty.conf"
-  "${HOME}/.config/kitty/themes/catppuccin.conf  -> tty/kitty-catppuccin.conf"
-  "${HOME}/.config/kitty/arch.conf               -> tty/kitty-arch.conf"
-  "${HOME}/.config/kitty/darwin.conf             -> tty/kitty-darwin.conf"
-  "${HOME}/.config/kitty/msys2.conf              -> tty/kitty-msys2.conf"
   "${HOME}/.cargo/config.toml                    -> rust/cargo-config.toml"
   "${HOME}/.config/bat/config                    -> bat/config"
   "${HOME}/.config/bat/themes/catppuccin.tmTheme -> bat/catppuccin.tmTheme"
@@ -40,6 +35,14 @@ declare -a FILES=(
   "${HOME}/.config/ranger/rc.conf                -> ranger/rc.conf"
   "${HOME}/bin                                   -> bin"
   "${HOME}/wallpapers                            -> wallpapers"
+)
+
+declare -a FILES_KITTY=(
+  "${HOME}/.config/kitty/kitty.conf              -> tty/kitty.conf"
+  "${HOME}/.config/kitty/themes/catppuccin.conf  -> tty/kitty-catppuccin.conf"
+  "${HOME}/.config/kitty/arch.conf               -> tty/kitty-arch.conf"
+  "${HOME}/.config/kitty/darwin.conf             -> tty/kitty-darwin.conf"
+  "${HOME}/.config/kitty/msys2.conf              -> tty/kitty-msys2.conf"
 )
 
 declare -a FILES_DARWIN=(
@@ -121,7 +124,11 @@ main() {
     created_links='false'
 
     link_files "${FILES[@]}"
-    link_templates
+
+    if [[ "${OS}" != 'debian' ]]; then
+        link_files "${FILES_KITTY[@]}"
+        link_templates
+    fi
 
     case "${OS}" in
         'arch')
@@ -195,6 +202,11 @@ list_link_names() {
     for mapping in "${FILES[@]}"; do
         link_name "${mapping}"
     done
+    if [[ "${OS}" != 'debian' ]]; then
+        for mapping in "${FILES_KITTY[@]}"; do
+            link_name "${mapping}"
+        done
+    fi
 }
 
 # Returns the link source from a 'link-target -> link-name' mapping
@@ -306,4 +318,3 @@ make_link() {
 # non-POSIX compliant versions of bash in which $@ is reported as unbound.
 #
 main "${@:+$@}"
-
