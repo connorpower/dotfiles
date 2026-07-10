@@ -41,7 +41,7 @@ packages:
       - cmake
       # Rice
       - cmatrix
-      - neofetch
+      - fastfetch
 
     debian:
       - zsh

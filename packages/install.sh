@@ -222,19 +222,20 @@ function configure() {
 function install_all() {
     for category in "${cats[@]}"; do
         while read -r pkg; do
-            (pkg_install "${pkg//\"/}")
+            # Keep package installers from consuming the remaining package list.
+            (pkg_install "${pkg//\"/}") </dev/null
         done < <(yq ".packages.${category} | [.universal, .${OS}] | .[][]" "${PACKAGE_LIST}");
 
         # If we're on arch, also install AUR packages
         if [[ "${OS}" == 'arch' ]]; then
             while read -r pkg; do
-                (pkg_install "${pkg//\"/}" 'arch-aur')
+                (pkg_install "${pkg//\"/}" 'arch-aur') </dev/null
             done < <(yq ".packages.${category} | [.\"arch-aur\"] | .[][]" "${PACKAGE_LIST}")
         fi
 
         # Install Rust cargo binaries
         while read -r pkg; do
-            (cargo_install "${pkg//\"/}")
+            (cargo_install "${pkg//\"/}") </dev/null
         done < <(yq ".packages.${category} | [.cargo] | .[][]" "${PACKAGE_LIST}")
     done
 }
