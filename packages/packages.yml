@@ -140,7 +140,6 @@ packages:
       - font-hack-nerd-font
       - font-recursive-code
       # Apps
-      - 1password
       - 1password-cli
       - firefox
       - moom
@@ -171,7 +170,6 @@ packages:
     # Arch AUR packages
     arch-aur:
       # General
-      - 1password
       - 1password-cli
       - tidal-hifi-bin
       - tasksh
