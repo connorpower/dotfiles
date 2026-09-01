@@ -16,6 +16,34 @@ Files are organized by topic:
 - **bin**: utilities of various kinds
 - ... etc.
 
+## Setup
+
+On a fresh machine, run the two scripts **in this order**:
+
+```sh
+./packages/install.sh base        # 1. install tools (see categories below)
+./bootstrap.sh                    # 2. symlink the configs into place
+```
+
+Order matters: `bootstrap.sh` only creates symlinks, but many of those configs
+(bat themes, starship, kitty, nvim plugins, …) are inert or error until the
+corresponding package from step 1 is installed. `install.sh` also bootstraps
+Homebrew / `yq` / `rustup`, which nothing else sets up.
+
+Re-running either script later is safe — both are idempotent.
+
+## packages/install.sh
+
+Installs packages via the OS package manager, plus `cargo` and `rustup`.
+Packages are declared in `packages/packages.yml`, grouped into categories.
+
+```sh
+./packages/install.sh base                  # all machines
+./packages/install.sh base personal         # + personal machines
+./packages/install.sh base personal ditto   # + work tooling
+./packages/install.sh -d base               # dry run
+```
+
 ## bootstrap.sh
 
 The `bootstrap.sh` script will install the dotfiles in their respective
@@ -31,19 +59,23 @@ right repo file are left untouched, so re-running is safe.
 
 The only part of the script which needs to be changed is the `FILES` array at
 the start of `bootstrap.sh`. The `FILES` array contains a mapping of
-every file in the repository and the location it should be linked to.
+every file in the repository and the location it should be linked to, in
+`destination -> repo/path` form.
 
 ```sh
 declare -a FILES=(
-    'zsh/rc               -> ~/.zshrc'
-    'zsh/zsh.d            -> ~/.config/zsh.d'
-    'git/gitconfig        -> ~/.gitconfig'
-    'git/gitignore_global -> ~/.gitignore_global'
-    'git/tigrc            -> ~/.tigrc'
-    'nvim/init.lua        -> ~/.config/nvim/init.lua'
-    # ... etc
+  "${HOME}/.zshrc                       -> zsh/rc"
+  "${HOME}/.config/zsh.d                -> zsh/zsh.d"
+  "${HOME}/.gitconfig                   -> git/gitconfig"
+  "${HOME}/.gitignore_global            -> git/gitignore_global"
+  "${HOME}/.tigrc                       -> git/tigrc"
+  "${HOME}/.config/nvim/init.lua        -> nvim/init.lua"
+  # ... etc
 )
 ```
+
+OS-specific arrays (`FILES_DARWIN` / `FILES_DEBIAN` / `FILES_ARCH`,
+`FILES_KITTY`) are merged in automatically for the detected OS.
 
 ### Usage
 
