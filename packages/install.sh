@@ -83,8 +83,15 @@ function bootstrap() {
                     )"
             fi
 
+            # The installer doesn't touch PATH for the current process, so make
+            # brew usable for the rest of this script.
+            if ! command -v brew &> /dev/null; then
+                for brew_bin in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+                    [ -x "${brew_bin}" ] && eval "$("${brew_bin}" shellenv)" && break
+                done
+            fi
+
             pkg_install yq
-            brew tap homebrew/cask-fonts
             ;;
         'arch')
             ${dry_run} sudo pacman -Syy
