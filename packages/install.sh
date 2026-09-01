@@ -92,6 +92,10 @@ function bootstrap() {
             fi
 
             pkg_install yq
+
+            # Terraform was relicensed (BUSL) and removed from homebrew/core;
+            # it now lives only in HashiCorp's own tap.
+            ${dry_run} brew tap hashicorp/tap
             ;;
         'arch')
             ${dry_run} sudo pacman -Syy

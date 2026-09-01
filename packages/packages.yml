@@ -130,7 +130,7 @@ packages:
       - ddcctl
       - gnu-tar
       - gpg-suite
-      - terraform
+      - hashicorp/tap/terraform
       # Rice
       - pipes-sh
       # Dev
