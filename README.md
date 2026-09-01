@@ -21,6 +21,12 @@ Files are organized by topic:
 The `bootstrap.sh` script will install the dotfiles in their respective
 locations.
 
+If a real file (or a stale symlink) is already sitting at a destination, it is
+moved aside to `<dest>.backup.<YYYYmmddHHMMSS>` before the symlink is created,
+and a summary of everything moved is printed at the end. Pass `-f` to delete
+those files instead of backing them up. Destinations that already point at the
+right repo file are left untouched, so re-running is safe.
+
 ### Configuration
 
 The only part of the script which needs to be changed is the `FILES` array at
@@ -49,7 +55,8 @@ Usage: ./bootstrap.sh [-h|--help] [-f] [-d] [-l]
         Dry run. Echoes the commands which would be executed to
         stdout but doesn't modify anything.
     -f
-        Force. Overwrites any existing files.
+        Force. Deletes any file that is in the way instead of moving it
+        to a timestamped .backup copy first.
     -l
         Lists the files that would be installed by this program. Each
         full path is printed on a new line making the output suitable
@@ -59,4 +66,3 @@ Usage: ./bootstrap.sh [-h|--help] [-f] [-d] [-l]
                 ls -lah "$file";
             done
 ```
-

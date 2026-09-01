@@ -15,7 +15,7 @@ Supported targets: `darwin` (macOS), `debian` (Ubuntu/WSL2), `arch` (Arch Linux)
 ```sh
 ./bootstrap.sh          # link all files for detected OS
 ./bootstrap.sh -d       # dry run (prints commands, changes nothing)
-./bootstrap.sh -f       # force-overwrite existing files
+./bootstrap.sh -f       # delete files in the way instead of backing them up
 ./bootstrap.sh -l       # list all destination paths (pipeable)
 ```
 
@@ -35,6 +35,8 @@ Supported targets: `darwin` (macOS), `debian` (Ubuntu/WSL2), `arch` (Arch Linux)
 ### Symlink model
 
 `bootstrap.sh` maintains a `FILES` array mapping `$HOME/...destination -> repo/path`. Running the script creates symlinks. To add a new dotfile: add it to the `FILES` array (or `FILES_DARWIN`/`FILES_DEBIAN`/`FILES_ARCH` for OS-specific), then run `bootstrap.sh`.
+
+If a real file (or stale symlink) already sits at a destination, `bootstrap.sh` moves it aside to `<dest>.backup.<YYYYmmddHHMMSS>` before linking and prints a summary of what it moved. `-f` deletes those instead of backing them up. Re-runs are idempotent — a destination already pointing at the right repo file is left untouched.
 
 The `TEMPLATE_LINKS` mechanism handles files where the target path contains `<OS>` — e.g., `kitty/os.conf` resolves to `kitty/kitty-darwin.conf` on macOS.
 

@@ -122,6 +122,7 @@ main() {
     shift $((OPTIND-1))
 
     created_links='false'
+    backed_up_files=''
 
     link_files "${FILES[@]}"
 
@@ -143,6 +144,12 @@ main() {
         *)
             ;;
     esac
+
+    if [[ -n "${backed_up_files}" ]]; then
+        printf '\n%s\n' "Existing files were moved aside to make room for the symlinks:"
+        printf '%s' "${backed_up_files}"
+        printf '%s\n' "Delete the .backup.* copies once you're happy with the new links."
+    fi
 
     if [[ "${created_links}" == 'false' ]]; then
         echo "no changes required"
@@ -178,7 +185,8 @@ print_help() {
     echo "            Dry run. Echoes the commands which would be executed to"
     echo "            stdout but doesn't modify anything."
     echo "        -f"
-    echo "            Force. Overwrites any existing files."
+    echo "            Force. Deletes any file that is in the way instead of"
+    echo "            moving it to a timestamped .backup copy first."
     echo "        -l"
     echo "            Lists the files that would be installed by this program."
     echo "            Each full path is printed on a new line making the output"
@@ -227,8 +235,9 @@ link_name() {
 }
 
 # Sets up symlinks for each file in $FILES. If the destination directory
-# doesn't exist, it is created. If the destination file already exists,
-# no action is taken.
+# doesn't exist, it is created. If a different file already exists at the
+# destination it is moved aside to a timestamped backup first (unless -f is
+# given, in which case it is deleted).
 #
 # $1: A bash array of files in 'link_name -> target' form.
 link_files() {
@@ -287,6 +296,8 @@ make_link() {
     local name
     local name_dir_path
 
+    local backup
+
     target=$(realpath "${1}")
     name="${2}"
     name_dir_path=$(dirname "${name}")
@@ -296,18 +307,28 @@ make_link() {
         exit 1
     fi
 
-    if [[ -d "${target}" && -d "${name}" ]]; then
-        # ${1} is a directory and already exists — skipping
+    # Already linked to the right place — nothing to do.
+    if [[ -L "${name}" ]] && [[ "$(realpath "${name}")" == "${target}" ]]; then
         return 0
     fi
 
-    if [[ "${force}" == 'true' ]] || [[ ! -e "${name}" ]]; then
-        if [[ ! -d "${name_dir_path}" ]]; then
-            $dry_run mkdir -p "${name_dir_path}"
+    # Something else is in the way: a real file/dir, or a stale symlink.
+    # Move it aside to a timestamped backup, or delete it when forced.
+    if [[ -e "${name}" || -L "${name}" ]]; then
+        if [[ "${force}" == 'true' ]]; then
+            $dry_run rm -rf "${name}"
+        else
+            backup="${name}.backup.$(date +%Y%m%d%H%M%S)"
+            $dry_run mv "${name}" "${backup}"
+            backed_up_files+="    ${name} -> ${backup}"$'\n'
         fi
-        $dry_run ln -fs "${target}" "${name}"
-        created_links='true'
     fi
+
+    if [[ ! -d "${name_dir_path}" ]]; then
+        $dry_run mkdir -p "${name_dir_path}"
+    fi
+    $dry_run ln -s "${target}" "${name}"
+    created_links='true'
 }
 
 ################################################################################
