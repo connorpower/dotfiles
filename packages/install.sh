@@ -152,13 +152,19 @@ function bootstrap() {
             ;;
     esac
 
+    # An existing toolchain may already be installed but not yet on PATH for
+    # this process — source its env before deciding whether to install.
+    # shellcheck source=/dev/null
+    [ -s "${HOME}/.cargo/env" ] && source "${HOME}/.cargo/env"
+
     if ! command -v rustup &> /dev/null; then
+        # -y: don't prompt; this script is meant to run unattended.
         ${dry_run} /bin/bash -c \
             "$(${dry_run} curl \
                 --proto '=https' \
                 --tlsv1.2 \
                 -sSf https://sh.rustup.rs \
-            )"
+            )" '' -y
     fi
     # Make cargo available in the current session if rustup just installed it
     # shellcheck source=/dev/null
