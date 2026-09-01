@@ -47,7 +47,7 @@
     required = true
     clean = git-lfs clean -- %f
 [commit]
-    gpgsign = false 
+    gpgsign = true
 [gpg]
     program = gpg
 [init]
