@@ -78,15 +78,31 @@ key_mapper('', '<right>', '<nop>')
 
 -- boostrap packer if not yet installed
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+local packer_bootstrap = false
 if fn.empty(fn.glob(install_path)) > 0 then
-  packer_bootstrap = fn.system({
+  vim.fn.system({
       'git', 'clone', '--depth', '1',
       'https://github.com/wbthomason/packer.nvim', install_path
   })
+  vim.cmd [[packadd packer.nvim]]
+  packer_bootstrap = true
 end
 
 -- Load plugins defined in separate file
 require('plugins')
+
+-- On first run packer was only just cloned above: no plugins are on disk yet,
+-- so every `require` of a plugin below would error (E5113: module 'cmp' not
+-- found). Install the plugins and stop here — `bootstrap.sh` follows up with a
+-- headless `:PackerSync`, and an interactive launch kicks the sync off now.
+-- Re-open nvim once it finishes to load the full config.
+if packer_bootstrap then
+  if #vim.api.nvim_list_uis() > 0 then
+    require('packer').sync()
+    vim.notify('Installing plugins — reopen nvim once :PackerSync completes')
+  end
+  return
+end
 
 ----------------------------------------------------------------- Treesitter ---
 
@@ -150,7 +166,8 @@ local lsp_flags = {
 
 ----------------------------------------------------------------- completion ---
 
-local cmp = require('cmp')
+local cmp_ok, cmp = pcall(require, 'cmp')
+if cmp_ok then
 cmp.setup({
   -- Enable LSP snippets
   snippet = {
@@ -180,6 +197,7 @@ cmp.setup({
     { name = 'path' },
   },
 })
+end
 
 ----------------------------------------------------- preservim/vim-markdown ---
 
@@ -189,11 +207,12 @@ vim.g.vim_markdown_new_list_item_indent = 0
 
 --------------------------------------------------------------- color scheme ---
 
-if os.getenv("TERM") ~= 'linux' then
+local catppuccin_ok, catppuccin = pcall(require, 'catppuccin')
+if catppuccin_ok and os.getenv("TERM") ~= 'linux' then
   -- only set colorsheme if term is likely to have 256 color
   vim.g.catppuccin_flavour = 'mocha'
   local colors = require("catppuccin.palettes").get_palette()
-  require("catppuccin").setup({
+  catppuccin.setup({
     custom_highlights = {
       -- Disable italic display for comments
       Comment = { fg = colors.surface2, style = { } },
