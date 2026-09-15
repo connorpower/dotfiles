@@ -54,6 +54,12 @@ setopt hist_save_no_dups
 
 #--------------------------------------------------------------- completions ---
 
+# Docker Desktop writes its completions here. The directory is absent when
+# Docker is not installed, so guard on it.
+if [[ -d "${HOME}/.docker/completions" ]]; then
+    fpath=("${HOME}/.docker/completions" ${fpath})
+fi
+
 autoload bashcompinit && bashcompinit
 autoload -Uz compinit && compinit
 
