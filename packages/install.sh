@@ -73,6 +73,17 @@ function bootstrap() {
         'darwin')
             xcode-select -p &>/dev/null || ${dry_run} xcode-select --install
 
+            # Homebrew and every compile step refuse to run while the Xcode
+            # license is outstanding. `xcodebuild -license check` exits 69 in
+            # that state. Skip the check on a Command Line Tools only machine,
+            # where `xcodebuild` is absent and no agreement is pending.
+            local developer_dir
+            developer_dir="$(xcode-select -p 2>/dev/null || true)"
+            if [[ "${developer_dir}" == *Xcode.app* ]] \
+                && ! xcodebuild -license check &> /dev/null; then
+                ${dry_run} sudo xcodebuild -license accept
+            fi
+
             if ! command -v brew &> /dev/null; then
                 ${dry_run} /bin/bash -c \
                     "$(${dry_run} curl \
