@@ -10,7 +10,7 @@ packages:
       - bacon
       - eza
       - bat
-      - bottom
+      - bottom@0.12.1 # 0.13.0+ needs unstable if-let-guards despite declaring rust-version 1.85 (rust-lang/rust#51114)
       - ripgrep
       - starship
       - tealdeer
