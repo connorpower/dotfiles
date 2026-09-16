@@ -32,6 +32,16 @@ Homebrew / `yq` / `rustup`, which nothing else sets up.
 
 Re-running either script later is safe — both are idempotent.
 
+On a work machine, add a third step. `zsh/rc` reads `zsh/zsh.d/work.zsh` only
+when a flag file exists:
+
+```sh
+touch ~/.config/zsh.d/enable-work     # 3. work machines only
+```
+
+Git ignores the flag, so you set it on each machine. Delete it to turn the
+include off again.
+
 ## packages/install.sh
 
 Installs packages via the OS package manager, plus `cargo` and `rustup`.

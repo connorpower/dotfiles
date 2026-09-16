@@ -199,6 +199,15 @@ print_help() {
     echo "                for file in \$(${SCRIPT} -l); do"
     echo "                    ls -lah \"\$file\""
     echo "                done"
+    echo ""
+    echo "    Opt-in includes:"
+    echo "        zsh/rc reads zsh/zsh.d/work.zsh only when a flag file"
+    echo "        exists. Create the flag on a work machine:"
+    echo ""
+    echo "            touch ~/.config/zsh.d/enable-work"
+    echo ""
+    echo "        Git ignores the flag, so you set it on each machine."
+    echo "        Delete it to turn the include off again."
 }
 
 # Lists all file destinations in the format:
