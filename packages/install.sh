@@ -166,7 +166,9 @@ function bootstrap() {
     # An existing toolchain may already be installed but not yet on PATH for
     # this process — source its env before deciding whether to install.
     # shellcheck source=/dev/null
-    [ -s "${HOME}/.cargo/env" ] && source "${HOME}/.cargo/env"
+    if [ -s "${HOME}/.cargo/env" ]; then
+        source "${HOME}/.cargo/env"
+    fi
 
     if ! command -v rustup &> /dev/null; then
         # -y: don't prompt; this script is meant to run unattended.
@@ -179,7 +181,9 @@ function bootstrap() {
     fi
     # Make cargo available in the current session if rustup just installed it
     # shellcheck source=/dev/null
-    [ -s "${HOME}/.cargo/env" ] && source "${HOME}/.cargo/env"
+    if [ -s "${HOME}/.cargo/env" ]; then
+        source "${HOME}/.cargo/env"
+    fi
 }
 
 # Install a package with the os-specific package manager
@@ -214,6 +218,23 @@ function pkg_install() (
 function cargo_install() {
     ${dry_run} cargo install --locked "${1}"
 }
+
+# Install a tool via its own curl-piped install script, skipping it if the
+# tool is already on PATH.
+#
+# Arguments
+# $1: 'name@url' pair, e.g. 'herdr@https://herdr.dev/install.sh'
+function script_install() (
+    local name="${1%%@*}"
+    local url="${1#*@}"
+
+    if command -v "${name}" &> /dev/null; then
+        return 0
+    fi
+
+    echo "installing ${name}..."
+    ${dry_run} sh -c "$(${dry_run} curl -fsSL "${url}")"
+)
 
 function configure() {
     # aws-cli v2: not available via apt, requires unzip (installed via packages.yml)
@@ -271,6 +292,11 @@ function install_all() {
         while read -r pkg; do
             (cargo_install "${pkg//\"/}") </dev/null
         done < <(yq ".packages.${category} | [.cargo] | .[][]" "${PACKAGE_LIST}")
+
+        # Install tools that ship their own curl-piped install script
+        while read -r script; do
+            (script_install "${script//\"/}") </dev/null
+        done < <(yq ".packages.${category}.scripts | [.universal, .${OS}] | .[][]" "${PACKAGE_LIST}")
     done
 }
 
