@@ -141,7 +141,6 @@ packages:
       - font-recursive-code
       # Apps
       - 1password-cli
-      - firefox
       - moom
       - bartender
       - tidal
