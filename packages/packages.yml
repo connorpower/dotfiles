@@ -147,6 +147,7 @@ packages:
       - gh
       - glab
       - awscli
+      - herdr
       # Fonts
       - font-hack-nerd-font
       - font-recursive-code
