@@ -212,4 +212,9 @@ packages:
     # Homebrew packages
     darwin:
       - cocoapods # provides the `pod` CLI, for iOS dependencies
+      - protobuf # provides the `protoc` compiler
+
+    # Debian packages
+    debian:
+      - protobuf-compiler # provides the `protoc` compiler
 
