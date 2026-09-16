@@ -5,25 +5,30 @@ packages:
   # Packages to be installed on all machines: both personal and work
 
   base:
-    # Packages to be installed with cargo
+    # Packages built from source with cargo. Prefer a prebuilt package from
+    # the OS package manager and only fall back to here when there is none.
     cargo:
-      - bacon
-      - eza
-      - bat
-      - bottom@0.12.1 # 0.13.0+ needs unstable if-let-guards despite declaring rust-version 1.85 (rust-lang/rust#51114)
-      - ripgrep
-      - starship
-      - tealdeer
-      - du-dust
-      - viu
-      - fd-find
-      - cargo-update
+      # The calc in brew, pacman and apt is a different program: Landon Curt
+      # Noll's C calculator, which installs a binary of the same name.
       - calc
-      - git-delta
+
+    # Rust tools that apt does not package. macOS and Arch install these
+    # prebuilt from the lists below.
+    cargo-debian:
+      - bacon
+      - bottom@0.12.1 # 0.13.0+ needs unstable if-let-guards despite declaring rust-version 1.85 (rust-lang/rust#51114)
+      - cargo-update
+      - du-dust
+      - starship
+      - viu
 
     # Packages which have the same package name across all package managers
     universal:
       # General
+      - bat
+      - eza
+      - ripgrep
+      - tealdeer
       - tmux
       - zsh-autosuggestions
       - zsh-syntax-highlighting
@@ -33,6 +38,7 @@ packages:
       # Dev
       - doxygen
       - git
+      - git-delta
       - git-filter-repo
       - gnupg
       - graphviz
@@ -44,6 +50,7 @@ packages:
       - fastfetch
 
     debian:
+      - fd-find # apt installs this as fdfind; install.sh links it to fd
       - zsh
       - unzip
       - git-lfs
@@ -117,6 +124,14 @@ packages:
       - gnu-netcat
       - github-cli
       - glab
+      # Rust CLI tools
+      - bacon
+      - bottom
+      - cargo-update
+      - dust
+      - fd
+      - starship
+      - viu
 
     arch-aur:
       # Compositor
@@ -148,6 +163,14 @@ packages:
       - glab
       - awscli
       - herdr
+      # Rust CLI tools
+      - bacon
+      - bottom
+      - cargo-update
+      - dust
+      - fd
+      - starship
+      - viu
       # Fonts
       - font-hack-nerd-font
       - font-recursive-code
@@ -205,12 +228,21 @@ packages:
 
   work:
 
+    # apt has no cargo-nextest package.
+    cargo-debian:
+      - cargo-nextest # provides `cargo nextest`
+
     scripts:
       universal:
         - uv@https://astral.sh/uv/install.sh
 
+    # Arch official packages
+    arch:
+      - cargo-nextest # provides `cargo nextest`
+
     # Homebrew packages
     darwin:
+      - cargo-nextest # provides `cargo nextest`
       - cocoapods # provides the `pod` CLI, for iOS dependencies
       - protobuf # provides the `protoc` compiler
 

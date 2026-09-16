@@ -237,6 +237,19 @@ function script_install() (
 )
 
 function configure() {
+    # apt ships bat as batcat and fd as fdfind, because both names were taken
+    # by older packages. The zsh config and gitconfig call them bat and fd.
+    if [[ "${OS}" == 'debian' ]]; then
+        ${dry_run} mkdir -p "${HOME}/.local/bin"
+        if [ -x /usr/bin/batcat ] && [ ! -e "${HOME}/.local/bin/bat" ]; then
+            ${dry_run} ln -s /usr/bin/batcat "${HOME}/.local/bin/bat"
+        fi
+        if [ -x /usr/bin/fdfind ] && [ ! -e "${HOME}/.local/bin/fd" ]; then
+            ${dry_run} ln -s /usr/bin/fdfind "${HOME}/.local/bin/fd"
+        fi
+        PATH="${HOME}/.local/bin:${PATH}"
+    fi
+
     # aws-cli v2: not available via apt, requires unzip (installed via packages.yml)
     if [[ "${OS}" == 'debian' ]] && ! command -v aws &> /dev/null; then
         ARCH=$(uname -m)
@@ -288,10 +301,11 @@ function install_all() {
             done < <(yq ".packages.${category} | [.\"arch-aur\"] | .[][]" "${PACKAGE_LIST}")
         fi
 
-        # Install Rust cargo binaries
+        # Install Rust cargo binaries. The cargo-<os> key is for crates that
+        # one package manager has no prebuilt package for.
         while read -r pkg; do
             (cargo_install "${pkg//\"/}") </dev/null
-        done < <(yq ".packages.${category} | [.cargo] | .[][]" "${PACKAGE_LIST}")
+        done < <(yq ".packages.${category} | [.cargo, .\"cargo-${OS}\"] | .[][]" "${PACKAGE_LIST}")
 
         # Install tools that ship their own curl-piped install script
         while read -r script; do
