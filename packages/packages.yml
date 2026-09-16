@@ -199,41 +199,17 @@ packages:
     # Debian packages
     debian:
 
-  # Ditto
+  # Work
   # --------
   # Packages to be installed on only work machines
 
-  ditto:
+  work:
 
-    # Packages which have the same package name across all package managers
-    universal:
-      - direnv
-
-    # Debian packages
-    debian:
-      - keychain
+    scripts:
+      universal:
+        - uv@https://astral.sh/uv/install.sh
 
     # Homebrew packages
     darwin:
-      - cocoapods
-      - rbenv
-      - ruby
-      - sourcekitten
-      - fastlane
-      - nvm
-      - swiftlint
-      - --cask tailscale
-      - --cask zoom
-      - --cask slack
-      - --cask lastpass
-      - --cask drawio
-      - --cask notion
-        # Confirm whether nix is handling these now
-        #- jenv
-        #- openjdk
-        #- openjdk@11
-        #- swig
-        #- kafka
-        #- zookeeper
-        #- dotnet-sdk
+      - cocoapods # provides the `pod` CLI, for iOS dependencies
 

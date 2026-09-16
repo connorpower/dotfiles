@@ -40,7 +40,7 @@ Packages are declared in `packages/packages.yml`, grouped into categories.
 ```sh
 ./packages/install.sh base                  # all machines
 ./packages/install.sh base personal         # + personal machines
-./packages/install.sh base personal ditto   # + work tooling
+./packages/install.sh base personal work    # + work tooling
 ./packages/install.sh -d base               # dry run
 ```
 

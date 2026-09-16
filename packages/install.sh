@@ -19,7 +19,7 @@ PACKAGE_LIST="${DIR}/packages.yml"
 declare -a CATEGORIES=(
     'base'
     'personal'
-    'ditto'
+    'work'
 )
 
 ###############################################################################

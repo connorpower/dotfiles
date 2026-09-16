@@ -24,7 +24,7 @@ Supported targets: `darwin` (macOS), `debian` (Ubuntu/WSL2), `arch` (Arch Linux)
 ```sh
 ./packages/install.sh base              # installs base packages for all machines
 ./packages/install.sh base personal     # base + personal packages
-./packages/install.sh base personal ditto  # all categories (includes work tooling)
+./packages/install.sh base personal work   # all categories (includes work tooling)
 ./packages/install.sh -d base           # dry run
 ```
 
@@ -42,7 +42,7 @@ The `TEMPLATE_LINKS` mechanism handles files where the target path contains `<OS
 
 ### Package model
 
-`packages/packages.yml` organises packages into categories (`base`, `personal`, `ditto`) and sub-keys (`universal`, `cargo`, `darwin`, `arch`, `arch-aur`, `debian`). `install.sh` uses `yq` to query this YAML and dispatches to the correct package manager. Cargo packages are always installed with `--locked`.
+`packages/packages.yml` organises packages into categories (`base`, `personal`, `work`) and sub-keys (`universal`, `cargo`, `darwin`, `arch`, `arch-aur`, `debian`, `scripts`). `install.sh` uses `yq` to query this YAML and dispatches to the correct package manager. Cargo packages are always installed with `--locked`. The `scripts` sub-key is for tools that ship their own curl-piped installer instead of a package-manager package; entries are `name@url`, and `name` is checked on `PATH` before running the installer.
 
 ### OS-specific zsh includes
 
