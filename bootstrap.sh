@@ -53,6 +53,7 @@ declare -a FILES_DARWIN=(
 
 declare -a FILES_DEBIAN=(
   "${HOME}/.gitconfig-os                          -> git/gitconfig-debian"
+  "${HOME}/.gnupg/gpg-agent.conf                  -> gpg/gpg-agent-debian.conf"
 )
 
 declare -a FILES_ARCH=(
