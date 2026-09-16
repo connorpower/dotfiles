@@ -1,0 +1,8 @@
+{
+  "name": "dotfiles",
+  "description": "Personal skills, agents and commands from the dotfiles repo",
+  "version": "0.1.0",
+  "author": {
+    "name": "Connor Power"
+  }
+}

@@ -40,6 +40,16 @@ If a real file (or stale symlink) already sits at a destination, `bootstrap.sh` 
 
 The `TEMPLATE_LINKS` mechanism handles files where the target path contains `<OS>` — e.g., `kitty/os.conf` resolves to `kitty/kitty-darwin.conf` on macOS.
 
+### Claude Code skills
+
+`claude/dotfiles-plugin/` is a Claude Code plugin, linked to `~/.claude/skills/dotfiles`. Any directory placed directly in `~/.claude/skills/` that carries a `.claude-plugin/plugin.json` is adopted as a plugin (`dotfiles@skills-dir`) at the start of the next session. Verify with `claude plugin list` and `claude plugin details dotfiles`.
+
+Add a skill with `mkdir claude/dotfiles-plugin/skills/<name>` and a `SKILL.md` inside it. No `bootstrap.sh` change is needed — the single symlink covers the whole plugin. The directory can also hold `agents/`, `commands/` and `hooks/`.
+
+Skills loaded this way are namespaced, so `technical-writing` is invoked as `dotfiles:technical-writing`.
+
+Do not link `~/.claude/skills` itself. Claude Code owns that directory: it writes the claude.ai sync bucket to `~/.claude/skills/synced/`, and company or project tooling may add sibling entries. Linking the parent pulls all of that into this repo.
+
 ### Package model
 
 `packages/packages.yml` organises packages into categories (`base`, `personal`, `work`) and sub-keys (`universal`, `cargo`, `darwin`, `arch`, `arch-aur`, `debian`, `scripts`). `install.sh` uses `yq` to query this YAML and dispatches to the correct package manager. Cargo packages are always installed with `--locked`. The `scripts` sub-key is for tools that ship their own curl-piped installer instead of a package-manager package; entries are `name@url`, and `name` is checked on `PATH` before running the installer.
