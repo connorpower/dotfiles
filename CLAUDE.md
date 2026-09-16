@@ -62,7 +62,7 @@ Two apt packages install a binary under another name, because the obvious name w
 
 `zsh/rc` sources files from `zsh/zsh.d/` conditionally:
 - `macos.zsh` / `arch.zsh` / `msys2.zsh` / `debian-wsl2.zsh` — loaded based on `$OS`
-- `ditto.zsh` — loaded only when `~/.config/zsh.d/enable-ditto` exists (work machine opt-in)
+- `work.zsh` — loaded only when `~/.config/zsh.d/enable-work` exists (work machine opt-in)
 - `vim-mode.zsh`, `aws-utils.zsh`, `dates.zsh`, `stand.zsh` — always loaded
 
 ### Git config layering

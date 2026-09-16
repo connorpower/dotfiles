@@ -244,6 +244,7 @@ packages:
     darwin:
       - cargo-nextest # provides `cargo nextest`
       - cocoapods # provides the `pod` CLI, for iOS dependencies
+      - libpq # keg-only; zsh.d sets PQ_LIB_DIR so linkers can find it
       - protobuf # provides the `protoc` compiler
 
     # Debian packages

@@ -89,8 +89,8 @@ if [[ "${OS}" == 'darwin' ]]; then source "${ZSH_INCL}/macos.zsh"; fi
 if [[ "${OS}" == 'arch'   ]]; then source "${ZSH_INCL}/arch.zsh";  fi
 if [[ "${OS}" == 'msys2'  ]]; then source "${ZSH_INCL}/msys2.zsh"; fi
 
-# touch ~/.config/zsh.d/enable-ditto to trigger loading Ditto env
-if [[ -f "${ZSH_INCL}/enable-ditto" ]]; then source "${ZSH_INCL}/ditto.zsh"; fi
+# touch ~/.config/zsh.d/enable-work to trigger loading the work env
+if [[ -f "${ZSH_INCL}/enable-work" ]]; then source "${ZSH_INCL}/work.zsh"; fi
 
 source "${ZSH_INCL}/vim-mode.zsh"
 source "${ZSH_INCL}/aws-utils.zsh"
