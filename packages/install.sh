@@ -234,6 +234,12 @@ function configure() {
             ;;
     esac
 
+    # gpg-agent reads its config once at startup, so the pinentry-mac entry in
+    # gpg-agent.conf only takes effect after a restart.
+    if [[ "${OS}" == 'darwin' ]] && command -v gpgconf &> /dev/null; then
+        ${dry_run} gpgconf --kill gpg-agent
+    fi
+
     if command -v git-lfs &> /dev/null; then
         ${dry_run} git lfs install
     fi
