@@ -107,6 +107,7 @@ packages:
       # Dev
       - gnu-netcat
       - github-cli
+      - glab
 
     arch-aur:
       # Compositor
@@ -135,6 +136,7 @@ packages:
       - pipes-sh
       # Dev
       - gh
+      - glab
       - awscli
       # Fonts
       - font-hack-nerd-font
