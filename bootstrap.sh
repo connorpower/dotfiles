@@ -47,6 +47,7 @@ declare -a FILES_KITTY=(
 
 declare -a FILES_DARWIN=(
   "${HOME}/.gitconfig-os                          -> git/gitconfig-darwin"
+  "${HOME}/.gnupg/gpg-agent.conf                  -> gpg/gpg-agent-darwin.conf"
 )
 
 declare -a FILES_DEBIAN=(
