@@ -129,7 +129,6 @@ packages:
       - rename
       - ddcctl
       - gnu-tar
-      - gpg-suite
       - pinentry-mac
       - hashicorp/tap/terraform
       # Rice
