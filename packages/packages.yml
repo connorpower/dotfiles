@@ -50,6 +50,15 @@ packages:
       - gh
       - neovim
 
+    # Tools that ship their own curl-piped install script rather than a
+    # package-manager package. Entries are 'name@url'; name is checked on
+    # PATH before running the script.
+    scripts:
+      debian:
+        - herdr@https://herdr.dev/install.sh
+      arch:
+        - herdr@https://herdr.dev/install.sh
+
     arch:
       # Base Tools
       - git
