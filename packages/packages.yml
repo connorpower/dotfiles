@@ -224,7 +224,8 @@ packages:
 
   # Work
   # --------
-  # Packages to be installed on only work machines
+  # Packages to be installed on only work machines. Those run macOS and
+  # WSL2 Debian. Arch is a personal machine, so this category has no arch key.
 
   work:
 
@@ -235,10 +236,6 @@ packages:
     scripts:
       universal:
         - uv@https://astral.sh/uv/install.sh
-
-    # Arch official packages
-    arch:
-      - cargo-nextest # provides `cargo nextest`
 
     # Homebrew packages
     darwin:
