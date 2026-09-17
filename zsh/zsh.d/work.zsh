@@ -10,4 +10,8 @@ if [[ "${OS}" == 'darwin' ]] && command -v brew &> /dev/null; then
     export PQ_LIB_DIR="$(brew --prefix libpq)/lib"
 fi
 
-export PATH="$HOME/fvm/default/bin:$PATH"
+# fvm is a macOS-only package here. ~/fvm/default appears once
+# `fvm global <version>` selects a Flutter SDK.
+if [[ "${OS}" == 'darwin' ]]; then
+    export PATH="${HOME}/fvm/default/bin:${PATH}"
+fi
