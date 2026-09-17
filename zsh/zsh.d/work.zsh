@@ -9,3 +9,5 @@
 if [[ "${OS}" == 'darwin' ]] && command -v brew &> /dev/null; then
     export PQ_LIB_DIR="$(brew --prefix libpq)/lib"
 fi
+
+export PATH="$HOME/fvm/default/bin:$PATH"
