@@ -244,6 +244,7 @@ packages:
     darwin:
       - cargo-nextest # provides `cargo nextest`
       - cocoapods # provides the `pod` CLI, for iOS dependencies
+      - fvm # Flutter version manager; work.zsh puts ~/fvm/default/bin on PATH
       - libpq # keg-only; zsh.d sets PQ_LIB_DIR so linkers can find it
       - wix/brew/applesimutils # iOS simulator CLI, from the wix/brew tap
       - protobuf # provides the `protoc` compiler
