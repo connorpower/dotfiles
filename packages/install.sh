@@ -107,12 +107,6 @@ function bootstrap() {
             # Terraform was relicensed (BUSL) and removed from homebrew/core;
             # it now lives only in HashiCorp's own tap.
             ${dry_run} brew tap hashicorp/tap
-
-            # applesimutils drives the iOS simulator and ships only in Wix's
-            # tap. Personal machines never install it, so tap it on request.
-            if [[ " ${cats[*]:-} " == *' work '* ]]; then
-                ${dry_run} brew tap wix/brew
-            fi
             ;;
         'arch')
             ${dry_run} sudo pacman -Syy
