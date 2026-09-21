@@ -107,6 +107,12 @@ function bootstrap() {
             # Terraform was relicensed (BUSL) and removed from homebrew/core;
             # it now lives only in HashiCorp's own tap.
             ${dry_run} brew tap hashicorp/tap
+
+            # idb ships only in Meta's tap, and no personal machine installs
+            # it. Tap on a work install alone.
+            if [[ " ${cats[*]:-} " == *' work '* ]]; then
+                ${dry_run} brew tap facebook/fb
+            fi
             ;;
         'arch')
             ${dry_run} sudo pacman -Syy
