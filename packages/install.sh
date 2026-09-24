@@ -190,6 +190,15 @@ function bootstrap() {
     if [ -s "${HOME}/.cargo/env" ]; then
         source "${HOME}/.cargo/env"
     fi
+
+    # A rustup that carries no default toolchain answers every cargo call with
+    # "rustup could not choose a version of cargo to run". Debian's rustup
+    # package installs the shims and stops there, and it owns /usr/bin/cargo,
+    # so the check above finds rustup and skips the installer that would have
+    # set a toolchain. Set one here instead.
+    if command -v rustup &> /dev/null && ! rustup default &> /dev/null; then
+        ${dry_run} rustup default stable
+    fi
 }
 
 # Install a package with the os-specific package manager
