@@ -30,6 +30,7 @@ path_append "${HOME}/.cargo/bin"
 #----------------------------------------------------------------- constants ---
 
 export EDITOR=nvim
+export TERM=xterm-256color
 
 ZSH_INCL="${HOME}/.config/zsh.d"
 SCM_DIR="${HOME}/scm"
@@ -181,5 +182,3 @@ export PATH="$HOME/.local/bin:$PATH"
 if [ -z "$SSH_AUTH_SOCK" ]; then
   eval "$(ssh-agent -s)" > /dev/null
 fi
-export TERM=xterm-256color
-export PATH="$HOME/.local/bin:$PATH"
