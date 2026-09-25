@@ -27,7 +27,7 @@
     ui = auto
 [push]
     autoSetupRemote = true
-    default = upstream
+    default = current
 [pull]
     default = current
     rebase = true
