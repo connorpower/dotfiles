@@ -158,6 +158,7 @@ main() {
     esac
 
     copy_templates
+    generate_allowed_signers
 
     if [[ -n "${backed_up_files}" ]]; then
         printf '\n%s\n' "Existing files were moved aside to make room for the symlinks:"
@@ -322,6 +323,61 @@ copy_templates() {
         $dry_run cp "${target}" "${name}"
         copied_templates+="    ${name}"$'\n'
     done
+}
+
+# Writes ~/.config/git/allowed_signers from the identity files, so git can
+# verify your own signatures. Without it, anything that asks for a
+# verification result fails, including the %G? log format and
+# `git verify-commit`.
+#
+# The file is derived, not edited. Every run rewrites it from whatever the
+# identity files hold, so filling in an identity and re-running is enough.
+# An identity is skipped until its email looks like an address and its
+# signing key is readable.
+generate_allowed_signers() {
+    local signers="${HOME}/.config/git/allowed_signers"
+    local identity
+    local email
+    local key
+    local lines=''
+
+    if ! command -v git &>/dev/null; then
+        return 0
+    fi
+
+    for identity in "${HOME}/.gitconfig-identity" "${HOME}/.gitconfig-work-identity"; do
+        if [[ ! -f "${identity}" ]]; then
+            continue
+        fi
+
+        email=$(git config --file "${identity}" --default '' user.email)
+        key=$(git config --file "${identity}" --default '' --path user.signingkey)
+
+        if [[ "${email}" != *@* ]] || [[ ! -r "${key}" ]]; then
+            continue
+        fi
+
+        lines+="${email} namespaces=\"git\" $(cut -d' ' -f1,2 "${key}")"$'\n'
+    done
+
+    if [[ -z "${lines}" ]]; then
+        return 0
+    fi
+
+    # $(cat) drops the trailing newline, so compare against $lines without it.
+    if [[ -f "${signers}" ]] && [[ "$(cat "${signers}")" == "${lines%$'\n'}" ]]; then
+        return 0
+    fi
+
+    if [[ -n "${dry_run}" ]]; then
+        echo "write ${signers}"
+        return 0
+    fi
+
+    mkdir -p "$(dirname "${signers}")"
+    printf '%s' "${lines}" > "${signers}"
+    echo "Wrote ${signers}"
+    created_links='true'
 }
 
 configure_locale() {

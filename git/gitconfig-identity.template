@@ -14,6 +14,9 @@
 # "Signing key". A key added for authentication alone does not verify
 # signatures.
 #
+# bootstrap.sh reads this file to build ~/.config/git/allowed_signers, which
+# is what lets git verify your own signatures. Re-run it after you edit here.
+#
 # The dotfiles repo is public, so nothing tracks this file. Each machine
 # needs its own copy.
 [user]

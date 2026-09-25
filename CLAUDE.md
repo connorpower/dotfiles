@@ -78,6 +78,8 @@ Neither identity file is in this repo, and neither is any key. Each holds a name
 
 The same key has to be registered with each forge before signatures verify: GitHub under "SSH and GPG keys" with the type "Signing key", GitLab under "SSH Keys" with the usage type "Authentication & Signing". A key added for authentication alone signs fine and verifies nowhere.
 
-Nothing sets `gpg.ssh.allowedSignersFile`, so git cannot check a signature on this machine. Commits still sign, and both forges still verify them, because each holds its own copy of the key. The cost is local: `git log --show-signature` reports `U` and "No principal matched", and `git verify-commit` exits 1. To get local verification back, point that setting at a file listing one `<email> namespaces="git" <key type> <public key>` line per address.
+`gpg.ssh.allowedSignersFile` points at `~/.config/git/allowed_signers`, which git needs to check a signature locally. Without it, every request for a verification result fails, including the `%G?` log format and `git verify-commit`, even though the commit is signed correctly.
+
+That file is generated, not edited. `generate_allowed_signers()` in `bootstrap.sh` rewrites it on each run from the two identity files, one line per address. An identity is skipped until its email looks like an address and its signing key is readable, so a run before you fill in the templates is harmless. Fill in an identity and re-run.
 
 An earlier version of this config signed with OpenPGP on GitHub and SSH on GitLab, and selected between them with eight `includeIf "hasconfig:remote.*.url:..."` blocks. Signing everything with SSH replaced all of it. If you ever need the per-remote form back, know that git matches the SCP form (`git@host:group/repo.git`) and the URL form (`https://host/group/repo.git`) with different globs, `*` never crosses a `/`, and each forge therefore needs four patterns.
