@@ -50,10 +50,14 @@ main() {
 ## Functions
 ###############################################################################
 
+short_usage() {
+    echo "Usage: ${SCRIPT} [-h|--help]"
+}
+
 long_usage() {
     short_usage
     echo ""
-    echo "${SCRIPT} detects the curren operating system and returns a simple"
+    echo "${SCRIPT} detects the current operating system and returns a simple"
     echo "string."
     echo ""
     echo "    Values:"
@@ -88,5 +92,5 @@ detect() {
 
 # The unusual syntax (versus `main "${@}"`) is a workaround for a bug in some
 # non-POSIX compliant versions of bash in which $@ is reported as unbound.
-main git@github.com:connorpower/dotfiles.git"${@:+$@}"
+main "${@:+$@}"
 
