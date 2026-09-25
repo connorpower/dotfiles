@@ -1,0 +1,23 @@
+# vim: set ft=gitconfig: set syntax=on:
+
+# Your work identity and signing key, used by every repo under ~/scm/work.
+# bootstrap.sh copied this file from git/gitconfig-work-identity.template
+# because ~/.gitconfig-work-identity did not exist.
+#
+# Replace all three values below.
+#
+#   name        as you want it on a commit
+#   email       an address on your GitLab account, or GitLab shows the
+#               commits as unverified and does not link them to your profile
+#   signingkey  the path to a public key, such as ~/.ssh/<name>.pub
+#
+# Add the same key to GitLab under "SSH Keys" with the usage type
+# "Authentication & Signing". A key added for authentication alone does not
+# verify signatures.
+#
+# The dotfiles repo is public, so nothing tracks this file. Each machine
+# needs its own copy.
+[user]
+    name = FIXME
+    email = FIXME
+    signingkey = FIXME

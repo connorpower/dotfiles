@@ -67,4 +67,17 @@ Two apt packages install a binary under another name, because the obvious name w
 
 ### Git config layering
 
-`git/gitconfig` includes `~/.gitconfig-os` which is a symlink to either `git/gitconfig-darwin` or `git/gitconfig-debian` depending on OS. This is where OS-specific git settings (e.g. GPG agent config) live. GPG signing is enabled globally; signing key is `EC2399A673BBCD1F`.
+`git/gitconfig` is the base. Everything signs with SSH, so no part of the config switches signature format. Two things layer on top:
+
+1. `~/.gitconfig-os` — a symlink to `git/gitconfig-darwin` or `git/gitconfig-debian`. OS-specific settings such as the credential helper live here.
+2. Two identity files, included in order. `~/.gitconfig-identity` always applies. `includeIf "gitdir:~/scm/work/"` then pulls in `~/.gitconfig-work-identity`, which overrides it inside the work tree. Git takes the last value it reads, so order in the file is what makes work win.
+
+Identity follows the directory and nothing else. A repo outside `~/scm/work` gets the personal identity, wherever it pushes.
+
+Neither identity file is in this repo, and neither is any key. Each holds a name, an email, and the path to a signing key, and `bootstrap.sh` copies each from a template in `git/` when the destination is missing. It never overwrites one you have filled in. The `TEMPLATE_FILES` array holds the mapping.
+
+The same key has to be registered with each forge before signatures verify: GitHub under "SSH and GPG keys" with the type "Signing key", GitLab under "SSH Keys" with the usage type "Authentication & Signing". A key added for authentication alone signs fine and verifies nowhere.
+
+Nothing sets `gpg.ssh.allowedSignersFile`, so git cannot check a signature on this machine. Commits still sign, and both forges still verify them, because each holds its own copy of the key. The cost is local: `git log --show-signature` reports `U` and "No principal matched", and `git verify-commit` exits 1. To get local verification back, point that setting at a file listing one `<email> namespaces="git" <key type> <public key>` line per address.
+
+An earlier version of this config signed with OpenPGP on GitHub and SSH on GitLab, and selected between them with eight `includeIf "hasconfig:remote.*.url:..."` blocks. Signing everything with SSH replaced all of it. If you ever need the per-remote form back, know that git matches the SCP form (`git@host:group/repo.git`) and the URL form (`https://host/group/repo.git`) with different globs, `*` never crosses a `/`, and each forge therefore needs four patterns.

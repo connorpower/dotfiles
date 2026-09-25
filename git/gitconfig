@@ -21,10 +21,6 @@
 [merge]
     tool = nvimdiff
     conflictstyle = diff3
-[user]
-	name = Connor Power
-	email = connor@connorpower.com
-    signingkey = EC2399A673BBCD1F
 [color]
     status = auto
     branch = auto
@@ -48,10 +44,28 @@
     clean = git-lfs clean -- %f
 [commit]
     gpgsign = true
+[tag]
+    gpgsign = true
 [gpg]
-    program = gpg
+    format = ssh
 [init]
     defaultBranch = main
 
 [rerere]
 	enabled = true
+
+#-------------------------------------------------------------- identity ---
+#
+# Who you are depends on where the repo sits. Everything signs with SSH, so
+# the signature format never varies and nothing has to switch it.
+#
+# Neither file below is in this repo, which is public. bootstrap.sh copies
+# each from a template in git/ when it is missing, and you fill in the name,
+# email, and signing key by hand. Order matters: git takes the last value it
+# reads, so the work include overrides the personal one.
+
+[include]
+    path = ~/.gitconfig-identity
+
+[includeIf "gitdir:~/scm/work/"]
+    path = ~/.gitconfig-work-identity

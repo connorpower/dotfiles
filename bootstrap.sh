@@ -75,6 +75,14 @@ declare -a TEMPLATE_LINKS=(
   "${HOME}/.config/kitty/os.conf -> ${HOME}/.config/kitty/<OS>.conf"
 )
 
+# Files copied, not linked. Each one holds details that differ per machine
+# and must stay out of this repo, which is public. A copy is made only when
+# the destination is missing, so your edits survive every later run.
+declare -a TEMPLATE_FILES=(
+  "${HOME}/.gitconfig-identity                   -> git/gitconfig-identity.template"
+  "${HOME}/.gitconfig-work-identity              -> git/gitconfig-work-identity.template"
+)
+
 
 ################################################################################
 # CONSTANTS
@@ -126,6 +134,7 @@ main() {
 
     created_links='false'
     backed_up_files=''
+    copied_templates=''
 
     link_files "${FILES[@]}"
 
@@ -148,13 +157,21 @@ main() {
             ;;
     esac
 
+    copy_templates
+
     if [[ -n "${backed_up_files}" ]]; then
         printf '\n%s\n' "Existing files were moved aside to make room for the symlinks:"
         printf '%s' "${backed_up_files}"
         printf '%s\n' "Delete the .backup.* copies once you're happy with the new links."
     fi
 
-    if [[ "${created_links}" == 'false' ]]; then
+    if [[ -n "${copied_templates}" ]]; then
+        printf '\n%s\n' "These files were created from templates and need your details:"
+        printf '%s' "${copied_templates}"
+        printf '%s\n' "Each one says what to put in it. Nothing tracks them, so edit them on every machine."
+    fi
+
+    if [[ "${created_links}" == 'false' ]] && [[ -z "${copied_templates}" ]]; then
         echo "no changes required"
     fi
 
@@ -278,6 +295,32 @@ link_templates() {
 	else
 	    echo "Skipping (doesn't exist): ${target}"
 	fi
+    done
+}
+
+# Copies each file in $TEMPLATE_FILES to its destination, but only when
+# nothing is there yet. These files hold per-machine details, so the script
+# never overwrites one you have already filled in.
+copy_templates() {
+    local target
+    local name
+    local name_dir_path
+
+    for mapping in "${TEMPLATE_FILES[@]}"; do
+        target="${DIR}/$(link_target "${mapping}")"
+        name=$(link_name "${mapping}")
+
+        if [[ -e "${name}" ]]; then
+            continue
+        fi
+
+        name_dir_path=$(dirname "${name}")
+        if [[ ! -d "${name_dir_path}" ]]; then
+            $dry_run mkdir -p "${name_dir_path}"
+        fi
+
+        $dry_run cp "${target}" "${name}"
+        copied_templates+="    ${name}"$'\n'
     done
 }
 
