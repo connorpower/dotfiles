@@ -64,10 +64,18 @@
 # Neither file below is in this repo, which is public. bootstrap.sh copies
 # each from a template in git/ when it is missing, and you fill in the name,
 # email, and signing key by hand. Order matters: git takes the last value it
-# reads, so the work include overrides the personal one.
+# reads, so the work includes override the personal one.
+#
+# ~/.agents holds agent worktrees and clones, and is work too. gitdir matches
+# where the .git directory lives, not the checkout, so a worktree follows its
+# main repo: an atok worktree under ~/.agents is work because atok's .git is
+# in ~/scm/work. The ~/.agents rule catches repos cloned straight into it.
 
 [include]
     path = ~/.gitconfig-identity
 
 [includeIf "gitdir:~/scm/work/"]
+    path = ~/.gitconfig-work-identity
+
+[includeIf "gitdir:~/.agents/"]
     path = ~/.gitconfig-work-identity

@@ -1,6 +1,7 @@
 # vim: set ft=gitconfig: set syntax=on:
 
-# Your work identity and signing key, used by every repo under ~/scm/work.
+# Your work identity and signing key, used by every repo under ~/scm/work
+# or ~/.agents.
 # bootstrap.sh copied this file from git/gitconfig-work-identity.template
 # because ~/.gitconfig-work-identity did not exist.
 #

@@ -70,9 +70,11 @@ Two apt packages install a binary under another name, because the obvious name w
 `git/gitconfig` is the base. Everything signs with SSH, so no part of the config switches signature format. Two things layer on top:
 
 1. `~/.gitconfig-os` — a symlink to `git/gitconfig-darwin` or `git/gitconfig-debian`. OS-specific settings such as the credential helper live here.
-2. Two identity files, included in order. `~/.gitconfig-identity` always applies. `includeIf "gitdir:~/scm/work/"` then pulls in `~/.gitconfig-work-identity`, which overrides it inside the work tree. Git takes the last value it reads, so order in the file is what makes work win.
+2. Two identity files, included in order. `~/.gitconfig-identity` always applies. Two `includeIf` rules, `gitdir:~/scm/work/` and `gitdir:~/.agents/`, then pull in `~/.gitconfig-work-identity`, which overrides it in either tree. Git takes the last value it reads, so order in the file is what makes work win.
 
-Identity follows the directory and nothing else. A repo outside `~/scm/work` gets the personal identity, wherever it pushes.
+Identity follows the directory and nothing else. A repo outside `~/scm/work` and `~/.agents` gets the personal identity, wherever it pushes.
+
+`gitdir:` matches the location of the `.git` directory, not the checkout. A linked worktree therefore takes the identity of its main repo, wherever the worktree sits. Agent tooling puts worktrees of `~/scm/work` repos under `~/.agents/worktrees/`, and they are work because their main repo is. The `~/.agents` rule covers repos cloned directly into `~/.agents`. Git has no condition that matches a worktree's own path.
 
 Neither identity file is in this repo, and neither is any key. Each holds a name, an email, and the path to a signing key, and `bootstrap.sh` copies each from a template in `git/` when the destination is missing. It never overwrites one you have filled in. The `TEMPLATE_FILES` array holds the mapping.
 
