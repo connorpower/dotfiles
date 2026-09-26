@@ -236,6 +236,12 @@ packages:
     scripts:
       universal:
         - uv@https://astral.sh/uv/install.sh
+        # No package manager ships atomic. The npm package needs node. macOS
+        # installs none, and a global install under nvm on WSL2 breaks when
+        # the node version changes. The installer instead unpacks a
+        # self-contained archive under ~/.local/share/atomic and links
+        # ~/.local/bin/atomic, which zsh/rc already puts on PATH.
+        - atomic@https://raw.githubusercontent.com/bastani-inc/atomic/main/install.sh
 
     # Homebrew packages
     darwin:
