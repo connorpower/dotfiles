@@ -1,5 +1,6 @@
 {
   "trustedformulae": [
+    "atlassian/acli/acli",
     "can1357/tap/omp",
     "facebook/fb/idb-cli",
     "facebook/fb/idb-companion",
