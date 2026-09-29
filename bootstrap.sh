@@ -49,6 +49,7 @@ declare -a FILES_KITTY=(
 declare -a FILES_DARWIN=(
   "${HOME}/.gitconfig-os                          -> git/gitconfig-darwin"
   "${HOME}/.gnupg/gpg-agent.conf                  -> gpg/gpg-agent-darwin.conf"
+  "${HOME}/.homebrew/trust.json                   -> homebrew/trust.json"
 )
 
 declare -a FILES_DEBIAN=(

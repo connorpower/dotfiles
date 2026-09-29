@@ -256,15 +256,18 @@ function pkg_install() (
 # Homebrew refuses to load a formula from a third-party tap until the formula
 # is trusted, and answers `brew install` with "Refusing to load formula ...
 # from untrusted tap" until then. The trust store is ~/.homebrew/trust.json,
-# outside this repo. Versions without `brew trust` need no trust, so skip the
-# call when the subcommand is absent.
+# which bootstrap.sh links to homebrew/trust.json in this repo. Write only the
+# entries that are missing, so a normal run leaves that linked file alone. A
+# Homebrew without `brew trust` needs no trust, so skip the call there.
 #
 # Arguments
 # $1: fully qualified formula name, e.g. 'hashicorp/tap/terraform'
 function brew_trust() (
-    if brew trust --help &> /dev/null; then
-        ${dry_run} brew trust --formula "${1}"
+    brew trust --help &> /dev/null || return 0
+    if brew trust --json v1 2>/dev/null | grep -qF "\"${1}\""; then
+        return 0
     fi
+    ${dry_run} brew trust --formula "${1}"
 )
 
 function cargo_install() {

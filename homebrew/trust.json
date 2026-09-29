@@ -1,0 +1,11 @@
+{
+  "trustedformulae": [
+    "can1357/tap/omp",
+    "facebook/fb/idb-cli",
+    "facebook/fb/idb-companion",
+    "hashicorp/tap/terraform"
+  ],
+  "trustedcasks": [
+    "steipete/tap/codexbar"
+  ]
+}

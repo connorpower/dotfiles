@@ -56,6 +56,20 @@ Do not link `~/.claude/skills` itself. Claude Code owns that directory: it write
 
 The `npm` sub-key is for tools that ship only as an npm package. Both it and `scripts` take `universal` and per-OS lists, the same as the package-manager keys. `npm_install()` runs `npm install -g` with no prior check, so each run also updates the package. node is a work-only dependency: brew installs it from `work.darwin`, and `bootstrap()` installs nvm and the current LTS on Debian. A global npm install belongs to the node version that made it, so an `nvm install` of a new LTS drops every package under this key. Re-run `install.sh` after one.
 
+### Homebrew tap trust
+
+Homebrew refuses to load a formula from a third-party tap until that formula is trusted, and answers `brew install` with "Refusing to load formula ... from untrusted tap". Three taps here need it: `hashicorp/tap`, `facebook/fb`, and `atlassian/homebrew-acli`.
+
+`homebrew/trust.json` holds the trusted entries, and `bootstrap.sh` links it to `~/.homebrew/trust.json` through `FILES_DARWIN`. Homebrew reads `$XDG_CONFIG_HOME/homebrew/trust.json` instead when that variable is set. Nothing in this repo sets it, so the link covers every machine here.
+
+Either order works on a new machine, and the order decides how tidy the result is. README puts `install.sh` first, before any symlink exists, so `brew_trust()` in `install.sh` writes each missing entry to a real file and the install proceeds. `bootstrap.sh` then moves that file aside as a backup and links this one.
+
+Run `bootstrap.sh` first and no backup appears. It creates `~/.homebrew` and links the file before Homebrew is installed, so the entries are already in place when the first `brew install` needs them. `brew_trust()` finds each one and writes nothing. Both of its other steps, the allowed-signers file and the nvim plugins, skip when git or nvim is missing, so running it on a machine with no packages is safe.
+
+On a machine that is already set up, every entry is present, `brew_trust()` writes nothing, and the linked file stays untouched.
+
+Add a formula to `homebrew/trust.json` whenever you add a tapped formula to `packages.yml`. A `brew trust` run writes through the symlink and lands in this repo, where it shows up as a change to commit.
+
 Prefer a prebuilt package over a source build. Put a Rust tool in `cargo` only when no package manager ships it, and in `cargo-<os>` (for example `cargo-debian`) when one package manager lacks it and the others do not. A source build costs compile time on every machine, and it trades a reviewed distribution package for an unreviewed one. Check the package before you move a tool: `calc` on crates.io is a different program from the `calc` that brew, pacman, and apt ship.
 
 Two apt packages install a binary under another name, because the obvious name was already taken. `bat` installs `batcat`, and `fd-find` installs `fdfind`. The `zsh` and `git` configs call both tools by their upstream names, so `configure()` in `install.sh` links each one into `~/.local/bin`.
