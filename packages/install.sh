@@ -158,7 +158,12 @@ function bootstrap() {
 	    fi
 	    # shellcheck source=/dev/null
 	    source "${HOME}/.nvm/nvm.sh"
-	    if ! nvm ls --no-colors 2>/dev/null | grep -q 'lts'; then
+	    # `nvm ls` appends the alias list, and that list always carries an
+	    # lts/* line, so a grep for 'lts' matches on a machine that has nvm
+	    # and no node at all. Test for node itself. Sourcing nvm.sh activates
+	    # the default alias, so an absent node means nothing is installed.
+	    # The npm key below needs npm on PATH for the rest of this script.
+	    if ! command -v node &> /dev/null; then
 	        ${dry_run} nvm install --lts
 	    fi
 	    ;;

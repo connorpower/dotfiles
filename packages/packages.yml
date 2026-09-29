@@ -242,6 +242,12 @@ packages:
         # self-contained archive under ~/.local/share/atomic and links
         # ~/.local/bin/atomic, which zsh/rc already puts on PATH.
         - atomic@https://raw.githubusercontent.com/bastani-inc/atomic/main/install.sh
+      debian:
+        # apt has no rtk. The installer checks the release checksums.txt and
+        # drops a prebuilt binary in ~/.local/bin. macOS takes the brew bottle
+        # below. Do not move this to cargo: the rtk on crates.io is Rust Type
+        # Kit, an unrelated program.
+        - rtk@https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh
 
     # Global npm installs, for tools that ship no package-manager package.
     # node comes from brew on macOS and from nvm on WSL2 Debian. A global
@@ -261,6 +267,7 @@ packages:
       - libpq # keg-only; zsh.d sets PQ_LIB_DIR so linkers can find it
       - node # provides node and npm, for the npm key above
       - protobuf # provides the `protoc` compiler
+      - rtk # homebrew-core bottle; see the scripts key for the Debian install
 
     # Debian packages
     debian:

@@ -27,3 +27,6 @@ Temporary Items
 .apdisk
 
 *.swp
+
+# graft writes a per-repo cache here, including verbatim prompt text
+graft/
