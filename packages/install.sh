@@ -107,11 +107,16 @@ function bootstrap() {
             # Terraform was relicensed (BUSL) and removed from homebrew/core;
             # it now lives only in HashiCorp's own tap.
             ${dry_run} brew tap hashicorp/tap
+            brew_trust hashicorp/tap/terraform
 
-            # idb ships only in Meta's tap, and no personal machine installs
-            # it. Tap on a work install alone.
+            # idb and acli ship only in their vendors' taps, and no personal
+            # machine installs either. Tap on a work install alone.
             if [[ " ${cats[*]:-} " == *' work '* ]]; then
                 ${dry_run} brew tap facebook/fb
+                ${dry_run} brew tap atlassian/homebrew-acli
+                brew_trust facebook/fb/idb-cli
+                brew_trust facebook/fb/idb-companion
+                brew_trust atlassian/acli/acli
             fi
             ;;
         'arch')
@@ -150,6 +155,19 @@ function bootstrap() {
 	    # neovim-ppa/unstable tracks latest stable nvim releases (0.11+)
 	    if ! apt-cache policy | grep -q neovim-ppa; then
 	        ${dry_run} sudo add-apt-repository -y ppa:neovim-ppa/unstable
+	        ${dry_run} sudo apt-get update
+	    fi
+	    # acli ships in Atlassian's own apt repository, and no personal machine
+	    # installs it. Add the repository on a work install alone. The key is
+	    # dearmored into /etc/apt/keyrings and named in the sources entry, so
+	    # it signs this repository and nothing else.
+	    if [[ " ${cats[*]:-} " == *' work '* ]] \
+	        && [ ! -f /etc/apt/sources.list.d/acli.list ]; then
+	        ${dry_run} sudo apt-get install -y wget gnupg2
+	        ${dry_run} sudo mkdir -p -m 755 /etc/apt/keyrings
+	        ${dry_run} sudo sh -c 'wget -nv -O- https://acli.atlassian.com/gpg/public-key.asc | gpg --dearmor -o /etc/apt/keyrings/acli-archive-keyring.gpg'
+	        ${dry_run} sudo chmod go+r /etc/apt/keyrings/acli-archive-keyring.gpg
+	        ${dry_run} sudo sh -c "echo 'deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/acli-archive-keyring.gpg] https://acli.atlassian.com/linux/deb stable main' > /etc/apt/sources.list.d/acli.list"
 	        ${dry_run} sudo apt-get update
 	    fi
 	    # nvm
@@ -233,6 +251,20 @@ function pkg_install() (
             exit 1 # unreachable
             ;;
     esac
+)
+
+# Homebrew refuses to load a formula from a third-party tap until the formula
+# is trusted, and answers `brew install` with "Refusing to load formula ...
+# from untrusted tap" until then. The trust store is ~/.homebrew/trust.json,
+# outside this repo. Versions without `brew trust` need no trust, so skip the
+# call when the subcommand is absent.
+#
+# Arguments
+# $1: fully qualified formula name, e.g. 'hashicorp/tap/terraform'
+function brew_trust() (
+    if brew trust --help &> /dev/null; then
+        ${dry_run} brew trust --formula "${1}"
+    fi
 )
 
 function cargo_install() {

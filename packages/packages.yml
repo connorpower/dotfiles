@@ -259,6 +259,7 @@ packages:
 
     # Homebrew packages
     darwin:
+      - atlassian/acli/acli # Atlassian CLI, from the atlassian/homebrew-acli tap
       - cargo-nextest # provides `cargo nextest`
       - cocoapods # provides the `pod` CLI, for iOS dependencies
       - facebook/fb/idb-cli # the `idb` CLI, from the facebook/fb tap
@@ -271,5 +272,6 @@ packages:
 
     # Debian packages
     debian:
+      - acli # Atlassian CLI, from the apt repository bootstrap() adds
       - protobuf-compiler # provides the `protoc` compiler
 
