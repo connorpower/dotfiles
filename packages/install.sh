@@ -234,6 +234,16 @@ function cargo_install() {
     ${dry_run} cargo install --locked "${1}"
 }
 
+# Install a global npm package. npm resolves the latest version on every run,
+# so this installs and updates alike.
+#
+# Arguments
+# $1: package name, e.g. '@nanonets/graft'
+function npm_install() (
+    echo "installing ${1}..."
+    ${dry_run} npm install -g "${1}"
+)
+
 # Install a tool via its own curl-piped install script, skipping it if the
 # tool is already on PATH.
 #
@@ -326,6 +336,12 @@ function install_all() {
         while read -r script; do
             (script_install "${script//\"/}") </dev/null
         done < <(yq ".packages.${category}.scripts | [.universal, .${OS}] | .[][]" "${PACKAGE_LIST}")
+
+        # Install global npm packages. node comes from the package lists above
+        # on macOS, and from nvm in bootstrap() on WSL2 Debian.
+        while read -r pkg; do
+            (npm_install "${pkg//\"/}") </dev/null
+        done < <(yq ".packages.${category}.npm | [.universal, .${OS}] | .[][]" "${PACKAGE_LIST}")
     done
 }
 

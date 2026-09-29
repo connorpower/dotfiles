@@ -243,6 +243,14 @@ packages:
         # ~/.local/bin/atomic, which zsh/rc already puts on PATH.
         - atomic@https://raw.githubusercontent.com/bastani-inc/atomic/main/install.sh
 
+    # Global npm installs, for tools that ship no package-manager package.
+    # node comes from brew on macOS and from nvm on WSL2 Debian. A global
+    # install belongs to the node version that made it, so an nvm switch to a
+    # new LTS drops these. Re-run this script after one.
+    npm:
+      universal:
+        - "@nanonets/graft" # provides the `graft` CLI
+
     # Homebrew packages
     darwin:
       - cargo-nextest # provides `cargo nextest`
@@ -251,6 +259,7 @@ packages:
       - facebook/fb/idb-companion # the `idb_companion` server, same tap
       - fvm # Flutter version manager; work.zsh puts ~/fvm/default/bin on PATH
       - libpq # keg-only; zsh.d sets PQ_LIB_DIR so linkers can find it
+      - node # provides node and npm, for the npm key above
       - protobuf # provides the `protoc` compiler
 
     # Debian packages
