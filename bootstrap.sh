@@ -34,8 +34,6 @@ declare -a FILES=(
   "${HOME}/.config/starship.toml                 -> starship/starship.toml"
   "${HOME}/.config/ranger/rc.conf                -> ranger/rc.conf"
   "${HOME}/.claude/skills/dotfiles               -> agents"
-  "${HOME}/.agents/skills/technical-writing      -> agents/skills/technical-writing"
-  "${HOME}/.agents/skills/write-as-connor        -> agents/skills/write-as-connor"
   "${HOME}/bin                                   -> bin"
   "${HOME}/wallpapers                            -> wallpapers"
 )
@@ -94,6 +92,18 @@ declare -a TEMPLATE_FILES=(
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 SCRIPT=$(basename "${0}")
 OS="$(${DIR}/bin/detect-os)"
+
+# Every directory in agents/skills/ is linked into ~/.agents/skills/, where
+# Codex and the ChatGPT desktop app look for it. The list is derived here
+# rather than written out in $FILES, so adding a skill is a new directory and
+# nothing else. Claude Code reads the same skills through the single
+# ~/.claude/skills/dotfiles link, which covers the whole plugin.
+for skill in "${DIR}"/agents/skills/*/; do
+    [[ -f "${skill}SKILL.md" ]] || continue
+    skill_name="$(basename "${skill}")"
+    FILES+=("${HOME}/.agents/skills/${skill_name} -> agents/skills/${skill_name}")
+done
+unset skill skill_name
 
 ################################################################################
 # MAIN

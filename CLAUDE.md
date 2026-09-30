@@ -8,6 +8,8 @@ Personal dotfiles managed via symlinks. No build step, no tests. Everything is p
 
 Supported targets: `darwin` (macOS), `debian` (Ubuntu/WSL2), `arch` (Arch Linux), `msys2` (Windows).
 
+There is no code graph here, on purpose. `graft` indexes a codebase so that an agent can search summaries instead of source, which earns nothing against 79 files of config and two bash scripts. Running `graft init` in this repo writes per-file cards, a `.ignore` file, and machine-wide hook entries, so do not run it. `graft uninstall --no-global` reverses it and leaves other repos alone. The machine-wide hooks still write `graft/.cache`, which `.gitignore` covers.
+
 ## Key scripts
 
 **`bootstrap.sh`** — creates symlinks from repo files to their system destinations.
@@ -52,9 +54,9 @@ The mirror is what keeps paths out of the manifest. A plugin scans `skills/` und
 
 Skills loaded this way are namespaced, so `technical-writing` is invoked as `dotfiles:technical-writing`.
 
-**Codex and ChatGPT.** Codex scans `~/.agents/skills/` for user-level skills, and `.agents/skills/` in every directory from the working directory up to the repository root. It follows symlinks. `FILES` therefore links each skill separately into `~/.agents/skills/<name>`. A new skill needs a new line there.
+**Codex and ChatGPT.** Codex scans `~/.agents/skills/` for user-level skills, and `.agents/skills/` in every directory from the working directory up to the repository root. It follows symlinks. Each skill is linked separately into `~/.agents/skills/<name>`, because linking the parent would pull in whatever Codex and ChatGPT install there themselves.
 
-Add a skill with `mkdir agents/skills/<name>` and a `SKILL.md` inside it, then add the `~/.agents/skills/<name>` mapping to `FILES` and re-run `bootstrap.sh`.
+`bootstrap.sh` derives that list rather than holding it. A loop after the `CONSTANTS` section appends one mapping to `FILES` for every directory in `agents/skills/` that holds a `SKILL.md`. Adding a skill is therefore `mkdir agents/skills/<name>`, a `SKILL.md` inside it, and `bootstrap.sh`. No edit to the script, and `bootstrap.sh -l` lists the new skill like any other destination.
 
 Claude Code puts a plugin's commands, hooks, and output styles beside its skills, which lands them at `agents/commands/`, `agents/hooks/`, and `agents/output-styles/`. Each one reads correctly under `agents/`. The single collision is subagents, which Claude Code expects at `agents/agents/`.
 
