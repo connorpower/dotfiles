@@ -28,5 +28,8 @@ Temporary Items
 
 *.swp
 
-# graft writes a per-repo cache here, including verbatim prompt text
+# graft writes a per-repo cache here, including verbatim prompt text.
+# .ignore is its ripgrep re-admit file, which it rewrites whenever it
+# runs. .claude/settings.json asks it to write neither.
 graft/
+.ignore

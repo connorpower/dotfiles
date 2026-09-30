@@ -1,0 +1,7 @@
+{
+  "env": {
+    "GRAFT_NO_REFRESH": "1",
+    "GRAFT_NO_IGNORE": "1",
+    "GRAFT_NO_GITIGNORE": "1"
+  }
+}
