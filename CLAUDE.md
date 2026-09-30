@@ -40,15 +40,29 @@ If a real file (or stale symlink) already sits at a destination, `bootstrap.sh` 
 
 The `TEMPLATE_LINKS` mechanism handles files where the target path contains `<OS>` — e.g., `kitty/os.conf` resolves to `kitty/kitty-darwin.conf` on macOS.
 
-### Claude Code skills
+### Skills
 
-`claude/dotfiles-plugin/` is a Claude Code plugin, linked to `~/.claude/skills/dotfiles`. Any directory placed directly in `~/.claude/skills/` that carries a `.claude-plugin/plugin.json` is adopted as a plugin (`dotfiles@skills-dir`) at the start of the next session. Verify with `claude plugin list` and `claude plugin details dotfiles`.
+`agents/` is the version-controlled copy of `~/.agents/`, the cross-vendor directory that Codex and the ChatGPT desktop app read. It mirrors that layout exactly, so `agents/skills/<name>` in this repo is `~/.agents/skills/<name>` on the machine. Nothing in the path names one vendor, because nothing in it belongs to one.
 
-Add a skill with `mkdir claude/dotfiles-plugin/skills/<name>` and a `SKILL.md` inside it. No `bootstrap.sh` change is needed — the single symlink covers the whole plugin. The directory can also hold `agents/`, `commands/` and `hooks/`.
+`agents/skills/` holds the skills. Each one is a directory with a `SKILL.md` inside it, whose frontmatter carries a `name` and a `description`. That format is the Agent Skills standard, which Claude Code, Codex, and ChatGPT all read, so one copy of a skill serves every agent. Two sets of symlinks put it where each agent looks.
+
+**Claude Code.** `agents/` is also a Claude Code plugin, linked to `~/.claude/skills/dotfiles`. Any directory placed directly in `~/.claude/skills/` that carries a `.claude-plugin/plugin.json` is adopted as a plugin (`dotfiles@skills-dir`) at the start of the next session. Verify with `claude plugin list` and `claude plugin details dotfiles`. The one link covers every skill, so a new skill needs no `bootstrap.sh` change for Claude.
+
+The mirror is what keeps paths out of the manifest. A plugin scans `skills/` under its own root by default, and the `~/.agents/` layout already puts them there, so `.claude-plugin/plugin.json` carries metadata and nothing else. Run `claude plugin validate ./agents` after changing it.
 
 Skills loaded this way are namespaced, so `technical-writing` is invoked as `dotfiles:technical-writing`.
 
-Do not link `~/.claude/skills` itself. Claude Code owns that directory: it writes the claude.ai sync bucket to `~/.claude/skills/synced/`, and company or project tooling may add sibling entries. Linking the parent pulls all of that into this repo.
+**Codex and ChatGPT.** Codex scans `~/.agents/skills/` for user-level skills, and `.agents/skills/` in every directory from the working directory up to the repository root. It follows symlinks. `FILES` therefore links each skill separately into `~/.agents/skills/<name>`. A new skill needs a new line there.
+
+Add a skill with `mkdir agents/skills/<name>` and a `SKILL.md` inside it, then add the `~/.agents/skills/<name>` mapping to `FILES` and re-run `bootstrap.sh`.
+
+Claude Code puts a plugin's commands, hooks, and output styles beside its skills, which lands them at `agents/commands/`, `agents/hooks/`, and `agents/output-styles/`. Each one reads correctly under `agents/`. The single collision is subagents, which Claude Code expects at `agents/agents/`.
+
+An `agents/openai.yaml` beside a `SKILL.md` sets the display name, description, and default prompt that the ChatGPT desktop app shows for that skill. Claude Code ignores the file. It sits inside one skill and has nothing to do with the top-level `agents/`.
+
+Do not link `~/.claude/skills` or `~/.agents/skills` itself, only the entries inside them. Claude Code owns the first: it writes the claude.ai sync bucket to `~/.claude/skills/synced/`, and company or project tooling may add sibling entries. The second collects whatever Codex and ChatGPT install locally. Linking either parent pulls all of that into this repo.
+
+`~/.codex/skills/` is a third location, written by the ChatGPT desktop app when it installs a skill. Nothing in this repo links there. A skill present both there and in `~/.agents/skills/` appears twice in the Codex skill selector, because Codex lists duplicate names rather than merging them.
 
 ### Package model
 

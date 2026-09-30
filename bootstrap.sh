@@ -33,7 +33,9 @@ declare -a FILES=(
   "${HOME}/.config/bat/themes/catppuccin.tmTheme -> bat/catppuccin.tmTheme"
   "${HOME}/.config/starship.toml                 -> starship/starship.toml"
   "${HOME}/.config/ranger/rc.conf                -> ranger/rc.conf"
-  "${HOME}/.claude/skills/dotfiles               -> claude/dotfiles-plugin"
+  "${HOME}/.claude/skills/dotfiles               -> agents"
+  "${HOME}/.agents/skills/technical-writing      -> agents/skills/technical-writing"
+  "${HOME}/.agents/skills/write-as-connor        -> agents/skills/write-as-connor"
   "${HOME}/bin                                   -> bin"
   "${HOME}/wallpapers                            -> wallpapers"
 )

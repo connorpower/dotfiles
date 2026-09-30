@@ -1,6 +1,6 @@
 {
   "name": "dotfiles",
-  "description": "Personal skills, agents and commands from the dotfiles repo",
+  "description": "Personal skills from the dotfiles repo, shared with Codex and ChatGPT",
   "version": "0.1.0",
   "author": {
     "name": "Connor Power"

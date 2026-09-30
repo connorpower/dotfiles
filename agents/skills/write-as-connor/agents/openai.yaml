@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write as Connor"
+  short_description: "Draft candid, warm prose in Connor Power's voice"
+  default_prompt: "Use $write-as-connor to turn my notes into a clear draft in my voice for me to review and post."
