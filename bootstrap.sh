@@ -34,6 +34,8 @@ declare -a FILES=(
   "${HOME}/.config/starship.toml                 -> starship/starship.toml"
   "${HOME}/.config/ranger/rc.conf                -> ranger/rc.conf"
   "${HOME}/.claude/skills/dotfiles               -> agents"
+  "${HOME}/.claude/CLAUDE.md                     -> agents/AGENTS.md"
+  "${HOME}/.claude/RTK.md                        -> agents/RTK.md"
   "${HOME}/bin                                   -> bin"
   "${HOME}/wallpapers                            -> wallpapers"
 )
