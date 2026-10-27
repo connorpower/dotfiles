@@ -33,6 +33,7 @@ declare -a BOOTSTRAP_REPO_PKGS=(
     'neovim'
     'terraform'
     'acli'
+    'terraform-ls'
 )
 
 ###############################################################################
@@ -276,6 +277,12 @@ function bootstrap() {
     # fail with "requires rustc X". Update on every run.
     if command -v rustup &> /dev/null; then
         ${dry_run} rustup update stable
+        # The language server for Rust. On macOS, brew installs it from the
+        # darwin list instead. The rustup component tracks the toolchain it
+        # analyzes, which apt has no package for.
+        if [[ "${OS}" == 'debian' ]]; then
+            ${dry_run} rustup component add rust-analyzer
+        fi
         # zsh/zsh.d/rust.zsh updates the toolchain on the first cargo call each
         # week and reads this stamp, so record that an update just happened.
         if [[ -z "${dry_run}" ]]; then
@@ -354,7 +361,10 @@ function script_install() (
     # when the download fails.
     local script
     script="$(${dry_run} curl -fsSL "${url}")" || return 1
-    ${dry_run} sh -c "${script}"
+    # Installers built with cargo-dist, uv's among them, otherwise append a
+    # PATH line to ~/.zshrc. That file is zsh/rc in this repo, which already
+    # puts ~/.local/bin on PATH.
+    INSTALLER_NO_MODIFY_PATH=1 ${dry_run} sh -c "${script}"
 )
 
 # Installs actionlint from its GitHub release into ~/.local/bin, after

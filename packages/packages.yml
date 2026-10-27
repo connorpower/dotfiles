@@ -60,6 +60,7 @@ packages:
       - gh
       - neovim
       - terraform # from the HashiCorp apt repository bootstrap() adds
+      - terraform-ls # Terraform language server, from the same repository
 
     # Tools that ship their own curl-piped install script rather than a
     # package-manager package. Entries are 'name@url'; name is checked on
@@ -68,12 +69,22 @@ packages:
       debian:
         - herdr@https://herdr.dev/install.sh
         - omp@https://omp.sh/install # prebuilt binary, checksum verified
+        # apt has no uv. The installer drops uv and uvx in ~/.local/bin.
+        # macOS takes the brew formula below.
+        - uv@https://astral.sh/uv/install.sh
+
+    # Global npm installs, for tools that no package manager here ships.
+    # node comes from nvm, which bootstrap() installs on Debian. A global
+    # install belongs to the node version that made it, so an nvm switch to a
+    # new LTS drops these. Re-run this script after one.
+    npm:
+      debian:
+        - bash-language-server # macOS takes the brew formula below
     darwin:
       # Base Dev Tools
       - pkg-config
       # General
       - neovim
-      - rust-analyzer
       - kitty
       - coreutils
       - bat-extras
@@ -82,6 +93,12 @@ packages:
       - gnu-tar
       - pinentry-mac
       - hashicorp/tap/terraform
+      # Language servers and Python tools. Debian installs rust-analyzer with
+      # rustup in bootstrap(), and the others from the lists above.
+      - rust-analyzer
+      - bash-language-server
+      - terraform-ls
+      - uv # provides uv and uvx
       # Rice
       - pipes-sh
       # Dev
@@ -145,7 +162,6 @@ packages:
 
     scripts:
       universal:
-        - uv@https://astral.sh/uv/install.sh
         # No package manager ships atomic. The npm package needs node. macOS
         # installs none, and a global install under nvm on WSL2 breaks when
         # the node version changes. The installer instead unpacks a
@@ -192,6 +208,7 @@ commands:
   base:
     universal:
       - actionlint
+      - bash-language-server
       - bat
       - bacon
       - btm
@@ -216,15 +233,18 @@ commands:
       - nvim
       - omp
       - rg
+      - rust-analyzer
       - shellcheck
       - starship
       - terraform
+      - terraform-ls
       - aws
       - tig
       - tldr
       - tmux
       - unzip
-      - viu
+      - uv
+      - uvx
       - zsh
 
   personal:
@@ -239,4 +259,3 @@ commands:
       - cargo-nextest
       - graft
       - protoc
-      - uv
