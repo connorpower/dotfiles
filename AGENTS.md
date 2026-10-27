@@ -8,7 +8,7 @@ Personal dotfiles managed via symlinks. No build step, no tests. Everything is p
 
 Supported targets: `darwin` (macOS), `debian` (Ubuntu 26.04 LTS or later, including WSL2), `msys2` (Windows).
 
-There is no code graph here, on purpose. `graft` indexes a codebase so that an agent can search summaries instead of source, which earns nothing against 69 files of config and two bash scripts. Do not run `graft init` here, and do not commit anything it writes.
+There is no code graph here, on purpose. `graft` indexes a codebase so that an agent can search summaries instead of source, which earns nothing against 64 files of config and two bash scripts. Do not run `graft init` here, and do not commit anything it writes.
 
 `graft uninstall --no-global` clears its files from this repo but does not keep them away. Its hooks are registered machine-wide in `~/.claude/settings.json`, so they still run here and write `graft/` and `.ignore` again. A full `graft uninstall` would stop that by removing those hook entries, and would equally stop graft in the repos where it earns its keep.
 
