@@ -41,9 +41,6 @@ timer_announce() {
         'darwin')
             say "${2}"
             ;;
-        'arch')
-            echo "TODO..." >&2
-            ;;
         *)
             echo "unsupported OS" >&2
         ;;

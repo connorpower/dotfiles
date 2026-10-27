@@ -22,7 +22,6 @@ Files are organized by topic:
 |---|---|
 | macOS | current |
 | Ubuntu, including WSL2 | 26.04 LTS or later |
-| Arch Linux | current |
 | Windows (MSYS2) | current |
 
 Ubuntu 26.04 is the oldest supported Ubuntu. The package lists assume its apt
@@ -108,7 +107,7 @@ declare -a FILES=(
 )
 ```
 
-OS-specific arrays (`FILES_DARWIN` / `FILES_DEBIAN` / `FILES_ARCH`,
+OS-specific arrays (`FILES_DARWIN` / `FILES_DEBIAN`,
 `FILES_KITTY`) are merged in automatically for the detected OS.
 
 ### Usage

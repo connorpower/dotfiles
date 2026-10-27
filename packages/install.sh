@@ -172,21 +172,6 @@ function bootstrap() {
                 brew_trust atlassian/acli/acli
             fi
             ;;
-        'arch')
-            ${dry_run} sudo pacman -Syy
-            pkg_install yq
-            pkg_install git
-            pkg_install base-devel
-
-            # AUR support
-            if ! command -v yay &> /dev/null; then
-                ${dry_run} git clone https://aur.archlinux.org/yay.git /tmp/install-yay
-                ${dry_run} cd /tmp/install-yay
-                ${dry_run} makepkg --noconfirm -si
-                ${dry_run} cd -
-                ${dry_run} rm -rf /tmp/install-yay
-            fi
-            ;;
 	'debian')
 	    ${dry_run} sudo apt-get update
 	    ${dry_run} sudo apt-get upgrade -y
@@ -304,21 +289,12 @@ function bootstrap() {
 #
 # Arguments
 # $1: package name (required)
-# $2: repo info (optional, eg 'aur' on arch)
 function pkg_install() (
     echo "installing ${1}..."
     case "${OS}" in
         'darwin')
             # Don't quote "$1" to allow parsing args like "--cask cask-name"
             ${dry_run} brew install $1
-            ;;
-        'arch')
-            if [[ "${2:-}" == 'arch-aur' ]]; then
-                # Never run with sudo for AUR packages
-                ${dry_run} yay --needed --aur -S "${1}"
-            else
-                ${dry_run} sudo pacman --needed --noconfirm -S "${1}"
-            fi
             ;;
 	'debian')
 	    ${dry_run} sudo apt-get install -y "${1}"
@@ -430,7 +406,7 @@ function configure() {
     fi
 
     # actionlint: no apt package on the Ubuntu releases supported here, and it
-    # is a Go binary, so cargo can't build it. brew and pacman package it.
+    # is a Go binary, so cargo can't build it. brew packages it.
     if [[ "${OS}" == 'debian' ]] && ! command -v actionlint &> /dev/null; then
         attempt configure install_actionlint
     fi
@@ -445,7 +421,7 @@ function configure() {
     fi
 
     case "${OS}" in
-        'debian'|'arch')
+        'debian')
             if [[ "${SHELL}" != "$(command -v zsh)" ]]; then
                 ${dry_run} sudo usermod -s "$(command -v zsh)" "${USER}"
                 echo "Default shell changed to zsh — takes effect on next login"
@@ -513,7 +489,7 @@ function entries() {
 # Returns 0 when it exists, 1 when it does not and 2 when it can't be checked.
 #
 # Arguments
-# $1: kind: pkg, aur, cargo, script or npm
+# $1: kind: pkg, cargo, script or npm
 # $2: the entry as written in packages.yml
 function check_entry() {
     local kind="${1}"
@@ -534,9 +510,6 @@ function check_entry() {
                     [[ " ${BOOTSTRAP_REPO_PKGS[*]} " == *" ${entry} "* ]] && return 2
                     return 1
                     ;;
-                'arch')
-                    pacman -Si "${entry}" &> /dev/null || pacman -Sg "${entry}" &> /dev/null
-                    ;;
                 'darwin')
                     # A formula from a third-party tap is unknown until tapped.
                     [[ "${entry}" == */*/* ]] && return 2
@@ -546,11 +519,6 @@ function check_entry() {
                     return 2
                     ;;
             esac
-            ;;
-        'aur')
-            local reply
-            reply="$(curl -gfsS --max-time 20 "https://aur.archlinux.org/rpc/v5/info?arg[]=${entry}")" || return 2
-            [[ "${reply}" != *'"resultcount":0'* ]]
             ;;
         'cargo')
             local crate="${entry%%@*}"
@@ -584,14 +552,11 @@ function check_all() {
         # kind and the yq path under the category, separated by a space
         for spec in \
             'pkg .universal' "pkg .${OS}" \
-            'aur ."arch-aur"' \
             'cargo .cargo' "cargo .\"cargo-${OS}\"" \
             'script .scripts.universal' "script .scripts.${OS}" \
             'npm .npm.universal' "npm .npm.${OS}"; do
             kind="${spec%% *}"
             path="${spec#* }"
-            # AUR entries only exist for Arch.
-            [[ "${kind}" == 'aur' && "${OS}" != 'arch' ]] && continue
 
             while read -r entry; do
                 [[ -n "${entry}" ]] || continue
@@ -732,13 +697,6 @@ function install_all() {
             # Keep package installers from consuming the remaining package list.
             attempt "${category}" pkg_install "${pkg//\"/}"
         done < <(yq ".packages.${category} | [.universal, .${OS}] | .[][]" "${PACKAGE_LIST}");
-
-        # If we're on arch, also install AUR packages
-        if [[ "${OS}" == 'arch' ]]; then
-            while read -r pkg; do
-                attempt "${category}" pkg_install "${pkg//\"/}" 'arch-aur'
-            done < <(yq ".packages.${category} | [.\"arch-aur\"] | .[][]" "${PACKAGE_LIST}")
-        fi
 
         # Install Rust cargo binaries. The cargo-<os> key is for crates that
         # one package manager has no prebuilt package for.

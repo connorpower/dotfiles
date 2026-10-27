@@ -8,12 +8,12 @@ packages:
     # Packages built from source with cargo. Prefer a prebuilt package from
     # the OS package manager and only fall back to here when there is none.
     cargo:
-      # The calc in brew, pacman and apt is a different program: Landon Curt
+      # The calc in brew and apt is a different program: Landon Curt
       # Noll's C calculator, which installs a binary of the same name.
       - calc
 
-    # Rust tools that apt does not package. macOS and Arch install these
-    # prebuilt from the lists below.
+    # Rust tools that apt does not package. macOS installs these prebuilt
+    # from the list below.
     cargo-debian:
       - bacon
       - bottom@0.12.1 # 0.13.0+ needs unstable if-let-guards despite declaring rust-version 1.85 (rust-lang/rust#51114)
@@ -68,89 +68,6 @@ packages:
       debian:
         - herdr@https://herdr.dev/install.sh
         - omp@https://omp.sh/install # prebuilt binary, checksum verified
-      arch:
-        - herdr@https://herdr.dev/install.sh
-        - omp@https://omp.sh/install
-
-    arch:
-      # Base Tools
-      - git
-      - base-devel
-      - aws-cli
-      - bat-extras
-      - neovim
-      - man-db
-      - ntp
-      # Networking
-      - openssh
-      - nftables
-      - dhcpcd
-      # Hardware
-      - amd-ucode
-      - r8168
-      - iw
-      - netctl
-      - dialog
-      - wpa_supplicant
-      - openresolv
-      - bluez
-      - bluez-utils
-      # Compositor & GUI
-      - libinput
-      - waybar
-      - wl-clipboard
-      - swaylock
-      - gnome-themes-extra
-      - gnome-tweaks
-      # Rice
-      # General
-      - ttf-nerd-fonts-symbols # for starship
-      - pacman-contrib
-      - perl-rename
-      - light
-      - timew
-      - wget
-      - zathua-pdf-mupdf
-      - ranger
-      - python-pillow # required for ranger img preview in kitty
-      - gimp
-      - grim
-      - slurp
-      - drawio-desktop-bin
-      - unzip
-      - shotwell
-      # Audio
-      - sof-firmware
-      - alsa-firmware
-      - alsa-ucm-conf
-      - alsa-utils
-      - pulseaudio-bluetooth
-      - pulseadio
-      - pamixer
-      # Dev
-      - actionlint
-      - gnu-netcat
-      - github-cli
-      - glab
-      # Rust CLI tools
-      - bacon
-      - bottom
-      - cargo-update
-      - dust
-      - fd
-      - starship
-      - viu
-
-    arch-aur:
-      - terraform-bin # BUSL relicense removed terraform from the official repos
-      # Compositor
-      - hyprland-git
-      # General
-      - rofi-lbonn-wayland
-      - hyprpicker-git
-      # Fonts
-      - ttf-recursive
-
     darwin:
       # Base Dev Tools
       - pkg-config
@@ -205,24 +122,6 @@ packages:
       - yt-dlp
       - ffmpeg
 
-    # Arch official packages
-    arch:
-      - signal-desktop
-      - pdftk
-      - nodejs
-      - npm
-
-    # Arch AUR packages
-    arch-aur:
-      # General
-      - 1password-cli
-      - tidal-hifi-bin
-      - tasksh
-      # Rice
-      - cava
-      - pipes.sh
-      - cbonsai
-
     # Homebrew packages
     darwin:
       # General
@@ -236,7 +135,7 @@ packages:
   # Work
   # --------
   # Packages to be installed on only work machines. Those run macOS and
-  # WSL2 Debian. Arch is a personal machine, so this category has no arch key.
+  # WSL2 Debian.
 
   work:
 

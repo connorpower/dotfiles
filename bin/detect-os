@@ -11,7 +11,6 @@ set -euo pipefail
 ## Constants
 ###############################################################################
 
-declare -r OS_ARCH='arch'     # ArchLinux
 declare -r OS_DEBIAN='debian' # Debian Linux (WSL2)
 declare -r OS_MSYS2='msys2'   # MSYS2
 declare -r OS_DARWIN='darwin' # macOS
@@ -63,11 +62,8 @@ long_usage() {
     echo ""
     echo "    Values:"
     echo "        - darwin"
-    echo "        - arch"
     echo "        - debian"
     echo "        - msys2"
-    echo ""
-    echo "    Set DOTFILES_OS to one of the values above to skip detection."
     echo ""
     echo "    Options:"
     echo "        --help | -h"
@@ -75,25 +71,8 @@ long_usage() {
 }
 
 detect() {
-    # A container shares the host's kernel, so uname can't tell an Arch
-    # container from any other. CI sets DOTFILES_OS to say which OS it is.
-    if [[ -n "${DOTFILES_OS:-}" ]]; then
-        case "${DOTFILES_OS}" in
-            "${OS_ARCH}"|"${OS_DEBIAN}"|"${OS_MSYS2}"|"${OS_DARWIN}")
-                echo "${DOTFILES_OS}"
-                return
-                ;;
-            *)
-                echo "Unknown DOTFILES_OS: ${DOTFILES_OS}" >&2
-                exit 1
-                ;;
-        esac
-    fi
-
     if [[ "$(uname | tr '[A-Z]' '[a-z]')" == 'darwin' ]]; then
         echo $OS_DARWIN
-    elif uname -r | grep --quiet 'arch'; then
-        echo $OS_ARCH
     elif [[ "${MSYSTEM-}" == 'MSYS' ]]; then
 	echo $OS_MSYS2
     elif [[ "$(lsb_release -i 2> /dev/null | sed 's/:\t/:/' | cut -d ':' -f 2-)" == 'Ubuntu' ]]; then

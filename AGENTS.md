@@ -6,9 +6,9 @@ This file provides guidance to coding agents (Claude Code, Codex, and others) wh
 
 Personal dotfiles managed via symlinks. No build step, no tests. Everything is plain config files and bash scripts.
 
-Supported targets: `darwin` (macOS), `debian` (Ubuntu 26.04 LTS or later, including WSL2), `arch` (Arch Linux), `msys2` (Windows).
+Supported targets: `darwin` (macOS), `debian` (Ubuntu 26.04 LTS or later, including WSL2), `msys2` (Windows).
 
-There is no code graph here, on purpose. `graft` indexes a codebase so that an agent can search summaries instead of source, which earns nothing against 79 files of config and two bash scripts. Do not run `graft init` here, and do not commit anything it writes.
+There is no code graph here, on purpose. `graft` indexes a codebase so that an agent can search summaries instead of source, which earns nothing against 69 files of config and two bash scripts. Do not run `graft init` here, and do not commit anything it writes.
 
 `graft uninstall --no-global` clears its files from this repo but does not keep them away. Its hooks are registered machine-wide in `~/.claude/settings.json`, so they still run here and write `graft/` and `.ignore` again. A full `graft uninstall` would stop that by removing those hook entries, and would equally stop graft in the repos where it earns its keep.
 
@@ -36,13 +36,13 @@ Two things hold the line instead. `.claude/settings.json` sets `GRAFT_NO_REFRESH
 ./packages/install.sh -v base           # check the commands run from a fresh interactive zsh
 ```
 
-**`bin/detect-os`** — prints one of `darwin`, `arch`, `debian`, `msys2`. Used internally by both scripts.
+**`bin/detect-os`** — prints one of `darwin`, `debian`, `msys2`. Used internally by both scripts.
 
 ## Architecture
 
 ### Symlink model
 
-`bootstrap.sh` maintains a `FILES` array mapping `$HOME/...destination -> repo/path`. Running the script creates symlinks. To add a new dotfile: add it to the `FILES` array (or `FILES_DARWIN`/`FILES_DEBIAN`/`FILES_ARCH` for OS-specific), then run `bootstrap.sh`.
+`bootstrap.sh` maintains a `FILES` array mapping `$HOME/...destination -> repo/path`. Running the script creates symlinks. To add a new dotfile: add it to the `FILES` array (or `FILES_DARWIN`/`FILES_DEBIAN` for OS-specific), then run `bootstrap.sh`.
 
 If a real file (or stale symlink) already sits at a destination, `bootstrap.sh` moves it aside to `<dest>.backup.<YYYYmmddHHMMSS>` before linking and prints a summary of what it moved. `-f` deletes those instead of backing them up. Re-runs are idempotent — a destination already pointing at the right repo file is left untouched.
 
@@ -82,7 +82,7 @@ Do not link `~/.claude/skills` or `~/.agents/skills` itself, only the entries in
 
 ### Package model
 
-`packages/packages.yml` organises packages into categories (`base`, `personal`, `work`) and sub-keys (`universal`, `cargo`, `cargo-<os>`, `darwin`, `arch`, `arch-aur`, `debian`, `scripts`, `npm`). `install.sh` uses `yq` to query this YAML and dispatches to the correct package manager. A step that fails is recorded and the run continues, and the failures print at the end with exit status 1. `packages.yml` also holds a `commands` section, separate from `packages`, which lists the commands `-v` expects to find. Cargo packages are always installed with `--locked`. `bootstrap()` runs `rustup update stable` on every run, because `rustup default stable` selects a channel and never updates it, and a new crate release can need a newer compiler than the one installed. The `scripts` sub-key is for tools that ship their own curl-piped installer instead of a package-manager package; entries are `name@url`, and `name` is checked on `PATH` before running the installer.
+`packages/packages.yml` organises packages into categories (`base`, `personal`, `work`) and sub-keys (`universal`, `cargo`, `cargo-<os>`, `darwin`, `debian`, `scripts`, `npm`). `install.sh` uses `yq` to query this YAML and dispatches to the correct package manager. A step that fails is recorded and the run continues, and the failures print at the end with exit status 1. `packages.yml` also holds a `commands` section, separate from `packages`, which lists the commands `-v` expects to find. Cargo packages are always installed with `--locked`. `bootstrap()` runs `rustup update stable` on every run, because `rustup default stable` selects a channel and never updates it, and a new crate release can need a newer compiler than the one installed. The `scripts` sub-key is for tools that ship their own curl-piped installer instead of a package-manager package; entries are `name@url`, and `name` is checked on `PATH` before running the installer.
 
 The `npm` sub-key is for tools that ship only as an npm package. Both it and `scripts` take `universal` and per-OS lists, the same as the package-manager keys. `npm_install()` runs `npm install -g` with no prior check, so each run also updates the package. node is a work-only dependency: brew installs it from `work.darwin`, and `bootstrap()` installs nvm and the current LTS on Debian. A global npm install belongs to the node version that made it, so an `nvm install` of a new LTS drops every package under this key. Re-run `install.sh` after one.
 
@@ -90,12 +90,12 @@ The `npm` sub-key is for tools that ship only as an npm package. Both it and `sc
 
 These rules exist because the installer broke four times in a row on Ubuntu 22.04. Each time a package that newer releases ship was missing from the oldest supported one, and a stale compiler broke a build. The machine has since moved to Ubuntu 26.04, which is now the oldest supported release.
 
-- **`universal` means every package manager ships it.** The oldest supported Debian-family release is Ubuntu 26.04 (resolute), so a tool that resolute's apt lacks does not go in `universal`. Put it in `cargo-debian` and in the `arch` and `darwin` lists, or in `scripts`. `bottom`, `cargo-update`, and `viu` are the current examples, and `actionlint` installs from its GitHub release because no Ubuntu release packages it. The floor moves with the machine: `eza`, `tealdeer`, `git-delta`, and `fastfetch` sat outside `universal` while 22.04 was the floor, and moved back once it was 26.04.
+- **`universal` means every package manager ships it.** The oldest supported Debian-family release is Ubuntu 26.04 (resolute), so a tool that resolute's apt lacks does not go in `universal`. Put it in `cargo-debian` and in the `darwin` list, or in `scripts`. `bottom`, `cargo-update`, and `viu` are the current examples, and `actionlint` installs from its GitHub release because no Ubuntu release packages it. The floor moves with the machine: `eza`, `tealdeer`, `git-delta`, and `fastfetch` sat outside `universal` while 22.04 was the floor, and moved back once it was 26.04.
 - **Run `./packages/install.sh -c <categories>` after any edit to `packages.yml`**, and fix every `MISSING` line before you commit. It checks the real package manager, crates.io, and the install-script URLs. A passing check is not proof that a cargo crate compiles, so a new crate still needs one real `cargo install`.
 - **Add the command to `commands` in `packages.yml`** whenever you add a tool that installs one, then run `-v`. A package name is often not its command name. `-v` checks from `zsh -ic` because that is where the tools get used, and it separates "not installed" from "installed but not on the zsh PATH". It also runs each command with `--version`, then `-V`, `-v`, `version`, and `-version`, and reports `BROKEN` when none works. A binary can sit on `PATH` and still fail to load its libraries after an OS upgrade, as neovim did after the move to 26.04.
 - **Do not verify from a tool shell.** A non-interactive shell lacks `~/.local/bin` on `PATH` and reports installed tools as missing. Use `zsh -ic` or `-v`.
 - **Keep an install step's last command the one that does the install.** `attempt()` records a failure from the exit status of a step's last command, because `set -e` is off inside it.
-- **CI runs these checks.** `.github/workflows/packages.yml` runs `-c` on Ubuntu 26.04, Arch, and macOS, and the real installer plus a `zsh -ic` start on Ubuntu 26.04. It runs on changes to the package files, and every Monday to catch upstream drift. Arch runs in a container that shares the host kernel, so CI sets `DOTFILES_OS=arch`, which `bin/detect-os` honours. Debian proper is not a supported target: `bin/detect-os` recognises Ubuntu only.
+- **CI runs these checks.** `.github/workflows/packages.yml` runs `-c` on Ubuntu 26.04 and macOS, and the real installer plus a `zsh -ic` start on Ubuntu 26.04. It runs on changes to the package files, and every Monday to catch upstream drift. Debian proper is not a supported target: `bin/detect-os` recognises Ubuntu only.
 - **Fix the class, not the instance.** When an install fails, fix it, then add or extend the check that would have caught it, and say what you added. A fix that only patches the one package guarantees the next failure.
 
 ### Rust toolchain
@@ -124,14 +124,14 @@ On a machine that is already set up, every entry is present, `brew_trust()` writ
 
 Add a formula to `homebrew/trust.json` whenever you add a tapped formula to `packages.yml`. A `brew trust` run writes through the symlink and lands in this repo, where it shows up as a change to commit.
 
-Prefer a prebuilt package over a source build. Put a Rust tool in `cargo` only when no package manager ships it, and in `cargo-<os>` (for example `cargo-debian`) when one package manager lacks it and the others do not. A source build costs compile time on every machine, and it trades a reviewed distribution package for an unreviewed one. Check the package before you move a tool: `calc` on crates.io is a different program from the `calc` that brew, pacman, and apt ship.
+Prefer a prebuilt package over a source build. Put a Rust tool in `cargo` only when no package manager ships it, and in `cargo-<os>` (for example `cargo-debian`) when one package manager lacks it and the others do not. A source build costs compile time on every machine, and it trades a reviewed distribution package for an unreviewed one. Check the package before you move a tool: `calc` on crates.io is a different program from the `calc` that brew and apt ship.
 
 Two apt packages install a binary under another name, because the obvious name was already taken. `bat` installs `batcat`, and `fd-find` installs `fdfind`. The `zsh` and `git` configs call both tools by their upstream names, so `configure()` in `install.sh` links each one into `~/.local/bin`.
 
 ### OS-specific zsh includes
 
 `zsh/rc` sources files from `zsh/zsh.d/` conditionally:
-- `macos.zsh` / `arch.zsh` / `msys2.zsh` / `debian-wsl2.zsh` — loaded based on `$OS`
+- `macos.zsh` / `msys2.zsh` / `debian-wsl2.zsh` — loaded based on `$OS`
 - `work.zsh` — loaded only when `~/.config/zsh.d/enable-work` exists (work machine opt-in)
 - `vim-mode.zsh`, `aws-utils.zsh`, `dates.zsh`, `stand.zsh` — always loaded
 

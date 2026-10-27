@@ -58,16 +58,12 @@ jobs:
     runs-on: ${{ matrix.runner }}
     container: ${{ matrix.container }}
     timeout-minutes: 20
-    env:
-      # bin/detect-os can't tell an Arch container from the host's kernel.
-      DOTFILES_OS: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         include:
-          - {name: ubuntu-26.04, runner: ubuntu-latest, container: 'ubuntu:26.04', family: debian, os: ''}
-          - {name: arch, runner: ubuntu-latest, container: 'archlinux:latest', family: arch, os: arch}
-          - {name: macos, runner: macos-latest, container: '', family: darwin, os: ''}
+          - {name: ubuntu-26.04, runner: ubuntu-latest, container: 'ubuntu:26.04', family: debian}
+          - {name: macos, runner: macos-latest, container: '', family: darwin}
     steps:
       - name: Prerequisites (Ubuntu)
         if: matrix.family == 'debian'
@@ -80,9 +76,6 @@ jobs:
           wget -qO /usr/local/bin/yq \
             "https://github.com/mikefarah/yq/releases/latest/download/yq_linux_$(dpkg --print-architecture)"
           chmod a+rx /usr/local/bin/yq
-      - name: Prerequisites (Arch)
-        if: matrix.family == 'arch'
-        run: pacman -Syu --noconfirm --needed sudo curl git yq
       - name: Prerequisites (macOS)
         if: matrix.family == 'darwin'
         run: brew install yq

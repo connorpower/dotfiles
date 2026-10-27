@@ -44,7 +44,6 @@ declare -a FILES=(
 declare -a FILES_KITTY=(
   "${HOME}/.config/kitty/kitty.conf              -> tty/kitty.conf"
   "${HOME}/.config/kitty/themes/catppuccin.conf  -> tty/kitty-catppuccin.conf"
-  "${HOME}/.config/kitty/arch.conf               -> tty/kitty-arch.conf"
   "${HOME}/.config/kitty/darwin.conf             -> tty/kitty-darwin.conf"
   "${HOME}/.config/kitty/msys2.conf              -> tty/kitty-msys2.conf"
 )
@@ -58,21 +57,6 @@ declare -a FILES_DARWIN=(
 declare -a FILES_DEBIAN=(
   "${HOME}/.gitconfig-os                          -> git/gitconfig-debian"
   "${HOME}/.gnupg/gpg-agent.conf                  -> gpg/gpg-agent-debian.conf"
-)
-
-declare -a FILES_ARCH=(
-  "${HOME}/.config/backup/exclude.txt             -> backup/exclude.txt"
-  "${HOME}/.config/hypr/hyprland.conf             -> hyprland/hyprland.conf"
-  "${HOME}/.config/waybar/config                  -> waybar/config"
-  "${HOME}/.config/waybar/style.css               -> waybar/style.css"
-  "${HOME}/.config/swaylock/config                -> swaylock/config"
-  "${HOME}/.config/cava/config                    -> cava/config"
-  "${HOME}/.config/rofi/config.rasi               -> rofi/config.rasi"
-  "${HOME}/.config/rofi/catppuccin-mocha.rasi     -> rofi/catppuccin-mocha.rasi"
-  "${HOME}/.config/gtk-3.0/settings.ini           -> gtk/gtk-3.0/settings.ini"
-  "${HOME}/.config/gtk-4.0/settings.ini           -> gtk/gtk-4.0/settings.ini"
-  "${HOME}/.config/systemd/user/dropbox.service   -> systemd/dropbox.service"
-  "${HOME}/.config/systemd/user/ssh-agent.service -> systemd/ssh-agent.service"
 )
 
 declare -a TEMPLATE_LINKS=(
@@ -160,9 +144,6 @@ main() {
     fi
 
     case "${OS}" in
-        'arch')
-            link_files "${FILES_ARCH[@]}"
-            ;;
         'darwin')
             link_files "${FILES_DARWIN[@]}"
             ;;
