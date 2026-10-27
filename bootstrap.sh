@@ -28,6 +28,7 @@ declare -a FILES=(
   "${HOME}/.config/nvim/lua/plugins.lua          -> nvim/plugins.lua"
   "${HOME}/.config/nvim/spell/en.utf-8.add       -> spelling/en.utf-8.add"
   "${HOME}/.tmux.conf                            -> tmux/tmux.conf"
+  "${HOME}/.ssh/config                           -> ssh/config"
   "${HOME}/.cargo/config.toml                    -> rust/cargo-config.toml"
   "${HOME}/.config/bat/config                    -> bat/config"
   "${HOME}/.config/bat/themes/catppuccin.tmTheme -> bat/catppuccin.tmTheme"

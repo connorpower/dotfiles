@@ -192,7 +192,13 @@ export NVM_DIR="$HOME/.nvm"
 
 export PATH="$HOME/.local/bin:$PATH"
 
-# SSH agent — start once per login, reuse across terminals
+# SSH agent. launchd on macOS and the systemd ssh-agent.socket unit on Ubuntu
+# each run one agent per login. Point at that agent. Start a private agent
+# only when neither exists, such as on msys2.
 if [ -z "$SSH_AUTH_SOCK" ]; then
-  eval "$(ssh-agent -s)" > /dev/null
+  if [ -S "${XDG_RUNTIME_DIR:-/run/user/$UID}/openssh_agent" ]; then
+    export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR:-/run/user/$UID}/openssh_agent"
+  else
+    eval "$(ssh-agent -s)" > /dev/null
+  fi
 fi
