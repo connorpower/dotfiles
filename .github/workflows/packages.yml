@@ -38,10 +38,10 @@ defaults:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Syntax
         run: bash -n packages/install.sh bootstrap.sh bin/detect-os
       - name: Shellcheck, errors only
@@ -62,7 +62,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {name: ubuntu-26.04, runner: ubuntu-latest, container: 'ubuntu:26.04', family: debian}
+          - {name: ubuntu-26.04, runner: ubuntu-26.04, container: 'ubuntu:26.04', family: debian}
           - {name: macos, runner: macos-latest, container: '', family: darwin}
     steps:
       - name: Prerequisites (Ubuntu)
@@ -79,7 +79,7 @@ jobs:
       - name: Prerequisites (macOS)
         if: matrix.family == 'darwin'
         run: brew install yq
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Check packages
         run: ./packages/install.sh -c base personal work
 
@@ -90,10 +90,10 @@ jobs:
   pins:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     needs: lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Try pinned crates unpinned
         run: |
           rustup update stable
@@ -113,7 +113,7 @@ jobs:
   install:
     name: install (${{ matrix.name }})
     needs: [lint, check]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     container: ${{ matrix.container }}
     timeout-minutes: 90
     env:
@@ -133,10 +133,10 @@ jobs:
           # tzdata is preinstalled because `sudo` drops DEBIAN_FRONTEND, so a
           # later package that pulls it in would stop to ask a question.
           apt-get install -y sudo curl git ca-certificates wget lsb-release locales tzdata
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       # Only the download caches. Caching ~/.cargo/bin would hand the
       # installer finished binaries and test nothing.
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: |
             /root/.cargo/registry

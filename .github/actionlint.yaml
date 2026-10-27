@@ -1,0 +1,6 @@
+# actionlint 1.7.12 does not know the ubuntu-26.04 runner label yet. GitHub
+# hosts it (see actions/runner-images). Delete this file once actionlint lists
+# the label.
+self-hosted-runner:
+  labels:
+    - ubuntu-26.04
