@@ -62,7 +62,19 @@ if [[ -d "${HOME}/.docker/completions" ]]; then
 fi
 
 autoload bashcompinit && bashcompinit
-autoload -Uz compinit && compinit
+autoload -Uz compinit
+
+# A completion file that is a dangling symlink makes compinit print an error
+# on every shell start. Docker Desktop's WSL integration leaves one in
+# /usr/share/zsh/vendor-completions that dangles whenever it is not running.
+# Silence compinit only while such a link exists, so other errors still show.
+dangling_completions=(${^fpath}/_*(N-@))
+if (( ${#dangling_completions} )); then
+    compinit 2>/dev/null
+else
+    compinit
+fi
+unset dangling_completions
 
 if command -v aws_completer &> /dev/null; then complete -C "$(command -v aws_completer)" aws; fi
 
@@ -97,6 +109,7 @@ source "${ZSH_INCL}/vim-mode.zsh"
 source "${ZSH_INCL}/aws-utils.zsh"
 source "${ZSH_INCL}/dates.zsh"
 source "${ZSH_INCL}/stand.zsh"
+source "${ZSH_INCL}/rust.zsh"
 
 #---------------------------------------------------------------------- rust ---
 

@@ -1,0 +1,3 @@
+# omp global settings, linked to ~/.omp/agent/config.yml by bootstrap.sh.
+# Only this file is synced. Auth, sessions and caches stay machine-local.
+{}

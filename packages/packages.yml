@@ -22,7 +22,9 @@ packages:
       - starship
       - viu
 
-    # Packages which have the same package name across all package managers
+    # Packages which have the same package name across all package managers,
+    # and that the oldest supported Ubuntu (26.04) packages. See "Package
+    # changes" in AGENTS.md.
     universal:
       # General
       - bat
@@ -44,6 +46,7 @@ packages:
       - graphviz
       - jq
       - llvm
+      - shellcheck
       - cmake
       # Rice
       - cmatrix
@@ -56,6 +59,7 @@ packages:
       - git-lfs
       - gh
       - neovim
+      - terraform # from the HashiCorp apt repository bootstrap() adds
 
     # Tools that ship their own curl-piped install script rather than a
     # package-manager package. Entries are 'name@url'; name is checked on
@@ -63,8 +67,10 @@ packages:
     scripts:
       debian:
         - herdr@https://herdr.dev/install.sh
+        - omp@https://omp.sh/install # prebuilt binary, checksum verified
       arch:
         - herdr@https://herdr.dev/install.sh
+        - omp@https://omp.sh/install
 
     arch:
       # Base Tools
@@ -96,6 +102,7 @@ packages:
       - swaylock
       - gnome-themes-extra
       - gnome-tweaks
+      # Rice
       # General
       - ttf-nerd-fonts-symbols # for starship
       - pacman-contrib
@@ -121,6 +128,7 @@ packages:
       - pulseadio
       - pamixer
       # Dev
+      - actionlint
       - gnu-netcat
       - github-cli
       - glab
@@ -134,6 +142,7 @@ packages:
       - viu
 
     arch-aur:
+      - terraform-bin # BUSL relicense removed terraform from the official repos
       # Compositor
       - hyprland-git
       # General
@@ -159,10 +168,12 @@ packages:
       # Rice
       - pipes-sh
       # Dev
+      - actionlint # Debian and Ubuntu: install_actionlint() in install.sh
       - gh
       - glab
       - awscli
       - herdr
+      - can1357/tap/omp # from the can1357/tap tap, see bootstrap()
       # Rust CLI tools
       - bacon
       - bottom
@@ -275,3 +286,66 @@ packages:
       - acli # Atlassian CLI, from the apt repository bootstrap() adds
       - protobuf-compiler # provides the `protoc` compiler
 
+
+# Commands
+# --------
+# Commands that `install.sh -v` expects to find on PATH in a fresh interactive
+# zsh, laid out like the package lists above. A package name is often not the
+# command name (ripgrep installs rg, bottom installs btm), so list the command.
+# Add a tool's command here whenever you add the tool above, and leave out
+# packages that install no command, such as zsh plugins and fonts.
+
+commands:
+
+  base:
+    universal:
+      - actionlint
+      - bat
+      - bacon
+      - btm
+      - calc
+      - cargo-install-update
+      - cmake
+      - cmatrix
+      - delta
+      - doxygen
+      - dust
+      - eza
+      - fastfetch
+      - fd
+      - fzf
+      - gh
+      - git
+      - git-filter-repo
+      - git-lfs
+      - gpg
+      - herdr
+      - jq
+      - nvim
+      - omp
+      - rg
+      - shellcheck
+      - starship
+      - terraform
+      - aws
+      - tig
+      - tldr
+      - tmux
+      - unzip
+      - viu
+      - zsh
+
+  personal:
+    universal:
+      - ffmpeg
+      - yt-dlp
+
+  work:
+    universal:
+      - acli
+      - atomic
+      - cargo-nextest
+      - graft
+      - protoc
+      - rtk
+      - uv

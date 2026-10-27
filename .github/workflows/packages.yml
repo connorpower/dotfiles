@@ -1,0 +1,166 @@
+name: packages
+
+# Runs the package installer's own checks on the OSes it supports. Free: the
+# repo is public. See "Package changes" in AGENTS.md for what each check is for.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'packages/**'
+      - 'bootstrap.sh'
+      - 'bin/detect-os'
+      - 'zsh/**'
+      - '.github/workflows/packages.yml'
+  pull_request:
+    paths:
+      - 'packages/**'
+      - 'bootstrap.sh'
+      - 'bin/detect-os'
+      - 'zsh/**'
+      - '.github/workflows/packages.yml'
+  # Upstream drift breaks installs with no commit to blame: a crate release
+  # that needs a newer compiler, or a package dropped from a distribution.
+  schedule:
+    - cron: '23 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax
+        run: bash -n packages/install.sh bootstrap.sh bin/detect-os
+      - name: Shellcheck, errors only
+        run: shellcheck --severity=error packages/install.sh bootstrap.sh bin/detect-os
+      - name: packages.yml parses
+        run: yq '.packages | keys, .commands | keys' packages/packages.yml
+
+  # Confirms every package, crate, and install script exists on each OS,
+  # without installing anything. The Ubuntu 26.04 leg is the oldest OS the
+  # installer supports, which is where a missing package shows up first.
+  check:
+    name: check (${{ matrix.name }})
+    needs: lint
+    runs-on: ${{ matrix.runner }}
+    container: ${{ matrix.container }}
+    timeout-minutes: 20
+    env:
+      # bin/detect-os can't tell an Arch container from the host's kernel.
+      DOTFILES_OS: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {name: ubuntu-26.04, runner: ubuntu-latest, container: 'ubuntu:26.04', family: debian, os: ''}
+          - {name: arch, runner: ubuntu-latest, container: 'archlinux:latest', family: arch, os: arch}
+          - {name: macos, runner: macos-latest, container: '', family: darwin, os: ''}
+    steps:
+      - name: Prerequisites (Ubuntu)
+        if: matrix.family == 'debian'
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          apt-get update
+          apt-get install -y sudo curl git ca-certificates wget lsb-release
+          # The same binary bootstrap() downloads. The apt yq is a different tool.
+          wget -qO /usr/local/bin/yq \
+            "https://github.com/mikefarah/yq/releases/latest/download/yq_linux_$(dpkg --print-architecture)"
+          chmod a+rx /usr/local/bin/yq
+      - name: Prerequisites (Arch)
+        if: matrix.family == 'arch'
+        run: pacman -Syu --noconfirm --needed sudo curl git yq
+      - name: Prerequisites (macOS)
+        if: matrix.family == 'darwin'
+        run: brew install yq
+      - uses: actions/checkout@v4
+      - name: Check packages
+        run: ./packages/install.sh -c base personal work
+
+  # A pin such as bottom@0.12.1 holds a crate back for a reason that can go
+  # away. Builds each pinned crate unpinned on the newest stable toolchain and
+  # raises a warning when it works, so the pin can be dropped. Never fails the
+  # run: a crate that still breaks just means the pin stays.
+  pins:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    needs: lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Try pinned crates unpinned
+        run: |
+          rustup update stable
+          rustc --version
+          while read -r entry; do
+            crate="${entry%%@*}"
+            if cargo install --locked --root "$(mktemp -d)" "${crate}"; then
+              echo "::warning title=Pin may no longer be needed::${entry} builds unpinned on $(rustc --version)"
+            else
+              echo "pin still needed: ${entry}"
+            fi
+          done < <(yq '.packages[] | (.cargo // [], ."cargo-debian" // []) | .[]' packages/packages.yml | grep '@' || true)
+
+  # Runs the real installer on the oldest supported Ubuntu, then starts zsh
+  # the way a terminal does. Catches what a check can't: a crate that needs a
+  # newer compiler, an install script that fails, a shell that errors on start.
+  install:
+    name: install (${{ matrix.name }})
+    needs: [lint, check]
+    runs-on: ubuntu-latest
+    container: ${{ matrix.container }}
+    timeout-minutes: 90
+    env:
+      # install.sh reads both under `set -u`, and a container sets neither.
+      USER: root
+      SHELL: /bin/bash
+      DEBIAN_FRONTEND: noninteractive
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {name: ubuntu-26.04, container: 'ubuntu:26.04'}
+    steps:
+      - name: Prerequisites
+        run: |
+          apt-get update
+          # tzdata is preinstalled because `sudo` drops DEBIAN_FRONTEND, so a
+          # later package that pulls it in would stop to ask a question.
+          apt-get install -y sudo curl git ca-certificates wget lsb-release locales tzdata
+      - uses: actions/checkout@v4
+      # Only the download caches. Caching ~/.cargo/bin would hand the
+      # installer finished binaries and test nothing.
+      - uses: actions/cache@v4
+        with:
+          path: |
+            /root/.cargo/registry
+            /root/.cargo/git
+          key: cargo-${{ matrix.name }}-${{ hashFiles('packages/packages.yml') }}
+          restore-keys: cargo-${{ matrix.name }}-
+      # bootstrap.sh first, so ~/.zshrc exists when install.sh verifies the
+      # commands from an interactive zsh.
+      - name: Link dotfiles
+        run: ./bootstrap.sh
+      - name: Install packages
+        run: ./packages/install.sh base personal
+      - name: Interactive zsh starts without errors
+        run: |
+          errors="$(zsh -ic exit </dev/null 2>&1 >/dev/null)" || true
+          if [[ -n "${errors}" ]]; then
+            echo "zsh printed errors on start:"
+            echo "${errors}"
+            exit 1
+          fi

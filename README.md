@@ -16,6 +16,22 @@ Files are organized by topic:
 - **bin**: utilities of various kinds
 - ... etc.
 
+## Supported systems
+
+| System | Release |
+|---|---|
+| macOS | current |
+| Ubuntu, including WSL2 | 26.04 LTS or later |
+| Arch Linux | current |
+| Windows (MSYS2) | current |
+
+Ubuntu 26.04 is the oldest supported Ubuntu. The package lists assume its apt
+packages exist, so an older release can fail partway through an install. The
+floor moves up with the machine: when the machine upgrades, raise it here and in
+`AGENTS.md`, and move any tool the new floor packages back into the shared
+`universal` list. `bin/detect-os` recognizes Ubuntu only, so Debian itself is not
+supported.
+
 ## Setup
 
 On a fresh machine, run the two scripts **in this order**:
@@ -52,7 +68,15 @@ Packages are declared in `packages/packages.yml`, grouped into categories.
 ./packages/install.sh base personal         # + personal machines
 ./packages/install.sh base personal work    # + work tooling
 ./packages/install.sh -d base               # dry run
+./packages/install.sh -c base               # check every entry exists on this OS
+./packages/install.sh -v base               # check the commands run in zsh
 ```
+
+`-c` confirms each package, crate and install-script URL exists for this OS
+without installing anything, so run it after editing `packages.yml`. `-v`
+confirms the commands listed under `commands` in `packages.yml` run from a fresh
+interactive zsh. An install runs `-v` itself when it finishes. A step that fails
+is reported at the end instead of stopping the run.
 
 ## bootstrap.sh
 
