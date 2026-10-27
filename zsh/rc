@@ -6,6 +6,10 @@ export LESSCHARSET=UTF-8
 
 #--------------------------------------------------------------------- paths ---
 
+# Keep one copy of each PATH entry. ~/.profile and this file both add
+# ~/.local/bin, and a nested shell adds every entry again.
+typeset -U path PATH
+
 # Appends a single new path to $PATH, only if it does not already exist.
 path_append() {
     if [[ ! -d "${1}" ]]; then
