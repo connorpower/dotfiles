@@ -45,5 +45,3 @@ If the skill is unavailable, apply its core anyway:
 - One term per concept, no phrasal verbs
 - No cliches, no marketing adjectives
 - Numbers in place of weasel words
-
-@RTK.md

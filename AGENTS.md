@@ -52,8 +52,6 @@ The `TEMPLATE_LINKS` mechanism handles files where the target path contains `<OS
 
 `agents/AGENTS.md` holds the standing instructions every agent follows, and `bootstrap.sh` links it to `~/.claude/CLAUDE.md`. It is written for any agent rather than for Claude Code, so a second link covers Codex once that tool settles on a user-level path. Codex reads `AGENTS.md` at a repository root today and defines no global location, which is why there is one link and not two.
 
-`agents/RTK.md` is linked to `~/.claude/RTK.md`, and `AGENTS.md` pulls it in with `@RTK.md`. Both destinations exist, so the include resolves whether an agent reads it beside the symlink or beside the file in this repo.
-
 This repo is public, so `agents/AGENTS.md` carries only instructions that name nobody. Anything naming a colleague, a channel, a customer, an internal system, or a team workflow belongs in a skill outside this repo, such as the ones under `~/.claude/skills/`.
 
 ### Skills
