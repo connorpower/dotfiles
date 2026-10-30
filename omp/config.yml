@@ -29,3 +29,6 @@ commands:
   enableClaudeUser: true
 enabledProviders:
   - claude
+disabledProviders:
+  - amazon-bedrock
+  - bedrock-mantle

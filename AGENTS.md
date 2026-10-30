@@ -52,7 +52,12 @@ The `TEMPLATE_LINKS` mechanism handles files where the target path contains `<OS
 
 ### Agent instructions
 
-`agents/AGENTS.md` holds the standing instructions every agent follows, and `bootstrap.sh` links it to `~/.claude/CLAUDE.md`. It is written for any agent rather than for Claude Code, so a second link covers Codex once that tool settles on a user-level path. Codex reads `AGENTS.md` at a repository root today and defines no global location, which is why there is one link and not two.
+`agents/AGENTS.md` holds the standing instructions every agent follows. `bootstrap.sh` links it to two places:
+
+- `~/.claude/CLAUDE.md`, which Claude Code reads. omp reads it too, through the `claude` entry in `enabledProviders` in `omp/config.yml`.
+- `~/.codex/AGENTS.md`, which Codex and the ChatGPT desktop app read as their global instructions.
+
+Do not create `~/.omp/agent/AGENTS.md`. omp loads one user-level instruction file, and that file outranks `~/.claude/CLAUDE.md`, so omp would stop reading the shared file. omp task subagents also drop every file named `AGENTS.md` but keep `CLAUDE.md`, so the `~/.claude/CLAUDE.md` link is the one that reaches them.
 
 This repo is public, so `agents/AGENTS.md` carries only instructions that name nobody. Anything naming a colleague, a channel, a customer, an internal system, or a team workflow belongs in a skill outside this repo, such as the ones under `~/.claude/skills/`.
 

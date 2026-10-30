@@ -45,3 +45,19 @@ If the skill is unavailable, apply its core anyway:
 - One term per concept, no phrasal verbs
 - No cliches, no marketing adjectives
 - Numbers in place of weasel words
+
+# Research
+
+- Delegate research that needs more than 2 web searches or page reads to a subagent.
+- The subagent runs the searches and reads the pages in its own session.
+- Show the user only the subagent's summary, with source links.
+- Never print full web pages or raw API output in the main session.
+
+# Paid services and AWS infrastructure
+
+- Ask me before you create, change, or delete AWS infrastructure. Wait for an explicit yes.
+- Ask me before you subscribe to, enable, or start to use a paid service, model, or subscription. Wait for an explicit yes. This rule includes AWS Marketplace offers and Amazon Bedrock model access.
+- A model, provider, or region choice that bills my AWS account is a paid service. A third-party model on Amazon Bedrock, such as an OpenAI model, creates an AWS Marketplace subscription when you first call it.
+- When you ask, name the service, the expected cost, and the steps to cancel it.
+- You can make read-only calls that list or describe resources without asking.
+- If a model or tool that I ask for is not available, tell me. Do not use a different paid route to get it.
