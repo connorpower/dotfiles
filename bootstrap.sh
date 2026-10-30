@@ -35,6 +35,7 @@ declare -a FILES=(
   "${HOME}/.config/starship.toml                 -> starship/starship.toml"
   "${HOME}/.claude/skills/dotfiles               -> agents"
   "${HOME}/.claude/CLAUDE.md                     -> agents/AGENTS.md"
+  "${HOME}/.claude/statusline-omp.sh             -> claude/statusline-omp.sh"
   "${HOME}/.omp/agent/config.yml                 -> omp/config.yml"
   "${HOME}/bin                                   -> bin"
   "${HOME}/wallpapers                            -> wallpapers"
@@ -155,6 +156,7 @@ main() {
 
     copy_templates
     generate_allowed_signers
+    merge_claude_settings
 
     if [[ -n "${backed_up_files}" ]]; then
         printf '\n%s\n' "Existing files were moved aside to make room for the symlinks:"
@@ -373,6 +375,40 @@ generate_allowed_signers() {
     mkdir -p "$(dirname "${signers}")"
     printf '%s' "${lines}" > "${signers}"
     echo "Wrote ${signers}"
+    created_links='true'
+}
+
+# Merges claude/settings.shared.json into ~/.claude/settings.json. A symlink
+# cannot do this job: Claude Code and other tools write machine-specific values
+# to that file, such as hooks with absolute paths. Shared keys win on conflict.
+merge_claude_settings() {
+    local settings="${HOME}/.claude/settings.json"
+    local current='{}'
+    local merged
+
+    if ! command -v jq &>/dev/null; then
+        echo "jq not found: skipped ${settings}. Install jq, then run bootstrap.sh again." >&2
+        return 0
+    fi
+
+    if [[ -s "${settings}" ]] && ! current=$(jq . "${settings}"); then
+        echo "${settings} is not valid JSON: skipped the merge." >&2
+        return 0
+    fi
+
+    merged=$(jq --slurpfile shared "${DIR}/claude/settings.shared.json" '. * $shared[0]' <<<"${current}")
+
+    if [[ -s "${settings}" ]] && [[ "${merged}" == "${current}" ]]; then
+        return 0
+    fi
+
+    if [[ -n "${dry_run}" ]]; then
+        echo "merge claude/settings.shared.json into ${settings}"
+        return 0
+    fi
+
+    mkdir -p "$(dirname "${settings}")"
+    printf '%s\n' "${merged}" > "${settings}"
     created_links='true'
 }
 

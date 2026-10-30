@@ -81,6 +81,7 @@ packages:
       debian:
         - bash-language-server # macOS takes the brew formula below
     darwin:
+      - bash # claude/statusline-omp.sh requires 4.3 or later, and macOS ships 3.2
       # Base Dev Tools
       - pkg-config
       # General

@@ -46,6 +46,8 @@ Two things hold the line instead. `.claude/settings.json` sets `GRAFT_NO_REFRESH
 
 If a real file (or stale symlink) already sits at a destination, `bootstrap.sh` moves it aside to `<dest>.backup.<YYYYmmddHHMMSS>` before linking and prints a summary of what it moved. `-f` deletes those instead of backing them up. Re-runs are idempotent — a destination already pointing at the right repo file is left untouched.
 
+`~/.claude/settings.json` is not a symlink, because Claude Code and other tools write machine-specific values to it. `bootstrap.sh` merges `claude/settings.shared.json` into that file with `jq` instead. Shared keys win on conflict, and all other keys stay as they are. To share a Claude Code setting across machines, add it to `claude/settings.shared.json` and run `bootstrap.sh` on each machine.
+
 The `TEMPLATE_LINKS` mechanism handles files where the target path contains `<OS>` — e.g., `kitty/os.conf` resolves to `kitty/kitty-darwin.conf` on macOS.
 
 ### Agent instructions
