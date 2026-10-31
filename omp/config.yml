@@ -1,4 +1,5 @@
-modelRoles: {}
+modelRoles:
+  default: anthropic/claude-opus-5-5:high
 symbolPreset: nerd
 composer:
   shape: band
@@ -32,3 +33,14 @@ enabledProviders:
 disabledProviders:
   - amazon-bedrock
   - bedrock-mantle
+display:
+  hideToolActivity: true
+startup:
+  quiet: true
+task:
+  eager: always
+  enableEffort: true
+todo:
+  eager: always
+tier:
+  openai: none
